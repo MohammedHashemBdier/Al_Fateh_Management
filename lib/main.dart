@@ -25,7 +25,7 @@ class AlFatehManagementApp extends StatelessWidget {
       ],
       child: BlocBuilder<ThemeCubit, ThemeMode>(
         builder: (context, themeMode) {
-          return BlocBuilder<LocaleCubit, Locale>(
+          return BlocBuilder<LocaleCubit, Locale?>(
             builder: (context, currentLocale) {
               return MaterialApp.router(
                 title: 'إدارة مزود خدمة الانترنت الفتح',
@@ -34,9 +34,21 @@ class AlFatehManagementApp extends StatelessWidget {
                 // نظام التوجيه GoRouter
                 routerConfig: AppRouter.router,
 
-                // اللغات والتوطين (عربي / إنكليزي)
+                // اللغات والتوطين (عربي / إنكليزي / لغة الجهاز التلقائية)
                 locale: currentLocale,
                 supportedLocales: const [Locale('ar'), Locale('en')],
+                localeResolutionCallback: (deviceLocale, supportedLocales) {
+                  if (currentLocale != null) return currentLocale;
+                  if (deviceLocale != null) {
+                    for (final supported in supportedLocales) {
+                      if (supported.languageCode == deviceLocale.languageCode) {
+                        return supported;
+                      }
+                    }
+                  }
+                  // اللغة الافتراضية عند عدم توفر لغة الجهاز
+                  return const Locale('ar');
+                },
                 localizationsDelegates: const [
                   AppLocalizations.delegate,
                   GlobalMaterialLocalizations.delegate,
@@ -44,7 +56,7 @@ class AlFatehManagementApp extends StatelessWidget {
                   GlobalCupertinoLocalizations.delegate,
                 ],
 
-                // الثيم المتجاوب (فاتح / داكن) مع خطوط Monadi و Alhadari
+                // الثيم المتجاوب (فاتح / داكن / ثيم الجهاز) مع خطوط Monadi و Alhadari
                 theme: MaterialTheme.lightTheme,
                 darkTheme: MaterialTheme.darkTheme,
                 themeMode: themeMode,

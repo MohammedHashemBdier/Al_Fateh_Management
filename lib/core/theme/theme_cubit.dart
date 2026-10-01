@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeCubit extends Cubit<ThemeMode> {
   static const String _prefKey = 'selected_theme_mode';
 
-  ThemeCubit() : super(ThemeMode.dark) {
+  ThemeCubit() : super(ThemeMode.system) {
     _loadSavedTheme();
   }
 
@@ -17,18 +17,12 @@ class ThemeCubit extends Cubit<ThemeMode> {
         emit(ThemeMode.light);
       } else if (modeStr == 'dark') {
         emit(ThemeMode.dark);
+      } else if (modeStr == 'system') {
+        emit(ThemeMode.system);
       } else {
-        emit(ThemeMode.dark); // Default to dark for high-tech ISP look
+        // First launch: default to device theme
+        emit(ThemeMode.system);
       }
-    } catch (_) {}
-  }
-
-  Future<void> toggleTheme() async {
-    final nextMode = state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark;
-    emit(nextMode);
-    try {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_prefKey, nextMode == ThemeMode.dark ? 'dark' : 'light');
     } catch (_) {}
   }
 
@@ -36,7 +30,19 @@ class ThemeCubit extends Cubit<ThemeMode> {
     emit(mode);
     try {
       final prefs = await SharedPreferences.getInstance();
-      await prefs.setString(_prefKey, mode == ThemeMode.dark ? 'dark' : 'light');
+      String val = 'system';
+      if (mode == ThemeMode.light) {
+        val = 'light';
+      } else if (mode == ThemeMode.dark) {
+        val = 'dark';
+      }
+      await prefs.setString(_prefKey, val);
     } catch (_) {}
   }
+
+  Future<void> setLight() => setThemeMode(ThemeMode.light);
+  Future<void> setDark() => setThemeMode(ThemeMode.dark);
+  Future<void> setSystem() => setThemeMode(ThemeMode.system);
+
+  bool get isSystem => state == ThemeMode.system;
 }
