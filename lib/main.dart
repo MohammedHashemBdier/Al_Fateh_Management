@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'theme.dart';
 
 void main() {
@@ -19,8 +20,9 @@ class _AlFatehAppState extends State<AlFatehApp> {
 
   void _toggleTheme() {
     setState(() {
-      _themeMode =
-          _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+      _themeMode = _themeMode == ThemeMode.light
+          ? ThemeMode.dark
+          : ThemeMode.light;
     });
   }
 
@@ -29,13 +31,10 @@ class _AlFatehAppState extends State<AlFatehApp> {
     return MaterialApp(
       title: 'شركة الفتح - إدارة الدعم الفني',
       debugShowCheckedModeBanner: false,
-      
+
       // التوطين ودعم اللغة العربية من اليمين لليسار (RTL)
       locale: const Locale('ar', 'SY'),
-      supportedLocales: const [
-        Locale('ar', 'SY'),
-        Locale('ar'),
-      ],
+      supportedLocales: const [Locale('ar', 'SY'), Locale('ar')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
@@ -189,8 +188,8 @@ class HomeScreen extends StatelessWidget {
                 final itemWidth = constraints.maxWidth > 800
                     ? (constraints.maxWidth - (3 * 14)) / 4
                     : (constraints.maxWidth > 450
-                        ? (constraints.maxWidth - 14) / 2
-                        : constraints.maxWidth);
+                          ? (constraints.maxWidth - 14) / 2
+                          : constraints.maxWidth);
                 return Wrap(
                   spacing: 14,
                   runSpacing: 14,

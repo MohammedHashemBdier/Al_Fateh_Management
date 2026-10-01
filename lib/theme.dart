@@ -335,18 +335,38 @@ class MaterialTheme {
     return theme(darkHighContrastScheme());
   }
 
-
   static TextTheme createTextTheme() {
     return const TextTheme(
       // Secondary font: Alhadari (Bold headlines & titles)
-      displayLarge: TextStyle(fontFamily: 'Alhadari', fontWeight: FontWeight.bold),
-      displayMedium: TextStyle(fontFamily: 'Alhadari', fontWeight: FontWeight.bold),
-      displaySmall: TextStyle(fontFamily: 'Alhadari', fontWeight: FontWeight.bold),
-      headlineLarge: TextStyle(fontFamily: 'Alhadari', fontWeight: FontWeight.bold),
-      headlineMedium: TextStyle(fontFamily: 'Alhadari', fontWeight: FontWeight.bold),
-      headlineSmall: TextStyle(fontFamily: 'Alhadari', fontWeight: FontWeight.bold),
-      titleLarge: TextStyle(fontFamily: 'Alhadari', fontWeight: FontWeight.bold),
-      
+      displayLarge: TextStyle(
+        fontFamily: 'Alhadari',
+        fontWeight: FontWeight.bold,
+      ),
+      displayMedium: TextStyle(
+        fontFamily: 'Alhadari',
+        fontWeight: FontWeight.bold,
+      ),
+      displaySmall: TextStyle(
+        fontFamily: 'Alhadari',
+        fontWeight: FontWeight.bold,
+      ),
+      headlineLarge: TextStyle(
+        fontFamily: 'Alhadari',
+        fontWeight: FontWeight.bold,
+      ),
+      headlineMedium: TextStyle(
+        fontFamily: 'Alhadari',
+        fontWeight: FontWeight.bold,
+      ),
+      headlineSmall: TextStyle(
+        fontFamily: 'Alhadari',
+        fontWeight: FontWeight.bold,
+      ),
+      titleLarge: TextStyle(
+        fontFamily: 'Alhadari',
+        fontWeight: FontWeight.bold,
+      ),
+
       // Primary font: Monadi (Body, Subtitles, Buttons & Labels)
       titleMedium: TextStyle(fontFamily: 'Monadi', fontWeight: FontWeight.w600),
       titleSmall: TextStyle(fontFamily: 'Monadi', fontWeight: FontWeight.w600),
@@ -363,31 +383,29 @@ class MaterialTheme {
   static ThemeData get darkTheme => MaterialTheme(createTextTheme()).dark();
 
   ThemeData theme(ColorScheme colorScheme) => ThemeData(
-     useMaterial3: true,
-     brightness: colorScheme.brightness,
-     colorScheme: colorScheme,
-     fontFamily: 'Monadi',
-     textTheme: textTheme.apply(
-       bodyColor: colorScheme.onSurface,
-       displayColor: colorScheme.onSurface,
-     ),
-     scaffoldBackgroundColor: colorScheme.surface,
-     canvasColor: colorScheme.surface,
-     appBarTheme: AppBarTheme(
-       backgroundColor: colorScheme.surface,
-       foregroundColor: colorScheme.onSurface,
-       elevation: 0,
-       titleTextStyle: const TextStyle(
-         fontFamily: 'Alhadari',
-         fontSize: 20,
-         fontWeight: FontWeight.bold,
-       ),
-     ),
+    useMaterial3: true,
+    brightness: colorScheme.brightness,
+    colorScheme: colorScheme,
+    fontFamily: 'Monadi',
+    textTheme: textTheme.apply(
+      bodyColor: colorScheme.onSurface,
+      displayColor: colorScheme.onSurface,
+    ),
+    scaffoldBackgroundColor: colorScheme.surface,
+    canvasColor: colorScheme.surface,
+    appBarTheme: AppBarTheme(
+      backgroundColor: colorScheme.surface,
+      foregroundColor: colorScheme.onSurface,
+      elevation: 0,
+      titleTextStyle: const TextStyle(
+        fontFamily: 'Alhadari',
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
   );
 
-
-  List<ExtendedColor> get extendedColors => [
-  ];
+  List<ExtendedColor> get extendedColors => [];
 }
 
 class ExtendedColor {
