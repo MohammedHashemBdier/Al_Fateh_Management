@@ -10,6 +10,7 @@ export 'app_logo.dart';
 export 'app_scaffold.dart';
 export 'app_status_badge.dart';
 export 'app_text_field.dart';
+export 'app_theme_language_switchers.dart';
 export 'locale_toggle_button.dart';
 export 'responsive_builder.dart';
 export 'theme_toggle_button.dart';

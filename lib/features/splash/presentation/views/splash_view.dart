@@ -118,17 +118,14 @@ class _SplashViewState extends State<SplashView>
               ),
             ),
 
-            // أدوات التحكم السريعة بالأعلى (أزرار اللغة والثيم المخصصة)
-            SafeArea(
+            // أدوات التحكم السريعة بالأعلى (أزرار اللغة والثيم الموحدة والمجردة)
+            const SafeArea(
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
-                    LocaleToggleButton(),
-                    ThemeToggleButton(size: 22),
-                  ],
+                    EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: AppThemeLanguageSwitchers(
+                  spread: true,
+                  themeIconSize: 22,
                 ),
               ),
             ),

@@ -3,6 +3,7 @@ import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_logo.dart';
 import 'app_status_badge.dart';
+import 'app_theme_language_switchers.dart';
 import 'locale_toggle_button.dart';
 import 'theme_toggle_button.dart';
 
@@ -102,13 +103,21 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           const SizedBox(width: 8),
         ],
-        if (showLanguageToggle) ...[
-          LocaleToggleButton(compact: isCompact),
+        if (showLanguageToggle && showThemeToggle) ...[
+          AppThemeLanguageSwitchers(
+            compact: isCompact,
+            spacing: 4,
+          ),
           const SizedBox(width: 4),
-        ],
-        if (showThemeToggle) ...[
-          const ThemeToggleButton(),
-          const SizedBox(width: 4),
+        ] else ...[
+          if (showLanguageToggle) ...[
+            LocaleToggleButton(compact: isCompact),
+            const SizedBox(width: 4),
+          ],
+          if (showThemeToggle) ...[
+            const ThemeToggleButton(),
+            const SizedBox(width: 4),
+          ],
         ],
         ...?extraActions,
         const SizedBox(width: 8),
