@@ -133,6 +133,68 @@ class AppLocalizations {
       'login_error_account_disabled': 'تم تعطيل هذا الحساب، يرجى مراجعة إدارة الفتح',
       'login_error_network': 'تعذر الاتصال بالسيرفر، يرجى التحقق من اتصال الإنترنت',
       'login_error_generic': 'فشل تسجيل الدخول، يرجى التحقق من اسم المستخدم وكلمة المرور',
+
+      // Navigation & Sections
+      'nav_home': 'الرئيسية',
+      'nav_tickets': 'المتابعات الفنية',
+      'nav_attendance': 'سجل الدوام',
+      'nav_employees': 'الموظفون والصلاحيات',
+      'nav_settings': 'الإعدادات والحساب',
+
+      // Confirm Dialog
+      'confirm_logout_title': 'تأكيد تسجيل الخروج',
+      'confirm_logout_msg': 'هل أنت متأكد من رغبتك في تسجيل الخروج من منظومة الفتح؟',
+      'confirm_logout_button': 'تسجيل الخروج',
+
+      // Dashboard & Statistics
+      'stat_total_tickets': 'إجمالي التذاكر',
+      'stat_in_progress': 'تذاكر قيد الحل',
+      'stat_resolved_today': 'تم حلها اليوم',
+      'stat_attendance_status': 'حالة دوام اليوم',
+      'stat_present': 'حاضر بالعمل',
+      'stat_not_checked_in': 'لم يسجل حضور',
+      'stat_active_users': 'الموظفون النشطون',
+      'stat_quick_actions': 'الإجراءات السريعة',
+      'stat_recent_tickets': 'أحدث المتابعات المسجلة',
+      'stat_view_all': 'عرض الكل',
+      'stat_refresh_data': 'تحديث البيانات',
+      'stat_offline_indicator': 'وضع محلي غير متصل بالشبكة',
+      'action_new_ticket': 'تسجيل تذكرة',
+      'action_check_in': 'تسجيل الحضور',
+      'action_manage_users': 'إدارة الموظفين',
+      'action_payroll_audit': 'تدقيق الرواتب',
+      'action_settings': 'إعدادات الحساب',
+
+      // Modules Placeholders
+      'tickets_view_title': 'إدارة المتابعات الفنية والأعطال',
+      'tickets_view_desc': 'متابعة اتصالات المشتركين، تسجيل الأعطال، وتحديث الحالات فورياً في جداول البيانات',
+      'attendance_view_title': 'إدارة الحضور والانصراف والدوام',
+      'attendance_view_desc': 'تسجيل الحضور عبر الـ GPS، التحقق من النطاق الجغرافي للمقر، ومراقبة الورديات والخصومات',
+      'employees_view_title': 'إدارة الموظفين والحسابات والصلاحيات',
+      'employees_view_desc': 'إدارة بيانات كادر العمل، مصفوفة الصلاحيات (RBAC)، واستعراض سجل التدقيق والرقابة',
+      'settings_view_title': 'إعدادات التطبيق والحساب الشخصي',
+      'settings_view_desc': 'إدارة تفضيلات المظهر واللغة، الأمان، وتفاصيل الحساب وجلسة الدخول',
+
+      // User Roles
+      'role_admin': 'أدمن النظام',
+      'role_gm': 'المدير العام',
+      'role_finance': 'المحاسبة والمالية',
+      'role_support_manager': 'مدير الدعم الفني',
+      'role_sales_manager': 'مدير المبيعات',
+      'role_support': 'فني الدعم الفني',
+      'role_sales': 'موظف المبيعات',
+
+      // Errors
+      'error_network_connection': 'لا يوجد اتصال بالإنترنت، يرجى فحص الشبكة',
+      'error_network_timeout': 'انتهت مهلة انتظار استجابة الخادم',
+      'error_server_internal': 'حدث خطأ غير متوقع في الخادم',
+      'error_unauthorized': 'غير مصرح، يرجى إعادة تسجيل الدخول',
+      'error_forbidden': 'ليس لديك الصلاحيات الكافية لتنفيذ هذا الإجراء',
+      'error_not_found': 'العنصر المطلوب غير موجود',
+      'error_validation_failed': 'بيانات الإدخال غير صالحة',
+      'error_cache_failure': 'فشل الوصول إلى الذاكرة المحلية المخزنة',
+      'error_unknown': 'حدث خطأ غير متوقع',
+      'auth_session_expired': 'انتهت صلاحية الجلسة المحلية، يرجى الاتصال بالإنترنت وتسجيل الدخول مجدداً',
     },
     'en': {
       // General & Actions
@@ -250,6 +312,68 @@ class AppLocalizations {
       'login_error_account_disabled': 'This account has been disabled, please contact Al-Fateh admin',
       'login_error_network': 'Unable to connect to server, please check your network connection',
       'login_error_generic': 'Login failed, please check your credentials and try again',
+
+      // Navigation & Sections
+      'nav_home': 'Home',
+      'nav_tickets': 'Technical Tickets',
+      'nav_attendance': 'Attendance',
+      'nav_employees': 'Staff & Roles',
+      'nav_settings': 'Settings & Account',
+
+      // Confirm Dialog
+      'confirm_logout_title': 'Confirm Sign Out',
+      'confirm_logout_msg': 'Are you sure you want to sign out of Al-Fateh System?',
+      'confirm_logout_button': 'Sign Out',
+
+      // Dashboard & Statistics
+      'stat_total_tickets': 'Total Tickets',
+      'stat_in_progress': 'In Progress',
+      'stat_resolved_today': 'Resolved Today',
+      'stat_attendance_status': 'Attendance Today',
+      'stat_present': 'Present at Work',
+      'stat_not_checked_in': 'Not Checked In',
+      'stat_active_users': 'Active Staff',
+      'stat_quick_actions': 'Quick Actions',
+      'stat_recent_tickets': 'Recent Support Tickets',
+      'stat_view_all': 'View All',
+      'stat_refresh_data': 'Refresh Data',
+      'stat_offline_indicator': 'Offline Local Cache Mode',
+      'action_new_ticket': 'New Ticket',
+      'action_check_in': 'Clock In / Out',
+      'action_manage_users': 'Manage Users',
+      'action_payroll_audit': 'Payroll Audit',
+      'action_settings': 'Account Settings',
+
+      // Modules Placeholders
+      'tickets_view_title': 'Technical Support & Tickets Management',
+      'tickets_view_desc': 'Manage subscriber calls, log hardware issues, and real-time Google Sheets tracking',
+      'attendance_view_title': 'Smart GPS Attendance & Geofenced Clock',
+      'attendance_view_desc': 'Check-in with GPS verification within company geofence radius and shifts management',
+      'employees_view_title': 'Staff, Accounts & RBAC Permissions',
+      'employees_view_desc': 'Manage staff roster, access permissions matrix, and immutable audit logs',
+      'settings_view_title': 'Application & Profile Settings',
+      'settings_view_desc': 'Manage theme preferences, language, security, and active session details',
+
+      // User Roles
+      'role_admin': 'System Administrator',
+      'role_gm': 'General Manager',
+      'role_finance': 'Finance & Accounting',
+      'role_support_manager': 'Support Manager',
+      'role_sales_manager': 'Sales Manager',
+      'role_support': 'Technical Support',
+      'role_sales': 'Sales Representative',
+
+      // Errors
+      'error_network_connection': 'No internet connection, please check network',
+      'error_network_timeout': 'Server request timed out, please retry',
+      'error_server_internal': 'Unexpected internal server error',
+      'error_unauthorized': 'Unauthorized session, please log in again',
+      'error_forbidden': 'You do not have permission to perform this action',
+      'error_not_found': 'The requested record was not found',
+      'error_validation_failed': 'Form input validation failed',
+      'error_cache_failure': 'Failed to access local encrypted storage',
+      'error_unknown': 'An unexpected error occurred',
+      'auth_session_expired': 'Local session expired, please connect to internet and log in again',
     },
   };
 

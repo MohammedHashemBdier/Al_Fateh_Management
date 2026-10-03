@@ -18,4 +18,6 @@ export 'app_theme_language_switchers.dart';
 export 'app_tooltip.dart';
 export 'locale_toggle_button.dart';
 export 'responsive_builder.dart';
+export 'app_confirm_dialog.dart';
+export 'role_gate.dart';
 export 'theme_toggle_button.dart';

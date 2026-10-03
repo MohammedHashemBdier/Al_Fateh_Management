@@ -37,24 +37,27 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final isCompact = context.isMobile;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isCompact = context.isMobile || screenWidth < 768;
+    final isNarrow = screenWidth < 520;
     final displayTitle = title ?? context.tr('app_name');
     final displaySubtitle = subtitle ?? context.tr('app_subtitle');
 
     return AppBar(
       toolbarHeight: height,
-      titleSpacing: isCompact ? 12 : 20,
+      titleSpacing: isCompact ? 4 : 12,
       leading: leading,
       title: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          if (showLogo) ...[
+          if (showLogo && !isNarrow) ...[
             AppLogo(
-              size: isCompact ? 32 : 40,
+              size: isCompact ? 24 : 34,
               withContainer: true,
-              borderRadius: 10,
-              padding: const EdgeInsets.all(5),
+              borderRadius: 8,
+              padding: const EdgeInsets.all(3),
             ),
-            const SizedBox(width: 12),
+            const SizedBox(width: 6),
           ],
           Expanded(
             child: Column(
@@ -73,14 +76,14 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                if (displaySubtitle.isNotEmpty)
+                if (!isCompact && displaySubtitle.isNotEmpty)
                   Text(
                     displaySubtitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: context.textTheme.bodySmall?.copyWith(
                       fontFamily: AppAssets.fontPrimary,
-                      fontSize: isCompact ? 10 : 12,
+                      fontSize: 11,
                       color: colors.onSurfaceVariant,
                     ),
                   ),
@@ -90,37 +93,28 @@ class AppAppBar extends StatelessWidget implements PreferredSizeWidget {
         ],
       ),
       actions: [
-        if (showStatus) ...[
-          if (!isCompact)
-            AppStatusBadge(status: context.tr('status_connected'))
-          else
-            Tooltip(
-              message: context.tr('status_connected'),
-              child: AppStatusBadge(
-                status: context.tr('status_connected_short'),
-                showDot: true,
-              ),
-            ),
-          const SizedBox(width: 8),
+        if (showStatus && !isCompact && extraActions == null) ...[
+          AppStatusBadge(status: context.tr('status_connected')),
+          const SizedBox(width: 4),
         ],
         if (showLanguageToggle && showThemeToggle) ...[
-          AppThemeLanguageSwitchers(
-            compact: isCompact,
-            spacing: 4,
+          const AppThemeLanguageSwitchers(
+            compact: true,
+            spacing: 2,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 2),
         ] else ...[
           if (showLanguageToggle) ...[
-            LocaleToggleButton(compact: isCompact),
-            const SizedBox(width: 4),
+            const LocaleToggleButton(compact: true),
+            const SizedBox(width: 2),
           ],
           if (showThemeToggle) ...[
-            const ThemeToggleButton(),
-            const SizedBox(width: 4),
+            const ThemeToggleButton(size: 18),
+            const SizedBox(width: 2),
           ],
         ],
         ...?extraActions,
-        const SizedBox(width: 8),
+        const SizedBox(width: 4),
       ],
     );
   }

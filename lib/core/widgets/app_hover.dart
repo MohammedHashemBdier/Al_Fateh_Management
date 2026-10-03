@@ -13,7 +13,7 @@ class AppHover extends StatefulWidget {
 
   const AppHover({
     super.key,
-    required this.child,
+    this.child = const SizedBox.shrink(),
     this.builder,
     this.duration = const Duration(milliseconds: 200),
     this.scale = 1.0,
