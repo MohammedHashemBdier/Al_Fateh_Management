@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/rbac/role_permissions.dart';
 import '../../../../core/utils/context_extensions.dart';
+import '../../../../core/widgets/app_animations.dart';
 import '../../../../core/widgets/app_app_bar.dart';
 import '../../../../core/widgets/app_button.dart';
 import '../../../../core/widgets/app_card.dart';
@@ -73,76 +74,90 @@ class _HomeViewBody extends StatelessWidget {
         }
       },
       builder: (context, state) {
-        if (state is HomeLoading || state is HomeInitial) {
-          final cachedUser = state is HomeLoading ? state.cachedUser : null;
-          return _buildSkeletonDashboard(context, colors, cachedUser);
-        }
+        return AppAnimatedSwitch(
+          child: _buildStateView(context, state, colors),
+        );
+      },
+    );
+  }
 
-        if (state is HomeError) {
-          return Scaffold(
-            backgroundColor: colors.surface,
-            body: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 480),
-                child: Padding(
-                  padding: const EdgeInsets.all(24.0),
-                  child: AppCard(
-                    padding: const EdgeInsets.all(32),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
+  Widget _buildStateView(BuildContext context, HomeState state, ColorScheme colors) {
+    if (state is HomeLoading || state is HomeInitial) {
+      final cachedUser = state is HomeLoading ? state.cachedUser : null;
+      return KeyedSubtree(
+        key: const ValueKey('home_skeleton'),
+        child: _buildSkeletonDashboard(context, colors, cachedUser),
+      );
+    }
+
+    if (state is HomeError) {
+      return Scaffold(
+        key: const ValueKey('home_error'),
+        backgroundColor: colors.surface,
+        body: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 480),
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: AppCard(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.error_outline_rounded, size: 48, color: colors.error),
+                    const SizedBox(height: 16),
+                    Text(
+                      context.tr('error_unknown'),
+                      style: context.textTheme.titleMedium?.copyWith(
+                        fontFamily: AppAssets.fontSecondary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      state.errorMessage,
+                      textAlign: TextAlign.center,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        fontFamily: AppAssets.fontPrimary,
+                        color: colors.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    Row(
                       children: [
-                        Icon(Icons.error_outline_rounded, size: 48, color: colors.error),
-                        const SizedBox(height: 16),
-                        Text(
-                          context.tr('error_unknown'),
-                          style: context.textTheme.titleMedium?.copyWith(
-                            fontFamily: AppAssets.fontSecondary,
-                            fontWeight: FontWeight.bold,
+                        Expanded(
+                          child: AppButton(
+                            label: context.tr('refresh'),
+                            icon: Icons.refresh_rounded,
+                            onPressed: () => context.read<HomeCubit>().loadHomeData(),
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Text(
-                          state.errorMessage,
-                          textAlign: TextAlign.center,
-                          style: context.textTheme.bodySmall?.copyWith(
-                            fontFamily: AppAssets.fontPrimary,
-                            color: colors.onSurfaceVariant,
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: AppButton(
+                            label: context.tr('logout'),
+                            variant: AppButtonVariant.outlined,
+                            onPressed: () => _handleLogout(context),
                           ),
-                        ),
-                        const SizedBox(height: 24),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: AppButton(
-                                label: context.tr('refresh'),
-                                icon: Icons.refresh_rounded,
-                                onPressed: () => context.read<HomeCubit>().loadHomeData(),
-                              ),
-                            ),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: AppButton(
-                                label: context.tr('logout'),
-                                variant: AppButtonVariant.outlined,
-                                onPressed: () => _handleLogout(context),
-                              ),
-                            ),
-                          ],
                         ),
                       ],
                     ),
-                  ),
+                  ],
                 ),
               ),
             ),
-          );
-        }
+          ),
+        ),
+      );
+    }
 
-        final loaded = state as HomeLoaded;
-        final user = loaded.user;
-        final role = UserRole.fromCode(user.roleId);
+    final loaded = state as HomeLoaded;
+    final user = loaded.user;
+    final role = UserRole.fromCode(user.roleId);
 
-        return ResponsiveBuilder(
+    return KeyedSubtree(
+      key: const ValueKey('home_loaded'),
+      child: ResponsiveBuilder(
           desktop: (ctx) => Scaffold(
             backgroundColor: colors.surface,
             body: Row(
@@ -230,10 +245,9 @@ class _HomeViewBody extends StatelessWidget {
               onDestinationSelected: (idx) => _handleDestinationSelected(ctx, idx),
             ),
           ),
-        );
-      },
-    );
-  }
+        ),
+      );
+    }
 
   Widget _buildMainDashboardContent({
     required BuildContext context,
@@ -257,106 +271,112 @@ class _HomeViewBody extends StatelessWidget {
           children: [
             // تنبيه وضع عدم الاتصال (Offline Mode Banner)
             if (state.isOffline) ...[
-              AppCard(
-                backgroundColor: const Color(0xfffef3c7),
-                borderColor: const Color(0xfff59e0b).withValues(alpha: 0.5),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Row(
-                  children: [
-                    const Icon(Icons.cloud_off_rounded, color: Color(0xffb45309), size: 22),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        context.tr('stat_offline_indicator'),
-                        style: const TextStyle(
-                          fontFamily: AppAssets.fontPrimary,
-                          color: Color(0xff92400e),
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
+              AppFadeSlide(
+                delay: const Duration(milliseconds: 30),
+                child: AppCard(
+                  backgroundColor: const Color(0xfffef3c7),
+                  borderColor: const Color(0xfff59e0b).withValues(alpha: 0.5),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.cloud_off_rounded, color: Color(0xffb45309), size: 22),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Text(
+                          context.tr('stat_offline_indicator'),
+                          style: const TextStyle(
+                            fontFamily: AppAssets.fontPrimary,
+                            color: Color(0xff92400e),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                          ),
                         ),
                       ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.sync_rounded, color: Color(0xffb45309), size: 20),
-                      tooltip: context.tr('stat_refresh_data'),
-                      onPressed: () => context.read<HomeCubit>().refreshData(),
-                    ),
-                  ],
+                      IconButton(
+                        icon: const Icon(Icons.sync_rounded, color: Color(0xffb45309), size: 20),
+                        tooltip: context.tr('stat_refresh_data'),
+                        onPressed: () => context.read<HomeCubit>().refreshData(),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 18),
             ],
 
             // ترويسة الترحيب المخصصة للدور (Welcome Banner)
-            AppCard(
-              padding: EdgeInsets.all(isCompact ? 14.0 : 18.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          '${context.tr('welcome_admin')}: ${user.fullName.isNotEmpty ? user.fullName : user.username}',
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: (isCompact
-                                  ? context.textTheme.titleMedium
-                                  : context.textTheme.headlineSmall)
-                              ?.copyWith(
-                            fontFamily: AppAssets.fontSecondary,
-                            fontWeight: FontWeight.bold,
-                            color: colors.primary,
+            AppFadeSlide(
+              delay: const Duration(milliseconds: 50),
+              child: AppCard(
+                padding: EdgeInsets.all(isCompact ? 14.0 : 18.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${context.tr('welcome_admin')}: ${user.fullName.isNotEmpty ? user.fullName : user.username}',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: (isCompact
+                                    ? context.textTheme.titleMedium
+                                    : context.textTheme.headlineSmall)
+                                ?.copyWith(
+                              fontFamily: AppAssets.fontSecondary,
+                              fontWeight: FontWeight.bold,
+                              color: colors.primary,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 6),
-                        Wrap(
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          spacing: 8,
-                          runSpacing: 4,
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: colors.primaryContainer,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                context.isArabic ? role.titleAr : role.titleEn,
-                                style: TextStyle(
-                                  fontFamily: AppAssets.fontPrimary,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                  color: colors.onPrimaryContainer,
+                          const SizedBox(height: 6),
+                          Wrap(
+                            crossAxisAlignment: WrapCrossAlignment.center,
+                            spacing: 8,
+                            runSpacing: 4,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                decoration: BoxDecoration(
+                                  color: colors.primaryContainer,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Text(
+                                  context.isArabic ? role.titleAr : role.titleEn,
+                                  style: TextStyle(
+                                    fontFamily: AppAssets.fontPrimary,
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: colors.onPrimaryContainer,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Text(
-                              '•  ${user.department}',
-                              style: context.textTheme.bodySmall?.copyWith(
-                                fontFamily: AppAssets.fontPrimary,
-                                color: colors.onSurfaceVariant,
+                              Text(
+                                '•  ${user.department}',
+                                style: context.textTheme.bodySmall?.copyWith(
+                                  fontFamily: AppAssets.fontPrimary,
+                                  color: colors.onSurfaceVariant,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (!isCompact) ...[
-                    const SizedBox(width: 14),
-                    CircleAvatar(
-                      radius: 22,
-                      backgroundColor: colors.primaryContainer,
-                      child: Icon(
-                        Icons.dashboard_customize_rounded,
-                        color: colors.onPrimaryContainer,
-                        size: 22,
+                            ],
+                          ),
+                        ],
                       ),
                     ),
+                    if (!isCompact) ...[
+                      const SizedBox(width: 14),
+                      CircleAvatar(
+                        radius: 22,
+                        backgroundColor: colors.primaryContainer,
+                        child: Icon(
+                          Icons.dashboard_customize_rounded,
+                          color: colors.onPrimaryContainer,
+                          size: 22,
+                        ),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
             ),
             const SizedBox(height: 24),

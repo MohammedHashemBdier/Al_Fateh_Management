@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/utils/context_extensions.dart';
 import '../../../../core/utils/app_snackbars.dart';
+import '../../../../core/widgets/app_animations.dart';
 import '../../../../core/widgets/app_card.dart';
 import '../../../../core/widgets/app_logo.dart';
 import '../../../../core/widgets/app_theme_language_switchers.dart';
@@ -131,9 +132,12 @@ class _LoginViewBody extends StatelessWidget {
                 top: 24,
                 right: 28,
                 child: SafeArea(
-                  child: AppThemeLanguageSwitchers(
-                    compact: false,
-                    spacing: 8,
+                  child: AppFadeSlide(
+                    delay: Duration(milliseconds: 150),
+                    child: AppThemeLanguageSwitchers(
+                      compact: false,
+                      spacing: 8,
+                    ),
                   ),
                 ),
               ),
@@ -147,7 +151,11 @@ class _LoginViewBody extends StatelessWidget {
                   ),
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(maxWidth: 440),
-                    child: const LoginFormCard(),
+                    child: const AppFadeSlide(
+                      delay: Duration(milliseconds: 100),
+                      scaleIn: true,
+                      child: LoginFormCard(),
+                    ),
                   ),
                 ),
               ),
@@ -170,9 +178,12 @@ class _LoginViewBody extends StatelessWidget {
             top: 12,
             right: 16,
             left: 16,
-            child: AppThemeLanguageSwitchers(
-              spread: true,
-              compact: true,
+            child: AppFadeSlide(
+              delay: Duration(milliseconds: 50),
+              child: AppThemeLanguageSwitchers(
+                spread: true,
+                compact: true,
+              ),
             ),
           ),
 
@@ -186,58 +197,71 @@ class _LoginViewBody extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     // شعار الفتح في الموبايل
-                    const AppLogo(
-                      size: 72,
-                      withContainer: true,
-                      isCircle: true,
-                      withGlow: true,
-                      padding: EdgeInsets.all(12),
+                    const AppFadeSlide(
+                      delay: Duration(milliseconds: 80),
+                      scaleIn: true,
+                      child: AppLogo(
+                        size: 72,
+                        withContainer: true,
+                        isCircle: true,
+                        withGlow: true,
+                        padding: EdgeInsets.all(12),
+                      ),
                     ),
                     const SizedBox(height: 14),
 
-                    Text(
-                      context.tr('app_name'),
-                      textAlign: TextAlign.center,
-                      style: context.textTheme.titleMedium?.copyWith(
-                        fontFamily: AppAssets.fontSecondary,
-                        fontWeight: FontWeight.bold,
-                        color: colors.onSurface,
+                    AppFadeSlide(
+                      delay: const Duration(milliseconds: 130),
+                      child: Text(
+                        context.tr('app_name'),
+                        textAlign: TextAlign.center,
+                        style: context.textTheme.titleMedium?.copyWith(
+                          fontFamily: AppAssets.fontSecondary,
+                          fontWeight: FontWeight.bold,
+                          color: colors.onSurface,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 20),
 
                     // بطاقة النموذج
-                    AppCard(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 22,
-                        vertical: 26,
+                    const AppFadeSlide(
+                      delay: Duration(milliseconds: 180),
+                      child: AppCard(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 22,
+                          vertical: 26,
+                        ),
+                        child: LoginFormCard(),
                       ),
-                      child: const LoginFormCard(),
                     ),
                     const SizedBox(height: 18),
 
                     // شارة الحماية السفلية
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(
-                          Icons.lock_outline_rounded,
-                          size: 14,
-                          color: Colors.green,
-                        ),
-                        const SizedBox(width: 6),
-                        Flexible(
-                          child: Text(
-                            context.tr('security_badge'),
-                            overflow: TextOverflow.ellipsis,
-                            style: context.textTheme.labelSmall?.copyWith(
-                              fontFamily: AppAssets.fontPrimary,
-                              color: colors.onSurfaceVariant.withValues(alpha: 0.7),
+                    AppFadeSlide(
+                      delay: const Duration(milliseconds: 230),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(
+                            Icons.lock_outline_rounded,
+                            size: 14,
+                            color: Colors.green,
+                          ),
+                          const SizedBox(width: 6),
+                          Flexible(
+                            child: Text(
+                              context.tr('security_badge'),
+                              overflow: TextOverflow.ellipsis,
+                              style: context.textTheme.labelSmall?.copyWith(
+                                fontFamily: AppAssets.fontPrimary,
+                                color: colors.onSurfaceVariant.withValues(alpha: 0.7),
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),

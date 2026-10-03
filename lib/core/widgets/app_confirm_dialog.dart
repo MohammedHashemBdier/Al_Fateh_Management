@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_button.dart';
@@ -98,7 +99,10 @@ class AppConfirmDialog extends StatelessWidget {
             constraints: const BoxConstraints(maxWidth: 440),
             child: Dialog(
               backgroundColor: Colors.transparent,
-              insetPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+              insetPadding: const EdgeInsets.symmetric(
+                horizontal: 20,
+                vertical: 24,
+              ),
               child: AppCard(
                 padding: const EdgeInsets.all(24),
                 borderRadius: 20,
@@ -115,11 +119,7 @@ class AppConfirmDialog extends StatelessWidget {
                         color: variantColor.withValues(alpha: 0.12),
                         shape: BoxShape.circle,
                       ),
-                      child: Icon(
-                        variant.icon,
-                        size: 32,
-                        color: variantColor,
-                      ),
+                      child: Icon(variant.icon, size: 32, color: variantColor),
                     ),
                     const SizedBox(height: 18),
 

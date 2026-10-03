@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:al_fateh_management/core/constants/app_assets.dart';
 import 'package:al_fateh_management/core/rbac/role_permissions.dart';
 import 'package:al_fateh_management/core/utils/context_extensions.dart';
+import 'package:al_fateh_management/core/widgets/app_animations.dart';
 import 'package:al_fateh_management/core/widgets/app_card.dart';
 import 'package:al_fateh_management/core/widgets/app_hover.dart';
 import 'package:al_fateh_management/core/widgets/app_skeleton.dart';
@@ -78,10 +79,16 @@ class HomeStatsGrid extends StatelessWidget {
     return ResponsiveBuilder(
       desktop: (ctx) => Row(
         children: cards
-            .map((card) => Expanded(
+            .asMap()
+            .entries
+            .map((entry) => Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                    child: _buildCardItem(ctx, card),
+                    child: AppFadeSlide(
+                      delay: Duration(milliseconds: 60 + entry.key * 50),
+                      scaleIn: true,
+                      child: _buildCardItem(ctx, entry.value),
+                    ),
                   ),
                 ))
             .toList(),
@@ -93,7 +100,15 @@ class HomeStatsGrid extends StatelessWidget {
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
         childAspectRatio: 1.3,
-        children: cards.map((c) => _buildCardItem(ctx, c)).toList(),
+        children: cards
+            .asMap()
+            .entries
+            .map((entry) => AppFadeSlide(
+                  delay: Duration(milliseconds: 60 + entry.key * 50),
+                  scaleIn: true,
+                  child: _buildCardItem(ctx, entry.value),
+                ))
+            .toList(),
       ),
       mobile: (ctx) => GridView.count(
         crossAxisCount: 2,
@@ -102,7 +117,15 @@ class HomeStatsGrid extends StatelessWidget {
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
         childAspectRatio: 1.05,
-        children: cards.map((c) => _buildCardItem(ctx, c)).toList(),
+        children: cards
+            .asMap()
+            .entries
+            .map((entry) => AppFadeSlide(
+                  delay: Duration(milliseconds: 60 + entry.key * 50),
+                  scaleIn: true,
+                  child: _buildCardItem(ctx, entry.value),
+                ))
+            .toList(),
       ),
     );
   }
