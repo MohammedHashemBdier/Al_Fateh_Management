@@ -15,13 +15,13 @@ enum ConfirmDialogVariant {
   Color getColor(BuildContext context) {
     switch (this) {
       case ConfirmDialogVariant.info:
-        return context.colors.primary;
+        return context.colors.info;
       case ConfirmDialogVariant.warning:
-        return const Color(0xfff59e0b);
+        return context.colors.warning;
       case ConfirmDialogVariant.danger:
         return context.colors.error;
       case ConfirmDialogVariant.success:
-        return const Color(0xff10b981);
+        return context.colors.success;
     }
   }
 

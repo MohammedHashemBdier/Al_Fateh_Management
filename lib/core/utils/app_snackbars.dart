@@ -1,47 +1,52 @@
 import 'package:flutter/material.dart';
 import '../constants/app_assets.dart';
 import '../localization/backend_message_translator.dart';
+import '../theme/theme.dart';
 
 class AppSnackbars {
   AppSnackbars._();
 
   static void showSuccess(BuildContext context, String message) {
+    final colors = Theme.of(context).colorScheme;
     _showSnackBar(
       context: context,
       message: message,
       icon: Icons.check_circle_rounded,
-      backgroundColor: const Color(0xff1b5e20),
-      foregroundColor: Colors.white,
+      backgroundColor: colors.success,
+      foregroundColor: colors.onSuccess,
     );
   }
 
   static void showError(BuildContext context, String message) {
+    final colors = Theme.of(context).colorScheme;
     _showSnackBar(
       context: context,
       message: message,
       icon: Icons.error_rounded,
-      backgroundColor: const Color(0xffb71c1c),
-      foregroundColor: Colors.white,
+      backgroundColor: colors.error,
+      foregroundColor: colors.onError,
     );
   }
 
   static void showWarning(BuildContext context, String message) {
+    final colors = Theme.of(context).colorScheme;
     _showSnackBar(
       context: context,
       message: message,
       icon: Icons.warning_rounded,
-      backgroundColor: const Color(0xffe65100),
-      foregroundColor: Colors.white,
+      backgroundColor: colors.warning,
+      foregroundColor: colors.onWarning,
     );
   }
 
   static void showInfo(BuildContext context, String message) {
+    final colors = Theme.of(context).colorScheme;
     _showSnackBar(
       context: context,
       message: message,
       icon: Icons.info_rounded,
-      backgroundColor: const Color(0xff0d47a1),
-      foregroundColor: Colors.white,
+      backgroundColor: colors.info,
+      foregroundColor: colors.onInfo,
     );
   }
 

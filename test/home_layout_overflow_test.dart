@@ -154,13 +154,13 @@ void main() {
     });
 
     testWidgets('HomeRecentActivity & HomeQuickActions render cleanly on compact width', (tester) async {
-      tester.view.physicalSize = const Size(360, 700);
+      tester.view.physicalSize = const Size(320, 700);
       tester.view.devicePixelRatio = 1.0;
       addTearDown(() => tester.view.resetPhysicalSize());
 
       await tester.pumpWidget(
         buildTestableWidget(
-          screenSize: const Size(360, 700),
+          screenSize: const Size(320, 700),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -174,6 +174,10 @@ void main() {
       );
       await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
+
+      // Verify that subscriber name and landline are found in the widget tree
+      expect(find.text('شركة التقنية للحلول البرمجية المتطورة'), findsOneWidget);
+      expect(find.textContaining('0112233445'), findsOneWidget);
     });
   });
 }

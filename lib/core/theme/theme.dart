@@ -442,3 +442,45 @@ class ColorFamily {
   final Color colorContainer;
   final Color onColorContainer;
 }
+
+/// ملحق ألوان الحالات والسمات الدلالية المأخوذة ديناميكياً من نظام الثيم
+extension AppSemanticColors on ColorScheme {
+  Color get success => brightness == Brightness.dark
+      ? const Color(0xff4ade80)
+      : const Color(0xff16a34a);
+  Color get onSuccess => brightness == Brightness.dark
+      ? const Color(0xff052e16)
+      : const Color(0xffffffff);
+  Color get successContainer => brightness == Brightness.dark
+      ? const Color(0xff064e3b)
+      : const Color(0xffdcfce7);
+  Color get onSuccessContainer => brightness == Brightness.dark
+      ? const Color(0xff86efac)
+      : const Color(0xff14532d);
+
+  Color get warning => brightness == Brightness.dark
+      ? const Color(0xfffbbf24)
+      : const Color(0xffd97706);
+  Color get onWarning => brightness == Brightness.dark
+      ? const Color(0xff451a03)
+      : const Color(0xffffffff);
+  Color get warningContainer => brightness == Brightness.dark
+      ? const Color(0xff78350f)
+      : const Color(0xfffef3c7);
+  Color get onWarningContainer => brightness == Brightness.dark
+      ? const Color(0xfffde68a)
+      : const Color(0xff92400e);
+
+  Color get info => brightness == Brightness.dark
+      ? const Color(0xff60a5fa)
+      : const Color(0xff2563eb);
+  Color get onInfo => brightness == Brightness.dark
+      ? const Color(0xff172554)
+      : const Color(0xffffffff);
+  Color get infoContainer => brightness == Brightness.dark
+      ? const Color(0xff1e3a8a)
+      : const Color(0xffdbeafe);
+  Color get onInfoContainer => brightness == Brightness.dark
+      ? const Color(0xff93c5fd)
+      : const Color(0xff1e40af);
+}

@@ -38,11 +38,11 @@ class EmployeesView extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 36,
-                    backgroundColor: const Color(0xff8b5cf6).withValues(alpha: 0.15),
-                    child: const Icon(
+                    backgroundColor: colors.tertiary.withValues(alpha: 0.15),
+                    child: Icon(
                       Icons.badge_rounded,
                       size: 42,
-                      color: Color(0xff8b5cf6),
+                      color: colors.tertiary,
                     ),
                   ),
                   const SizedBox(height: 20),

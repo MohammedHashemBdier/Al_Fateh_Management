@@ -69,7 +69,7 @@ class AppLogo extends StatelessWidget {
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xff1e293b) : Colors.white,
+        color: isDark ? colors.surfaceContainerHigh : colors.surface,
         shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
         borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
         border: Border.all(

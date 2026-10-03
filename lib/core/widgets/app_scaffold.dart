@@ -35,7 +35,6 @@ class AppScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
-    final isDark = context.isDark;
     final isCompact = context.isMobile;
 
     PreferredSizeWidget? resolvedAppBar = appBar;
@@ -69,17 +68,11 @@ class AppScaffold extends StatelessWidget {
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
-                  colors: isDark
-                      ? [
-                          const Color(0xff0d131f),
-                          const Color(0xff141c2c),
-                          colors.surface,
-                        ]
-                      : [
-                          const Color(0xfff8faff),
-                          const Color(0xffedf3fb),
-                          colors.surface,
-                        ],
+                  colors: [
+                    colors.surfaceContainerLowest,
+                    colors.surfaceContainerLow,
+                    colors.surface,
+                  ],
                 ),
               ),
             ),

@@ -35,25 +35,42 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
       final usersRaw = (data['users'] as List<dynamic>?) ?? [];
 
       int inProgress = 0;
-      int resolved = 0;
+      int resolvedTodayCount = 0;
       final recentItems = <RecentTicketItem>[];
+
+      final now = DateTime.now();
+      final todayStr1 =
+          '${now.year}/${now.month.toString().padLeft(2, '0')}/${now.day.toString().padLeft(2, '0')}';
+      final todayStr2 =
+          '${now.year}-${now.month.toString().padLeft(2, '0')}-${now.day.toString().padLeft(2, '0')}';
+
+      int maxRowId = 0;
 
       for (final item in recentRaw) {
         if (item is Map) {
+          final rowId = int.tryParse(item['row_id']?.toString() ?? '0') ?? 0;
+          if (rowId > maxRowId) maxRowId = rowId;
+
           final ticket = RecentTicketItem(
-            rowId: int.tryParse(item['row_id']?.toString() ?? '0') ?? 0,
+            rowId: rowId,
             subscriberName: item['subscriber_name']?.toString() ?? '',
             landline: item['landline']?.toString() ?? '',
             problem: item['problem']?.toString() ?? '',
             status: item['status']?.toString() ?? 'قيد الحل',
             date: item['date']?.toString() ?? '',
+            time: item['time']?.toString() ?? '',
             employee: item['employee']?.toString() ?? '',
           );
           recentItems.add(ticket);
 
           final st = ticket.status.trim();
-          if (st == 'تم الحل' || st.toLowerCase() == 'resolved') {
-            resolved++;
+          final isResolved = st == 'تم الحل' || st.toLowerCase() == 'resolved';
+          if (isResolved) {
+            // التحقق الدقيق هل تاريخ حل التذكرة يطابق تاريخ اليوم
+            final tDate = ticket.date.trim();
+            if (tDate.startsWith(todayStr1) || tDate.startsWith(todayStr2)) {
+              resolvedTodayCount++;
+            }
           } else {
             inProgress++;
           }
@@ -64,10 +81,20 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
           ? employeesRaw.length
           : (usersRaw.isNotEmpty ? usersRaw.length : 7);
 
+      // استخراج إجمالي التذاكر الحقيقي (من أحدث row_id في الشيت أو من المفتاح الصريح)
+      final explicitTotal = int.tryParse(data['total_tickets']?.toString() ?? '');
+      final calculatedTotal = explicitTotal ?? (maxRowId > 1 ? (maxRowId - 1) : recentRaw.length);
+
+      final explicitInProgress = int.tryParse(data['in_progress_tickets']?.toString() ?? '');
+      final inProgressTotal = explicitInProgress ?? inProgress;
+
+      final explicitResolvedToday = int.tryParse(data['resolved_today']?.toString() ?? '');
+      final resolvedTodayTotal = explicitResolvedToday ?? resolvedTodayCount;
+
       return DashboardStatsModel(
-        totalTickets: recentRaw.length,
-        inProgressTickets: inProgress,
-        resolvedToday: resolved,
+        totalTickets: calculatedTotal,
+        inProgressTickets: inProgressTotal,
+        resolvedToday: resolvedTodayTotal,
         isCheckedInToday: false, // يتم تحديثها من سجل الدوام
         activeEmployeesCount: activeCount,
         isServerConnected: true,

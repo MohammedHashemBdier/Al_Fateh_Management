@@ -10,6 +10,7 @@ class LoginBrandingPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colors = context.colors;
     final isDark = context.isDark;
     final isArabic = context.isArabic;
 
@@ -18,17 +19,11 @@ class LoginBrandingPanel extends StatelessWidget {
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: isDark
-              ? [
-                  const Color(0xff0d131f),
-                  const Color(0xff162032),
-                  const Color(0xff1f2d47),
-                ]
-              : [
-                  const Color(0xff1e293b),
-                  const Color(0xff0f172a),
-                  const Color(0xff020617),
-                ],
+          colors: [
+            colors.surfaceContainerLowest,
+            colors.surfaceContainerLow,
+            colors.surfaceContainer,
+          ],
         ),
       ),
       child: Stack(
@@ -43,10 +38,10 @@ class LoginBrandingPanel extends StatelessWidget {
               height: 300,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xff904a4b).withValues(alpha: 0.18),
+                color: colors.primary.withValues(alpha: isDark ? 0.18 : 0.10),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xff904a4b).withValues(alpha: 0.25),
+                    color: colors.primary.withValues(alpha: isDark ? 0.25 : 0.12),
                     blurRadius: 140,
                     spreadRadius: 40,
                   ),
@@ -87,11 +82,11 @@ class LoginBrandingPanel extends StatelessWidget {
                                     context.tr('app_name'),
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontFamily: AppAssets.fontSecondary,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
-                                      color: Colors.white,
+                                      color: colors.onSurface,
                                     ),
                                   ),
                                   Text(
@@ -101,7 +96,7 @@ class LoginBrandingPanel extends StatelessWidget {
                                     style: TextStyle(
                                       fontFamily: AppAssets.fontPrimary,
                                       fontSize: 12,
-                                      color: Colors.white.withValues(alpha: 0.7),
+                                      color: colors.onSurfaceVariant,
                                     ),
                                   ),
                                 ],
@@ -120,11 +115,11 @@ class LoginBrandingPanel extends StatelessWidget {
                             delay: const Duration(milliseconds: 140),
                             child: Text(
                               context.tr('welcome_admin'),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontFamily: AppAssets.fontSecondary,
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
+                                color: colors.onSurface,
                                 height: 1.4,
                               ),
                             ),
@@ -137,7 +132,7 @@ class LoginBrandingPanel extends StatelessWidget {
                               style: TextStyle(
                                 fontFamily: AppAssets.fontPrimary,
                                 fontSize: 14,
-                                color: Colors.white.withValues(alpha: 0.8),
+                                color: colors.onSurfaceVariant,
                                 height: 1.6,
                               ),
                             ),
@@ -148,6 +143,7 @@ class LoginBrandingPanel extends StatelessWidget {
                           AppFadeSlide(
                             delay: const Duration(milliseconds: 260),
                             child: _buildFeatureItem(
+                              context: context,
                               icon: Icons.speed_rounded,
                               title: context.tr('feature_tickets_title'),
                               subtitle: context.tr('feature_tickets_desc'),
@@ -157,6 +153,7 @@ class LoginBrandingPanel extends StatelessWidget {
                           AppFadeSlide(
                             delay: const Duration(milliseconds: 320),
                             child: _buildFeatureItem(
+                              context: context,
                               icon: Icons.location_on_rounded,
                               title: context.tr('feature_geofence_title'),
                               subtitle: context.tr('feature_geofence_desc'),
@@ -166,6 +163,7 @@ class LoginBrandingPanel extends StatelessWidget {
                           AppFadeSlide(
                             delay: const Duration(milliseconds: 380),
                             child: _buildFeatureItem(
+                              context: context,
                               icon: Icons.security_rounded,
                               title: context.tr('feature_rbac_title'),
                               subtitle: context.tr('feature_rbac_desc'),
@@ -181,26 +179,26 @@ class LoginBrandingPanel extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.08),
+                            color: colors.surfaceContainerHighest.withValues(alpha: 0.5),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: Colors.white.withValues(alpha: 0.15),
+                              color: colors.outlineVariant.withValues(alpha: 0.4),
                             ),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.lock_outline_rounded, size: 16, color: Colors.greenAccent),
+                              Icon(Icons.lock_outline_rounded, size: 16, color: colors.success),
                               const SizedBox(width: 8),
                               Flexible(
                                 child: Text(
                                   context.tr('security_badge'),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontFamily: AppAssets.fontPrimary,
                                     fontSize: 12,
-                                    color: Colors.white,
+                                    color: colors.onSurfaceVariant,
                                   ),
                                 ),
                               ),
@@ -220,20 +218,22 @@ class LoginBrandingPanel extends StatelessWidget {
   }
 
   Widget _buildFeatureItem({
+    required BuildContext context,
     required IconData icon,
     required String title,
     required String subtitle,
   }) {
+    final colors = context.colors;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: Colors.white.withValues(alpha: 0.12),
+            color: colors.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(icon, color: Colors.white, size: 20),
+          child: Icon(icon, color: colors.primary, size: 20),
         ),
         const SizedBox(width: 14),
         Expanded(
@@ -242,11 +242,11 @@ class LoginBrandingPanel extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: const TextStyle(
+                style: TextStyle(
                   fontFamily: AppAssets.fontPrimary,
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
-                  color: Colors.white,
+                  color: colors.onSurface,
                 ),
               ),
               const SizedBox(height: 2),
@@ -255,7 +255,7 @@ class LoginBrandingPanel extends StatelessWidget {
                 style: TextStyle(
                   fontFamily: AppAssets.fontPrimary,
                   fontSize: 12,
-                  color: Colors.white.withValues(alpha: 0.65),
+                  color: colors.onSurfaceVariant,
                 ),
               ),
             ],

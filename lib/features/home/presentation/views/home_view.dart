@@ -274,26 +274,26 @@ class _HomeViewBody extends StatelessWidget {
               AppFadeSlide(
                 delay: const Duration(milliseconds: 30),
                 child: AppCard(
-                  backgroundColor: const Color(0xfffef3c7),
-                  borderColor: const Color(0xfff59e0b).withValues(alpha: 0.5),
+                  backgroundColor: colors.warningContainer,
+                  borderColor: colors.warning.withValues(alpha: 0.5),
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                   child: Row(
                     children: [
-                      const Icon(Icons.cloud_off_rounded, color: Color(0xffb45309), size: 22),
+                      Icon(Icons.cloud_off_rounded, color: colors.onWarningContainer, size: 22),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
                           context.tr('stat_offline_indicator'),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontFamily: AppAssets.fontPrimary,
-                            color: Color(0xff92400e),
+                            color: colors.onWarningContainer,
                             fontWeight: FontWeight.w600,
                             fontSize: 13,
                           ),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.sync_rounded, color: Color(0xffb45309), size: 20),
+                        icon: Icon(Icons.sync_rounded, color: colors.onWarningContainer, size: 20),
                         tooltip: context.tr('stat_refresh_data'),
                         onPressed: () => context.read<HomeCubit>().refreshData(),
                       ),

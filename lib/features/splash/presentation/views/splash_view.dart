@@ -76,17 +76,11 @@ class _SplashViewState extends State<SplashView>
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: isDark
-                        ? [
-                            const Color(0xff0d131f),
-                            const Color(0xff141c2c),
-                            const Color(0xff1b263b),
-                          ]
-                        : [
-                            const Color(0xfff8faff),
-                            const Color(0xffeef3fb),
-                            const Color(0xffe3ecf8),
-                          ],
+                    colors: [
+                      colors.surfaceContainerLowest,
+                      colors.surfaceContainerLow,
+                      colors.surface,
+                    ],
                   ),
                 ),
               ),
@@ -102,14 +96,10 @@ class _SplashViewState extends State<SplashView>
                 height: 380,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: isDark
-                      ? const Color(0xff904a4b).withValues(alpha: 0.18)
-                      : const Color(0xffa15858).withValues(alpha: 0.12),
+                  color: colors.primary.withValues(alpha: isDark ? 0.18 : 0.12),
                   boxShadow: [
                     BoxShadow(
-                      color: isDark
-                          ? const Color(0xff904a4b).withValues(alpha: 0.25)
-                          : const Color(0xffa15858).withValues(alpha: 0.15),
+                      color: colors.primary.withValues(alpha: isDark ? 0.25 : 0.15),
                       blurRadius: 160,
                       spreadRadius: 60,
                     ),

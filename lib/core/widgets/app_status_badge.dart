@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/app_assets.dart';
+import '../utils/context_extensions.dart';
 
 class AppStatusBadge extends StatelessWidget {
   final String status;
@@ -13,7 +14,7 @@ class AppStatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = _getStatusColors(status);
+    final colors = _getStatusColors(context, status);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -50,41 +51,46 @@ class AppStatusBadge extends StatelessWidget {
     );
   }
 
-  _StatusColors _getStatusColors(String status) {
+  _StatusColors _getStatusColors(BuildContext context, String status) {
     final cleanStatus = status.trim();
+    final themeColors = context.colors;
 
     if (cleanStatus.contains('تم الحل') ||
         cleanStatus.contains('نشط') ||
         cleanStatus.toLowerCase().contains('resolved') ||
         cleanStatus.toLowerCase().contains('active')) {
-      return const _StatusColors(
-        textColor: Color(0xff2e7d32),
-        bgColor: Color(0x1a2e7d32),
-        borderColor: Color(0x4d2e7d32),
+      final base = themeColors.success;
+      return _StatusColors(
+        textColor: base,
+        bgColor: base.withValues(alpha: 0.12),
+        borderColor: base.withValues(alpha: 0.35),
       );
     } else if (cleanStatus.contains('قيد الحل') ||
         cleanStatus.contains('متابعة') ||
         cleanStatus.toLowerCase().contains('progress') ||
         cleanStatus.toLowerCase().contains('pending')) {
-      return const _StatusColors(
-        textColor: Color(0xffe65100),
-        bgColor: Color(0x1ae65100),
-        borderColor: Color(0x4de65100),
+      final base = themeColors.warning;
+      return _StatusColors(
+        textColor: base,
+        bgColor: base.withValues(alpha: 0.12),
+        borderColor: base.withValues(alpha: 0.35),
       );
     } else if (cleanStatus.contains('لم يتم') ||
         cleanStatus.contains('معلق') ||
         cleanStatus.toLowerCase().contains('unresolved') ||
         cleanStatus.toLowerCase().contains('failed')) {
-      return const _StatusColors(
-        textColor: Color(0xffc62828),
-        bgColor: Color(0x1ac62828),
-        borderColor: Color(0x4dc62828),
+      final base = themeColors.error;
+      return _StatusColors(
+        textColor: base,
+        bgColor: base.withValues(alpha: 0.12),
+        borderColor: base.withValues(alpha: 0.35),
       );
     } else {
-      return const _StatusColors(
-        textColor: Color(0xff0277bd),
-        bgColor: Color(0x1a0277bd),
-        borderColor: Color(0x4d0277bd),
+      final base = themeColors.info;
+      return _StatusColors(
+        textColor: base,
+        bgColor: base.withValues(alpha: 0.12),
+        borderColor: base.withValues(alpha: 0.35),
       );
     }
   }

@@ -38,11 +38,11 @@ class AttendanceView extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: 36,
-                    backgroundColor: const Color(0xff10b981).withValues(alpha: 0.15),
-                    child: const Icon(
+                    backgroundColor: colors.success.withValues(alpha: 0.15),
+                    child: Icon(
                       Icons.access_time_filled_rounded,
                       size: 42,
-                      color: Color(0xff10b981),
+                      color: colors.success,
                     ),
                   ),
                   const SizedBox(height: 20),

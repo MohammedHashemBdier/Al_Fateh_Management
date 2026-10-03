@@ -32,27 +32,29 @@ class HomeStatsGrid extends StatelessWidget {
 
     final role = UserRole.fromCode(user.roleId);
 
-    // تجهيز البطاقات الأربعة
+    final colors = context.colors;
+
+    // تجهيز البطاقات الأربعة بألوان ديناميكية مأخوذة من ثيم التطبيق
     final cards = [
       _StatCardData(
         titleKey: 'stat_total_tickets',
         value: stats!.totalTickets.toString(),
         icon: Icons.confirmation_number_outlined,
-        color: const Color(0xff3b82f6),
+        color: colors.info,
         tooltipKey: 'stat_total_tickets',
       ),
       _StatCardData(
         titleKey: 'stat_in_progress',
         value: stats!.inProgressTickets.toString(),
         icon: Icons.pending_actions_rounded,
-        color: const Color(0xfff59e0b),
+        color: colors.warning,
         tooltipKey: 'stat_in_progress',
       ),
       _StatCardData(
         titleKey: 'stat_resolved_today',
         value: stats!.resolvedToday.toString(),
         icon: Icons.task_alt_rounded,
-        color: const Color(0xff10b981),
+        color: colors.success,
         tooltipKey: 'stat_resolved_today',
       ),
       // البطاقة الرابعة تتكيف حسب الدور:
@@ -62,7 +64,7 @@ class HomeStatsGrid extends StatelessWidget {
               titleKey: 'stat_active_users',
               value: stats!.activeEmployeesCount.toString(),
               icon: Icons.people_outline_rounded,
-              color: const Color(0xff8b5cf6),
+              color: colors.tertiary,
               tooltipKey: 'stat_active_users',
             )
           : _StatCardData(
@@ -71,7 +73,7 @@ class HomeStatsGrid extends StatelessWidget {
                   ? context.tr('stat_present')
                   : context.tr('stat_not_checked_in'),
               icon: Icons.access_time_rounded,
-              color: stats!.isCheckedInToday ? const Color(0xff10b981) : const Color(0xffef4444),
+              color: stats!.isCheckedInToday ? colors.success : colors.error,
               tooltipKey: 'stat_attendance_status',
             ),
     ];
@@ -83,11 +85,14 @@ class HomeStatsGrid extends StatelessWidget {
             .entries
             .map((entry) => Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 6.0),
-                    child: AppFadeSlide(
-                      delay: Duration(milliseconds: 60 + entry.key * 50),
-                      scaleIn: true,
-                      child: _buildCardItem(ctx, entry.value),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: SizedBox(
+                      height: 76,
+                      child: AppFadeSlide(
+                        delay: Duration(milliseconds: 60 + entry.key * 50),
+                        scaleIn: true,
+                        child: _buildCardItem(ctx, entry.value),
+                      ),
                     ),
                   ),
                 ))
@@ -97,9 +102,9 @@ class HomeStatsGrid extends StatelessWidget {
         crossAxisCount: 2,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 1.3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 1.9,
         children: cards
             .asMap()
             .entries
@@ -114,9 +119,9 @@ class HomeStatsGrid extends StatelessWidget {
         crossAxisCount: 2,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 1.05,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+        childAspectRatio: 1.55,
         children: cards
             .asMap()
             .entries
@@ -138,69 +143,68 @@ class HomeStatsGrid extends StatelessWidget {
       child: AppHover(
         builder: (ctx, isHovered) {
           return AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            transform: Matrix4.translationValues(0, isHovered ? -3 : 0, 0),
+            duration: const Duration(milliseconds: 180),
+            transform: Matrix4.translationValues(0, isHovered ? -2 : 0, 0),
             child: AppCard(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-              borderColor: isHovered ? data.color.withValues(alpha: 0.5) : null,
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: AlignmentDirectional.topStart,
-                child: SizedBox(
-                  width: 140,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+              borderRadius: 14,
+              borderColor: isHovered
+                  ? data.color.withValues(alpha: 0.45)
+                  : colors.outlineVariant.withValues(alpha: 0.3),
+              child: Row(
+                children: [
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: data.color.withValues(alpha: isHovered ? 0.18 : 0.1),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: data.color.withValues(alpha: isHovered ? 0.4 : 0.18),
+                        width: 1,
+                      ),
+                    ),
+                    child: Icon(data.icon, color: data.color, size: 18),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: AlignmentDirectional.centerStart,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: data.color.withValues(alpha: isHovered ? 0.2 : 0.12),
-                              borderRadius: BorderRadius.circular(8),
+                          Text(
+                            data.value,
+                            maxLines: 1,
+                            style: context.textTheme.titleMedium?.copyWith(
+                              fontFamily: AppAssets.fontSecondary,
+                              fontWeight: FontWeight.w800,
+                              color: colors.onSurface,
+                              fontSize: 18,
+                              letterSpacing: -0.3,
+                              height: 1.1,
                             ),
-                            child: Icon(data.icon, color: data.color, size: 18),
                           ),
-                          Container(
-                            width: 6,
-                            height: 6,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: isHovered ? data.color : Colors.transparent,
+                          const SizedBox(height: 2),
+                          Text(
+                            context.tr(data.titleKey),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: AppAssets.fontPrimary,
+                              color: colors.onSurfaceVariant,
+                              fontSize: 11,
+                              fontWeight: FontWeight.w500,
+                              height: 1.1,
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 6),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        alignment: AlignmentDirectional.centerStart,
-                        child: Text(
-                          data.value,
-                          maxLines: 1,
-                          style: context.textTheme.titleLarge?.copyWith(
-                            fontFamily: AppAssets.fontSecondary,
-                            fontWeight: FontWeight.bold,
-                            color: colors.onSurface,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        context.tr(data.titleKey),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.bodySmall?.copyWith(
-                          fontFamily: AppAssets.fontPrimary,
-                          color: colors.onSurfaceVariant,
-                          fontSize: 11,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           );
@@ -216,8 +220,8 @@ class HomeStatsGrid extends StatelessWidget {
           4,
           (i) => const Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 6.0),
-              child: AppSkeleton(height: 110, borderRadius: 16),
+              padding: EdgeInsets.symmetric(horizontal: 5.0),
+              child: AppSkeleton(height: 76, borderRadius: 14),
             ),
           ),
         ),
@@ -226,24 +230,24 @@ class HomeStatsGrid extends StatelessWidget {
         crossAxisCount: 2,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        crossAxisSpacing: 12,
-        mainAxisSpacing: 12,
-        childAspectRatio: 1.3,
+        crossAxisSpacing: 10,
+        mainAxisSpacing: 10,
+        childAspectRatio: 1.9,
         children: List.generate(
           4,
-          (i) => const AppSkeleton(height: 100, borderRadius: 14),
+          (i) => const AppSkeleton(height: 76, borderRadius: 14),
         ),
       ),
       mobile: (ctx) => GridView.count(
         crossAxisCount: 2,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        crossAxisSpacing: 10,
-        mainAxisSpacing: 10,
-        childAspectRatio: 1.05,
+        crossAxisSpacing: 8,
+        mainAxisSpacing: 8,
+        childAspectRatio: 1.55,
         children: List.generate(
           4,
-          (i) => const AppSkeleton(height: 100, borderRadius: 14),
+          (i) => const AppSkeleton(height: 76, borderRadius: 14),
         ),
       ),
     );

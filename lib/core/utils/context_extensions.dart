@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../localization/app_localizations.dart';
+export '../theme/theme.dart' show AppSemanticColors;
 
 extension ContextExtensions on BuildContext {
   // Theme & Colors

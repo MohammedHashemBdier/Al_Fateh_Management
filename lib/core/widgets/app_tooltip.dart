@@ -22,7 +22,6 @@ class AppTooltip extends StatelessWidget {
     if (message.isEmpty) return child;
 
     final colors = context.colors;
-    final isDark = context.isDark;
 
     return Tooltip(
       message: message,
@@ -30,11 +29,11 @@ class AppTooltip extends StatelessWidget {
       showDuration: const Duration(seconds: 3),
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xff2d3748) : const Color(0xff1a202c),
+        color: colors.inverseSurface,
         borderRadius: BorderRadius.circular(8),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.18),
+            color: colors.shadow.withValues(alpha: 0.18),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -42,7 +41,7 @@ class AppTooltip extends StatelessWidget {
       ),
       textStyle: TextStyle(
         fontFamily: AppAssets.fontPrimary,
-        color: colors.surface,
+        color: colors.onInverseSurface,
         fontSize: 12,
         fontWeight: FontWeight.w500,
       ),

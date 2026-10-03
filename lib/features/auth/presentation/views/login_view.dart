@@ -244,10 +244,10 @@ class _LoginViewBody extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.lock_outline_rounded,
                             size: 14,
-                            color: Colors.green,
+                            color: colors.success,
                           ),
                           const SizedBox(width: 6),
                           Flexible(

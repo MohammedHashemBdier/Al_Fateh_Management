@@ -88,14 +88,16 @@ class _AppSkeletonState extends State<AppSkeleton>
   Widget build(BuildContext context) {
     final isDark = context.isDark;
 
+    final colors = context.colors;
+
     // ألوان نابضة متناسقة مع الثيم
     final baseColor = isDark
-        ? const Color(0xff1b263b).withValues(alpha: 0.6)
-        : const Color(0xffe2e8f0);
+        ? colors.surfaceContainerHighest.withValues(alpha: 0.6)
+        : colors.surfaceContainerHigh;
 
     final highlightColor = isDark
-        ? const Color(0xff2d3d59).withValues(alpha: 0.8)
-        : const Color(0xfff8fafc);
+        ? colors.surfaceContainerLow.withValues(alpha: 0.8)
+        : colors.surfaceContainerLowest;
 
     return AnimatedBuilder(
       animation: _animation,

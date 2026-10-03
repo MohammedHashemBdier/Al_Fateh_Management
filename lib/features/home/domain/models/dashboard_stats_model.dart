@@ -85,6 +85,7 @@ class RecentTicketItem {
   final String problem;
   final String status;
   final String date;
+  final String time;
   final String employee;
 
   const RecentTicketItem({
@@ -94,8 +95,29 @@ class RecentTicketItem {
     required this.problem,
     required this.status,
     required this.date,
+    this.time = '',
     required this.employee,
   });
+
+  /// تاريخ نظيف بدون أصفار الوقت إذا كانت موجودة (مثال: 2026/09/27)
+  String get cleanDate {
+    if (date.isEmpty) return '';
+    final parts = date.split(' ');
+    return parts.first.replaceAll('-', '/');
+  }
+
+  /// وقت نظيف بالساعات والدقائق (مثال: 16:39)
+  String get cleanTime {
+    if (time.isEmpty) return '';
+    // إذا كان التنسيق 1899/12/30 16:39:19 نأخذ الجزء الثاني
+    final parts = time.split(' ');
+    final timeStr = parts.length > 1 ? parts.last : parts.first;
+    final timeParts = timeStr.split(':');
+    if (timeParts.length >= 2) {
+      return '${timeParts[0]}:${timeParts[1]}';
+    }
+    return timeStr;
+  }
 
   factory RecentTicketItem.fromJson(Map<String, dynamic> json) {
     return RecentTicketItem(
@@ -105,6 +127,7 @@ class RecentTicketItem {
       problem: json['problem']?.toString() ?? '',
       status: json['status']?.toString() ?? 'قيد الحل',
       date: json['date']?.toString() ?? '',
+      time: json['time']?.toString() ?? '',
       employee: json['employee']?.toString() ?? '',
     );
   }
@@ -117,6 +140,7 @@ class RecentTicketItem {
       'problem': problem,
       'status': status,
       'date': date,
+      'time': time,
       'employee': employee,
     };
   }
