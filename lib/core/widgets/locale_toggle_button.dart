@@ -47,13 +47,17 @@ class LocaleToggleButton extends StatelessWidget {
               children: [
                 Icon(Icons.language_rounded, size: 16, color: colors.primary),
                 const SizedBox(width: 6),
-                Text(
-                  currentLabel,
-                  style: TextStyle(
-                    fontFamily: AppAssets.fontPrimary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 12,
-                    color: colors.onSurface,
+                Flexible(
+                  child: Text(
+                    currentLabel,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    style: TextStyle(
+                      fontFamily: AppAssets.fontPrimary,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: colors.onSurface,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 4),

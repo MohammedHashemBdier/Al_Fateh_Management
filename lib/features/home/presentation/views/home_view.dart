@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../../core/widgets/widgets.dart';
+import '../../../auth/data/repositories/auth_repository_impl.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -12,6 +14,20 @@ class HomeView extends StatelessWidget {
     final isCompact = context.isMobile;
 
     return AppScaffold(
+      appBar: AppAppBar(
+        extraActions: [
+          IconButton(
+            icon: const Icon(Icons.logout_rounded, size: 20),
+            tooltip: context.tr('logout'),
+            onPressed: () async {
+              await AuthRepositoryImpl().logout();
+              if (context.mounted) {
+                context.go('/login');
+              }
+            },
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

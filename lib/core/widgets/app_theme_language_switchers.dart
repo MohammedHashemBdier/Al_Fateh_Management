@@ -30,22 +30,33 @@ class AppThemeLanguageSwitchers extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    final content = spread
-        ? Row(
+    final content = LayoutBuilder(
+      builder: (context, constraints) {
+        // إذا كان العرض المتاح ضيقاً، نستخدم النمط المدمج تلقائياً لمنع أي Overflow
+        final isVeryNarrow = constraints.maxWidth < 220;
+        final effectiveCompact = compact || isVeryNarrow;
+
+        if (spread) {
+          return Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              LocaleToggleButton(compact: compact),
-              ThemeToggleButton(size: themeIconSize),
-            ],
-          )
-        : Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              LocaleToggleButton(compact: compact),
-              SizedBox(width: spacing),
+              Flexible(child: LocaleToggleButton(compact: effectiveCompact)),
+              const SizedBox(width: 8),
               ThemeToggleButton(size: themeIconSize),
             ],
           );
+        }
+
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Flexible(child: LocaleToggleButton(compact: effectiveCompact)),
+            SizedBox(width: spacing),
+            ThemeToggleButton(size: themeIconSize),
+          ],
+        );
+      },
+    );
 
     if (withContainer) {
       return Container(

@@ -36,6 +36,7 @@ class DioClient {
     }
   }
 
+  factory DioClient() => instance;
   static DioClient get instance => _instance ??= DioClient._();
 
   Dio get dio => _dio;

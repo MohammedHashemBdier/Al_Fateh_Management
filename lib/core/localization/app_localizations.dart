@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'backend_message_translator.dart';
 
 class AppLocalizations {
   final Locale locale;
@@ -40,6 +41,7 @@ class AppLocalizations {
       'filter': 'فلترة',
       'refresh': 'تحديث',
       'back': 'رجوع',
+      'logout': 'تسجيل الخروج',
       'or': 'أو',
 
       // Splash Screen
@@ -91,6 +93,46 @@ class AppLocalizations {
       'val_subscriber_length': 'اسم المشترك قصير جداً (3 أحرف على الأقل)',
       'val_mobile_empty': 'يرجى إدخال رقم الهاتف المحمول',
       'val_mobile_invalid': 'يرجى إدخال رقم محمول صحيح (مثال: 09xxxxxxxx)',
+      'val_username_empty': 'يرجى إدخال اسم المستخدم',
+      'val_password_empty': 'يرجى إدخال كلمة المرور',
+      'val_password_short': 'كلمة المرور قصيرة جداً (4 خانات على الأقل)',
+
+      // Authentication & Login
+      'login_title': 'تسجيل الدخول للمنظومة',
+      'login_subtitle': 'أدخل بيانات حسابك للوصول إلى لوحة الإدارة والخدمات',
+      'username': 'اسم المستخدم',
+      'username_hint': 'مثال: admin أو hashem',
+      'password': 'كلمة المرور',
+      'password_hint': '••••••••',
+      'remember_me': 'تذكرني على هذا الجهاز',
+      'remember_me_tooltip': 'حفظ جلسة الدخول وتفعيل الوصول السريع بدون إنترنت',
+      'sign_in': 'تسجيل الدخول',
+      'signing_in': 'جاري التحقق والمصادقة...',
+      'login_success': 'تم تسجيل الدخول بنجاح',
+      'offline_mode_banner': 'تم الدخول في وضع عدم الاتصال (بيانات مخزنة محلياً)',
+      'forgot_password': 'نسيت كلمة المرور؟',
+      'forgot_password_desc': 'يرجى مراجعة إدارة منظومة الفتح لإعادة ضبط كلمة المرور',
+      'show_password': 'إظهار كلمة المرور',
+      'hide_password': 'إخفاء كلمة المرور',
+      'need_help': 'تحتاج إلى مساعدة؟',
+      'contact_admin': 'تواصل مع الدعم الفني والإدارة',
+      'security_badge': 'اتصال آمن ومشفر 256-bit',
+      'preview_skeleton': 'معاينة التحميل الهيكلي (Skeleton)',
+      'login_brand_desc': 'بوابة التحكم الموحدة لخدمات تزويد الإنترنت، متابعات المشتركين، وجداول الدوام الذكية.',
+      'feature_tickets_title': 'إدارة تذاكر الدعم الفني اللحظية',
+      'feature_tickets_desc': 'مزامنة مباشرة مع Google Sheets وتحديث حالات المشتركين',
+      'feature_geofence_title': 'الدوام الذكي مع التحقق الجغرافي (Geofence)',
+      'feature_geofence_desc': 'حضور وانصراف دقيق داخل نطاق مقر ومقاسم الشركة',
+      'feature_rbac_title': 'أمان متقدم ومصفوفة صلاحيات (RBAC)',
+      'feature_rbac_desc': 'فصل مهام دقيق لجميع أقسام الشركة مع سجل تدقيق غير قابل للتعديل',
+      'whatsapp_contact': 'تواصل مع الدعم الفني عبر واتساب',
+      'whatsapp_launch_error': 'تعذر فتح تطبيق واتساب، يرجى المحاولة لاحقاً',
+      'login_error_empty_fields': 'يرجى إدخال اسم المستخدم وكلمة المرور',
+      'login_error_invalid_password': 'كلمة المرور غير صحيحة',
+      'login_error_user_not_found': 'اسم المستخدم غير موجود',
+      'login_error_account_disabled': 'تم تعطيل هذا الحساب، يرجى مراجعة إدارة الفتح',
+      'login_error_network': 'تعذر الاتصال بالسيرفر، يرجى التحقق من اتصال الإنترنت',
+      'login_error_generic': 'فشل تسجيل الدخول، يرجى التحقق من اسم المستخدم وكلمة المرور',
     },
     'en': {
       // General & Actions
@@ -116,6 +158,7 @@ class AppLocalizations {
       'filter': 'Filter',
       'refresh': 'Refresh',
       'back': 'Back',
+      'logout': 'Sign Out',
       'or': 'Or',
 
       // Splash Screen
@@ -167,6 +210,46 @@ class AppLocalizations {
       'val_subscriber_length': 'Subscriber name is too short (min 3 chars)',
       'val_mobile_empty': 'Please enter mobile phone number',
       'val_mobile_invalid': 'Please enter a valid mobile number (e.g. 09xxxxxxxx)',
+      'val_username_empty': 'Please enter username',
+      'val_password_empty': 'Please enter password',
+      'val_password_short': 'Password too short (min 4 characters)',
+
+      // Authentication & Login
+      'login_title': 'System Authentication',
+      'login_subtitle': 'Enter your credentials to access the management portal',
+      'username': 'Username',
+      'username_hint': 'e.g. admin or hashem',
+      'password': 'Password',
+      'password_hint': '••••••••',
+      'remember_me': 'Remember me on this device',
+      'remember_me_tooltip': 'Save session for quick offline access and auto-fill',
+      'sign_in': 'Sign In',
+      'signing_in': 'Authenticating credentials...',
+      'login_success': 'Successfully authenticated',
+      'offline_mode_banner': 'Logged in offline mode (cached local session)',
+      'forgot_password': 'Forgot password?',
+      'forgot_password_desc': 'Please contact Al-Fateh Administration to reset credentials',
+      'show_password': 'Show password',
+      'hide_password': 'Hide password',
+      'need_help': 'Need assistance?',
+      'contact_admin': 'Contact System Administration',
+      'security_badge': 'Secure 256-bit Encrypted Connection',
+      'preview_skeleton': 'Preview Skeleton Loading',
+      'login_brand_desc': 'Unified control portal for ISP operations, subscriber follow-ups, and intelligent attendance.',
+      'feature_tickets_title': 'Real-time Support Tickets Management',
+      'feature_tickets_desc': 'Direct synchronization with Google Sheets & subscriber statuses',
+      'feature_geofence_title': 'Smart Attendance with Geofencing',
+      'feature_geofence_desc': 'Accurate check-in/out within HQ premises and branch locations',
+      'feature_rbac_title': 'Advanced Security & RBAC Permissions',
+      'feature_rbac_desc': 'Fine-grained role permissions with immutable audit trail logs',
+      'whatsapp_contact': 'Contact Support on WhatsApp',
+      'whatsapp_launch_error': 'Could not launch WhatsApp, please try again later',
+      'login_error_empty_fields': 'Please enter username and password',
+      'login_error_invalid_password': 'Incorrect password',
+      'login_error_user_not_found': 'Username not found',
+      'login_error_account_disabled': 'This account has been disabled, please contact Al-Fateh admin',
+      'login_error_network': 'Unable to connect to server, please check your network connection',
+      'login_error_generic': 'Login failed, please check your credentials and try again',
     },
   };
 
@@ -196,4 +279,6 @@ class _AppLocalizationsDelegate
 extension LocalizationExtension on BuildContext {
   AppLocalizations get loc => AppLocalizations.of(this);
   String tr(String key) => loc.translate(key);
+  String trServer(dynamic messageOrError) =>
+      BackendMessageTranslator.translate(this, messageOrError);
 }

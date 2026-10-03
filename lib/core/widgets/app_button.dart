@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
+import 'app_hover.dart';
+import 'app_tooltip.dart';
 
 enum AppButtonVariant { primary, tonal, outlined, danger }
 
+/// زر قياسي متقدم يدعم Hover، التحميل، الأنماط، والتلميحات التوضيحية
 class AppButton extends StatelessWidget {
   final String label;
   final VoidCallback? onPressed;
@@ -12,6 +15,7 @@ class AppButton extends StatelessWidget {
   final AppButtonVariant variant;
   final double? width;
   final double height;
+  final String? tooltip;
 
   const AppButton({
     super.key,
@@ -21,7 +25,8 @@ class AppButton extends StatelessWidget {
     this.isLoading = false,
     this.variant = AppButtonVariant.primary,
     this.width,
-    this.height = 46.0,
+    this.height = 48.0,
+    this.tooltip,
   });
 
   @override
@@ -50,12 +55,17 @@ class AppButton extends StatelessWidget {
           Icon(icon, size: 20),
           const SizedBox(width: 8),
         ],
-        Text(
-          label,
-          style: const TextStyle(
-            fontFamily: AppAssets.fontPrimary,
-            fontWeight: FontWeight.bold,
-            fontSize: 14,
+        Flexible(
+          child: Text(
+            label,
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+            style: const TextStyle(
+              fontFamily: AppAssets.fontPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+              letterSpacing: 0.2,
+            ),
           ),
         ),
       ],
@@ -68,6 +78,7 @@ class AppButton extends StatelessWidget {
           style: FilledButton.styleFrom(
             backgroundColor: colors.primary,
             foregroundColor: colors.onPrimary,
+            elevation: 2,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -93,7 +104,7 @@ class AppButton extends StatelessWidget {
         button = OutlinedButton(
           style: OutlinedButton.styleFrom(
             foregroundColor: colors.primary,
-            side: BorderSide(color: colors.primary.withValues(alpha: 0.5)),
+            side: BorderSide(color: colors.primary.withValues(alpha: 0.5), width: 1.4),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -117,10 +128,22 @@ class AppButton extends StatelessWidget {
         break;
     }
 
-    if (width != null) {
-      return SizedBox(width: width, height: height, child: button);
+    Widget sizedButton = SizedBox(
+      width: width,
+      height: height,
+      child: button,
+    );
+
+    // إضافة تأثير Hover للتفاعل المكتبي
+    Widget hoverable = AppHover.scale(
+      scale: isLoading ? 1.0 : 1.015,
+      child: sizedButton,
+    );
+
+    if (tooltip != null && tooltip!.isNotEmpty) {
+      return AppTooltip(message: tooltip!, child: hoverable);
     }
 
-    return SizedBox(height: height, child: button);
+    return hoverable;
   }
 }

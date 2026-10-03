@@ -1,3 +1,5 @@
+import '../../../auth/domain/models/auth_session.dart';
+
 abstract class SplashState {
   const SplashState();
 }
@@ -17,5 +19,11 @@ class SplashLoading extends SplashState {
 }
 
 class SplashCompleted extends SplashState {
-  const SplashCompleted();
+  final String targetRoute;
+  final AuthSession? session;
+
+  const SplashCompleted({
+    this.targetRoute = '/login',
+    this.session,
+  });
 }

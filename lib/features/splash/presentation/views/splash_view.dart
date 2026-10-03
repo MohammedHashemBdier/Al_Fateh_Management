@@ -62,7 +62,7 @@ class _SplashViewState extends State<SplashView>
     return BlocListener<SplashCubit, SplashState>(
       listener: (context, state) {
         if (state is SplashCompleted) {
-          context.go('/home');
+          context.go(state.targetRoute);
         }
       },
       child: Scaffold(
