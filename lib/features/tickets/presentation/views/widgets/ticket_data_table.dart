@@ -2,9 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/utils/context_extensions.dart';
-import '../../../../../core/widgets/app_card.dart';
-import '../../../../../core/widgets/app_status_badge.dart';
-import '../../../../../core/widgets/app_tooltip.dart';
+import '../../../../../core/widgets/widgets.dart';
 import '../../../domain/models/ticket_filter.dart';
 import '../../../domain/models/ticket_model.dart';
 
@@ -169,7 +167,7 @@ class _TicketDataTableState extends State<TicketDataTable> {
                           ),
                         ),
                         DataColumn(
-                          label: Text(
+                          label: AppText.literal(
                             context.tr('col_problem'),
                             style: _headerStyle(colors),
                           ),
@@ -199,7 +197,7 @@ class _TicketDataTableState extends State<TicketDataTable> {
                           label: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Text(
+                              AppText.literal(
                                 context.tr('actions'),
                                 style: _headerStyle(colors),
                               ),
@@ -232,17 +230,14 @@ class _TicketDataTableState extends State<TicketDataTable> {
                                               : colors.onSurfaceVariant,
                                         ),
                                         const SizedBox(width: 8),
-                                        Text(
+                                        AppText.literal(
                                           context.isArabic
                                               ? d.labelAr
                                               : d.labelEn,
-                                          style: TextStyle(
-                                            fontFamily: AppAssets.fontPrimary,
-                                            fontSize: 12,
-                                            fontWeight: d == _density
-                                                ? FontWeight.bold
-                                                : FontWeight.normal,
-                                          ),
+                                          fontSize: 12,
+                                          fontWeight: d == _density
+                                              ? FontWeight.bold
+                                              : FontWeight.normal,
                                         ),
                                       ],
                                     ),
@@ -324,14 +319,11 @@ class _TicketDataTableState extends State<TicketDataTable> {
                                   child: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
-                                      Text(
+                                      AppText.literal(
                                         '#${ticket.rowId > 0 ? ticket.rowId : 'OFFLINE'}',
-                                        style: TextStyle(
-                                          fontFamily: AppAssets.fontPrimary,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 13,
-                                          color: colors.primary,
-                                        ),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 13,
+                                        color: colors.primary,
                                       ),
                                       if (ticket.syncState !=
                                           SyncState.synced) ...[
@@ -369,14 +361,11 @@ class _TicketDataTableState extends State<TicketDataTable> {
                               ConstrainedBox(
                                 constraints:
                                     const BoxConstraints(maxWidth: 180),
-                                child: Text(
+                                child: AppText.literal(
                                   ticket.problem,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontFamily: AppAssets.fontPrimary,
-                                    fontSize: 13,
-                                    color: colors.onSurface,
-                                  ),
+                                  fontSize: 13,
+                                  color: colors.onSurface,
                                 ),
                               ),
                             ),
@@ -384,26 +373,20 @@ class _TicketDataTableState extends State<TicketDataTable> {
                               AppStatusBadge(status: ticket.status),
                             ),
                             DataCell(
-                              Text(
+                              AppText.literal(
                                 ticket.employee.isNotEmpty
                                     ? ticket.employee
                                     : context.tr('unassigned'),
-                                style: TextStyle(
-                                  fontFamily: AppAssets.fontPrimary,
-                                  fontSize: 13,
-                                  color: colors.onSurfaceVariant,
-                                ),
+                                fontSize: 13,
+                                color: colors.onSurfaceVariant,
                               ),
                             ),
                             DataCell(
-                              Text(
+                              AppText.literal(
                                 '${ticket.date} ${ticket.time}',
-                                style: TextStyle(
-                                  fontFamily: AppAssets.fontPrimary,
-                                  fontSize: 12,
-                                  color: colors.onSurfaceVariant
-                                      .withValues(alpha: 0.8),
-                                ),
+                                fontSize: 12,
+                                color: colors.onSurfaceVariant
+                                    .withValues(alpha: 0.8),
                               ),
                             ),
                             DataCell(
@@ -466,7 +449,7 @@ class _TicketDataTableState extends State<TicketDataTable> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(label, style: _headerStyle(colors)),
+            AppText.literal(label, style: _headerStyle(colors)),
             const SizedBox(width: 4),
             Icon(
               isCurrent
@@ -500,14 +483,11 @@ class _TicketDataTableState extends State<TicketDataTable> {
     required bool isBold,
   }) {
     if (query.trim().isEmpty || !text.toLowerCase().contains(query.toLowerCase())) {
-      return Text(
+      return AppText.literal(
         text,
-        style: TextStyle(
-          fontFamily: AppAssets.fontPrimary,
-          fontSize: 13,
-          fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-          color: textColor,
-        ),
+        fontSize: 13,
+        fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
+        color: textColor,
       );
     }
 
@@ -538,14 +518,11 @@ class _TicketDataTableState extends State<TicketDataTable> {
                 color: highlightColor,
                 borderRadius: BorderRadius.circular(3),
               ),
-              child: Text(
+              child: AppText.literal(
                 match,
-                style: TextStyle(
-                  fontFamily: AppAssets.fontPrimary,
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                ),
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: textColor,
               ),
             ),
           ),

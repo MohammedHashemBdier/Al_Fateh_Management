@@ -4,15 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/utils/app_snackbars.dart';
 import '../../../../core/utils/context_extensions.dart';
-import '../../../../core/widgets/app_animations.dart';
-import '../../../../core/widgets/app_app_bar.dart';
-import '../../../../core/widgets/app_card.dart';
-import '../../../../core/widgets/app_confirm_dialog.dart';
-import '../../../../core/widgets/app_empty_state.dart';
-import '../../../../core/widgets/app_pagination_bar.dart';
-import '../../../../core/widgets/app_scaffold.dart';
-import '../../../../core/widgets/app_skeleton.dart';
-import '../../../../core/widgets/app_tooltip.dart';
+import '../../../../core/services/services.dart';
+import '../../../../core/widgets/widgets.dart';
 import '../../data/repositories/tickets_repository_impl.dart';
 import '../../domain/models/ticket_model.dart';
 import '../cubit/tickets_cubit.dart';
@@ -92,13 +85,12 @@ class _TicketsViewContent extends StatelessWidget {
   }
 
   Future<void> _confirmCloseAllTickets(BuildContext context, TicketsCubit cubit) async {
-    final confirmed = await AppConfirmDialog.show(
+    final confirmed = await AppDialogService.warning(
       context: context,
       title: context.tr('tickets_bulk_close_title'),
       message: context.tr('tickets_bulk_close_confirm'),
       confirmText: context.tr('confirm'),
       cancelText: context.tr('cancel'),
-      variant: ConfirmDialogVariant.warning,
     );
 
     if (confirmed && context.mounted) {
@@ -198,23 +190,18 @@ class _TicketsViewContent extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                context.tr('tickets_view_title'),
-                                style: TextStyle(
-                                  fontFamily: AppAssets.fontSecondary,
-                                  fontSize: isCompact ? 16 : 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: colors.onSurface,
-                                ),
+                              AppText.titleLarge(
+                                'tickets_view_title',
+                                fontSize: isCompact ? 16 : 20,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: AppAssets.fontSecondary,
+                                color: colors.onSurface,
                               ),
                               const SizedBox(height: 2),
-                              Text(
-                                context.tr('tickets_view_desc'),
-                                style: TextStyle(
-                                  fontFamily: AppAssets.fontPrimary,
-                                  fontSize: 12,
-                                  color: colors.onSurfaceVariant,
-                                ),
+                              AppText.caption(
+                                'tickets_view_desc',
+                                fontSize: 12,
+                                color: colors.onSurfaceVariant,
                               ),
                             ],
                           ),
@@ -401,26 +388,19 @@ class _TicketsViewContent extends StatelessWidget {
           Icon(Icons.check_circle_outline_rounded,
               size: 20, color: colors.primary),
           const SizedBox(width: 8),
-          Text(
+          AppText.bodySmall(
             '${context.tr('selected_items')}: $count',
-            style: TextStyle(
-              fontFamily: AppAssets.fontPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 13,
-              color: colors.onSurface,
-            ),
+            isTranslated: false,
+            fontWeight: FontWeight.bold,
+            color: colors.onSurface,
           ),
           const Spacer(),
-          TextButton.icon(
-            style: TextButton.styleFrom(foregroundColor: colors.error),
-            icon: const Icon(Icons.clear_rounded, size: 16),
-            label: Text(
-              context.tr('clear_selection'),
-              style: const TextStyle(
-                fontFamily: AppAssets.fontPrimary,
-                fontSize: 12,
-              ),
-            ),
+          AppButton(
+            label: context.tr('clear_selection'),
+            icon: Icons.clear_rounded,
+            variant: AppButtonVariant.text,
+            height: 36,
+            customColor: colors.error,
             onPressed: () => cubit.toggleSelectAll(false),
           ),
         ],

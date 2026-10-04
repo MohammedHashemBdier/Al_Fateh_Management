@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/constants/app_assets.dart';
+import '../../../../../core/services/services.dart';
 import '../../../../../core/utils/context_extensions.dart';
-import '../../../../../core/widgets/app_animations.dart';
-import '../../../../../core/widgets/app_button.dart';
-import '../../../../../core/widgets/app_card.dart';
-import '../../../../../core/widgets/app_confirm_dialog.dart';
-import '../../../../../core/widgets/app_status_badge.dart';
-import '../../../../../core/widgets/app_text_field.dart';
+import '../../../../../core/widgets/widgets.dart';
 import '../../../domain/models/ticket_model.dart';
 
 /// نافذة تفاصيل التذكرة، تحديث الحالة والحل، وسجل التدقيق الزمني
@@ -55,7 +51,7 @@ class TicketDetailsDialog extends StatefulWidget {
     }) onUpdate,
     Future<bool> Function(int rowId)? onDelete,
   }) {
-    return showDialog<bool>(
+    return AppDialogService.custom<bool>(
       context: context,
       barrierDismissible: true,
       builder: (ctx) => TicketDetailsDialog(
@@ -124,13 +120,12 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
   }
 
   Future<void> _handleDelete() async {
-    final confirmed = await AppConfirmDialog.show(
+    final confirmed = await AppDialogService.danger(
       context: context,
       title: context.tr('confirm_delete_ticket_title'),
       message: context.tr('confirm_delete_ticket_msg'),
       confirmText: context.tr('delete'),
       cancelText: context.tr('cancel'),
-      variant: ConfirmDialogVariant.danger,
     );
 
     if (confirmed == true && mounted && widget.onDelete != null) {
@@ -175,14 +170,11 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
                       color: colors.primaryContainer,
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: Text(
+                    child: AppText.literal(
                       '#${widget.ticket.rowId > 0 ? widget.ticket.rowId : 'OFFLINE'}',
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: colors.onPrimaryContainer,
-                      ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: colors.onPrimaryContainer,
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -190,22 +182,19 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
+                        AppText.title(
                           widget.ticket.subscriberName,
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontSecondary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 17,
-                            color: colors.onSurface,
-                          ),
+                          isTranslated: false,
+                          fontFamily: AppAssets.fontSecondary,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 17,
+                          color: colors.onSurface,
                         ),
-                        Text(
+                        AppText.caption(
                           '${widget.ticket.landline}  •  ${widget.ticket.date} ${widget.ticket.time}',
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontPrimary,
-                            fontSize: 12,
-                            color: colors.onSurfaceVariant,
-                          ),
+                          isTranslated: false,
+                          fontSize: 12,
+                          color: colors.onSurfaceVariant,
                         ),
                       ],
                     ),
@@ -255,32 +244,22 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
               Row(
                 children: [
                   if (widget.onDelete != null)
-                    TextButton.icon(
-                      style: TextButton.styleFrom(
-                        foregroundColor: colors.error,
-                      ),
-                      icon: const Icon(Icons.delete_outline_rounded, size: 18),
-                      label: Text(
-                        context.tr('delete'),
-                        style: const TextStyle(
-                          fontFamily: AppAssets.fontPrimary,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                    AppButton(
+                      label: context.tr('delete'),
+                      icon: Icons.delete_outline_rounded,
+                      variant: AppButtonVariant.text,
+                      customColor: colors.error,
+                      height: 38,
                       onPressed: _isLoading ? null : _handleDelete,
                     ),
                   const Spacer(),
-                  TextButton(
+                  AppButton(
+                    label: context.tr('close'),
+                    variant: AppButtonVariant.ghost,
+                    customColor: colors.onSurfaceVariant,
+                    height: 38,
                     onPressed:
                         _isLoading ? null : () => Navigator.of(context).pop(),
-                    child: Text(
-                      context.tr('close'),
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        color: colors.onSurfaceVariant,
-                      ),
-                    ),
                   ),
                   const SizedBox(width: 12),
                   AppButton(
@@ -317,27 +296,20 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
                     Icon(Icons.report_problem_outlined,
                         size: 18, color: colors.tertiary),
                     const SizedBox(width: 8),
-                    Text(
+                    AppText.literal(
                       widget.ticket.problem,
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14,
-                        color: colors.onSurface,
-                      ),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: colors.onSurface,
                     ),
                   ],
                 ),
                 if (widget.ticket.description.isNotEmpty) ...[
                   const SizedBox(height: 8),
-                  Text(
+                  AppText.literal(
                     widget.ticket.description,
-                    style: TextStyle(
-                      fontFamily: AppAssets.fontPrimary,
-                      fontSize: 13,
-                      color: colors.onSurfaceVariant,
-                      height: 1.4,
-                    ),
+                    fontSize: 13,
+                    color: colors.onSurfaceVariant,
                   ),
                 ],
               ],
@@ -346,14 +318,11 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
           const SizedBox(height: 14),
 
           // تحديث الحالة بنقرة واحدة
-          Text(
-            context.tr('update_status_label'),
-            style: TextStyle(
-              fontFamily: AppAssets.fontPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 13,
-              color: colors.onSurface,
-            ),
+          AppText.label(
+            'update_status_label',
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+            color: colors.onSurface,
           ),
           const SizedBox(height: 8),
           Wrap(
@@ -362,17 +331,14 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
             children: widget.statuses.map((statusName) {
               final isSelected = _selectedStatus == statusName;
               return ChoiceChip(
-                label: Text(
+                label: AppText.literal(
                   statusName,
-                  style: TextStyle(
-                    fontFamily: AppAssets.fontPrimary,
-                    fontSize: 12,
-                    fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
-                    color: isSelected
-                        ? colors.onPrimaryContainer
-                        : colors.onSurface,
-                  ),
+                  fontSize: 12,
+                  fontWeight:
+                      isSelected ? FontWeight.bold : FontWeight.normal,
+                  color: isSelected
+                      ? colors.onPrimaryContainer
+                      : colors.onSurface,
                 ),
                 selected: isSelected,
                 selectedColor: colors.primaryContainer,
@@ -386,14 +352,11 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
           const SizedBox(height: 16),
 
           // الموظف المسؤول
-          Text(
-            context.tr('assigned_to_label'),
-            style: TextStyle(
-              fontFamily: AppAssets.fontPrimary,
-              fontWeight: FontWeight.bold,
-              fontSize: 13,
-              color: colors.onSurface,
-            ),
+          AppText.label(
+            'assigned_to_label',
+            fontWeight: FontWeight.bold,
+            fontSize: 13,
+            color: colors.onSurface,
           ),
           const SizedBox(height: 6),
           Container(
@@ -411,27 +374,21 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
                         widget.employees.contains(_selectedEmployee)
                     ? _selectedEmployee
                     : null,
-                hint: Text(
+                hint: AppText.literal(
                   _selectedEmployee.isNotEmpty
                       ? _selectedEmployee
                       : context.tr('unassigned'),
-                  style: TextStyle(
-                    fontFamily: AppAssets.fontPrimary,
-                    fontSize: 13,
-                    color: colors.onSurface,
-                  ),
+                  fontSize: 13,
+                  color: colors.onSurface,
                 ),
                 isExpanded: true,
                 items: widget.employees.map((emp) {
                   return DropdownMenuItem<String>(
                     value: emp,
-                    child: Text(
+                    child: AppText.literal(
                       emp,
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        fontSize: 13,
-                        color: colors.onSurface,
-                      ),
+                      fontSize: 13,
+                      color: colors.onSurface,
                     ),
                   );
                 }).toList(),
@@ -472,13 +429,10 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
 
     if (audit.isEmpty) {
       return Center(
-        child: Text(
-          context.tr('no_audit_history'),
-          style: TextStyle(
-            fontFamily: AppAssets.fontPrimary,
-            fontSize: 13,
-            color: colors.onSurfaceVariant,
-          ),
+        child: AppText.caption(
+          'no_audit_history',
+          fontSize: 13,
+          color: colors.onSurfaceVariant,
         ),
       );
     }
@@ -507,33 +461,24 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
+                        AppText.literal(
                           entry.actorName,
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontPrimary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 13,
-                            color: colors.onSurface,
-                          ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                          color: colors.onSurface,
                         ),
-                        Text(
+                        AppText.literal(
                           entry.timestamp,
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontPrimary,
-                            fontSize: 11,
-                            color: colors.onSurfaceVariant,
-                          ),
+                          fontSize: 11,
+                          color: colors.onSurfaceVariant,
                         ),
                       ],
                     ),
                     const SizedBox(height: 4),
-                    Text(
+                    AppText.literal(
                       entry.notes.isNotEmpty ? entry.notes : entry.action,
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        fontSize: 12,
-                        color: colors.onSurfaceVariant,
-                      ),
+                      fontSize: 12,
+                      color: colors.onSurfaceVariant,
                     ),
                   ],
                 ),

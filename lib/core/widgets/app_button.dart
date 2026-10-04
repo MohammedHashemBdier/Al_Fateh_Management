@@ -4,7 +4,7 @@ import '../utils/context_extensions.dart';
 import 'app_hover.dart';
 import 'app_tooltip.dart';
 
-enum AppButtonVariant { primary, tonal, outlined, danger }
+enum AppButtonVariant { primary, tonal, outlined, danger, text, ghost }
 
 /// زر قياسي متقدم يدعم Hover، التحميل، الأنماط، والتلميحات التوضيحية
 class AppButton extends StatelessWidget {
@@ -16,6 +16,7 @@ class AppButton extends StatelessWidget {
   final double? width;
   final double height;
   final String? tooltip;
+  final Color? customColor;
 
   const AppButton({
     super.key,
@@ -27,6 +28,7 @@ class AppButton extends StatelessWidget {
     this.width,
     this.height = 48.0,
     this.tooltip,
+    this.customColor,
   });
 
   @override
@@ -46,7 +48,7 @@ class AppButton extends StatelessWidget {
               valueColor: AlwaysStoppedAnimation<Color>(
                 variant == AppButtonVariant.primary
                     ? colors.onPrimary
-                    : colors.primary,
+                    : (customColor ?? colors.primary),
               ),
             ),
           ),
@@ -76,7 +78,7 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.primary:
         button = FilledButton(
           style: FilledButton.styleFrom(
-            backgroundColor: colors.primary,
+            backgroundColor: customColor ?? colors.primary,
             foregroundColor: colors.onPrimary,
             elevation: 2,
             shape: RoundedRectangleBorder(
@@ -90,8 +92,8 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.tonal:
         button = FilledButton.tonal(
           style: FilledButton.styleFrom(
-            backgroundColor: colors.primaryContainer,
-            foregroundColor: colors.onPrimaryContainer,
+            backgroundColor: customColor?.withValues(alpha: 0.15) ?? colors.primaryContainer,
+            foregroundColor: customColor ?? colors.onPrimaryContainer,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -103,8 +105,11 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.outlined:
         button = OutlinedButton(
           style: OutlinedButton.styleFrom(
-            foregroundColor: colors.primary,
-            side: BorderSide(color: colors.primary.withValues(alpha: 0.5), width: 1.4),
+            foregroundColor: customColor ?? colors.primary,
+            side: BorderSide(
+              color: (customColor ?? colors.primary).withValues(alpha: 0.5),
+              width: 1.4,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -116,8 +121,32 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.danger:
         button = FilledButton(
           style: FilledButton.styleFrom(
-            backgroundColor: colors.error,
+            backgroundColor: customColor ?? colors.error,
             foregroundColor: colors.onError,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          onPressed: isLoading ? null : onPressed,
+          child: childWidget,
+        );
+        break;
+      case AppButtonVariant.text:
+        button = TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: customColor ?? colors.primary,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+          ),
+          onPressed: isLoading ? null : onPressed,
+          child: childWidget,
+        );
+        break;
+      case AppButtonVariant.ghost:
+        button = TextButton(
+          style: TextButton.styleFrom(
+            foregroundColor: customColor ?? colors.onSurfaceVariant,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),

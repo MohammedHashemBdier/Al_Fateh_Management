@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/utils/context_extensions.dart';
-import '../../../../../core/widgets/app_tooltip.dart';
+import '../../../../../core/widgets/widgets.dart';
 
 /// شارة حالة الاتصال وطابور المزامنة التلقائية
 class TicketSyncBadge extends StatelessWidget {
@@ -68,14 +67,11 @@ class TicketSyncBadge extends StatelessWidget {
                 ),
               ),
             const SizedBox(width: 6),
-            Text(
+            AppText.literal(
               label,
-              style: TextStyle(
-                fontFamily: AppAssets.fontPrimary,
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-                color: badgeColor,
-              ),
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              color: badgeColor,
             ),
             if (pendingCount > 0) ...[
               const SizedBox(width: 6),
@@ -85,14 +81,11 @@ class TicketSyncBadge extends StatelessWidget {
                   color: colors.warning,
                   borderRadius: BorderRadius.circular(10),
                 ),
-                child: Text(
+                child: AppText.literal(
                   '$pendingCount',
-                  style: TextStyle(
-                    fontFamily: AppAssets.fontPrimary,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: colors.onWarning,
-                  ),
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: colors.onWarning,
                 ),
               ),
             ],
