@@ -176,3 +176,36 @@ class AppButton extends StatelessWidget {
     return hoverable;
   }
 }
+
+/// زر أيقونة موحد يدعم تلميحات وتأثيرات التفاعل
+class AppIconButton extends StatelessWidget {
+  final IconData icon;
+  final VoidCallback? onPressed;
+  final String? tooltip;
+  final Color? color;
+  final double size;
+
+  const AppIconButton({
+    super.key,
+    required this.icon,
+    required this.onPressed,
+    this.tooltip,
+    this.color,
+    this.size = 20,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    Widget btn = IconButton(
+      icon: Icon(icon, size: size, color: color ?? colors.onSurfaceVariant),
+      onPressed: onPressed,
+      visualDensity: VisualDensity.compact,
+    );
+    if (tooltip != null && tooltip!.isNotEmpty) {
+      return AppTooltip(message: tooltip!, child: btn);
+    }
+    return btn;
+  }
+}
+

@@ -106,7 +106,7 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedProblem == null || _selectedProblem!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.tr('select_problem_required'))),
+        SnackBar(content: AppText.body(context.tr('select_problem_required'))),
       );
       return;
     }
