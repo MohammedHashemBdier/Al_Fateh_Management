@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:al_fateh_management/core/constants/app_assets.dart';
 import 'package:al_fateh_management/core/rbac/role_permissions.dart';
+import 'package:al_fateh_management/core/services/services.dart';
 import 'package:al_fateh_management/core/utils/context_extensions.dart';
-import 'package:al_fateh_management/core/widgets/app_confirm_dialog.dart';
-import 'package:al_fateh_management/core/widgets/app_hover.dart';
-import 'package:al_fateh_management/core/widgets/app_logo.dart';
-import 'package:al_fateh_management/core/widgets/app_tooltip.dart';
-import 'package:al_fateh_management/core/widgets/locale_toggle_button.dart';
-import 'package:al_fateh_management/core/widgets/theme_toggle_button.dart';
+import 'package:al_fateh_management/core/widgets/widgets.dart';
 import 'package:al_fateh_management/features/auth/domain/models/user_model.dart';
 import 'package:al_fateh_management/features/home/domain/models/nav_destination_item.dart';
 
@@ -128,27 +123,19 @@ class HomeNavigationRail extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            context.tr('app_name'),
+                          AppText.title(
+                            'app_name',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: AppAssets.fontSecondary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: colors.primary,
-                            ),
+                            color: colors.primary,
                           ),
                           const SizedBox(height: 2),
-                          Text(
-                            context.tr('app_subtitle'),
+                          AppText.caption(
+                            'app_subtitle',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: AppAssets.fontPrimary,
-                              fontSize: 10,
-                              color: colors.onSurfaceVariant,
-                            ),
+                            color: colors.onSurfaceVariant,
+                            fontSize: 10,
                           ),
                         ],
                       ),
@@ -192,14 +179,11 @@ class HomeNavigationRail extends StatelessWidget {
                 CircleAvatar(
                   radius: 17,
                   backgroundColor: colors.primaryContainer,
-                  child: Text(
+                  child: AppText.literal(
                     user.username.isNotEmpty ? user.username[0].toUpperCase() : 'U',
-                    style: TextStyle(
-                      fontFamily: AppAssets.fontSecondary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      color: colors.onPrimaryContainer,
-                    ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    color: colors.onPrimaryContainer,
                   ),
                 ),
                 Positioned(
@@ -223,16 +207,13 @@ class HomeNavigationRail extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
+                  AppText.literal(
                     user.fullName.isNotEmpty ? user.fullName : user.username,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: AppAssets.fontSecondary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 12,
-                      color: colors.onSurface,
-                    ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    color: colors.onSurface,
                   ),
                   const SizedBox(height: 2),
                   Container(
@@ -241,16 +222,13 @@ class HomeNavigationRail extends StatelessWidget {
                       color: colors.primary.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(6),
                     ),
-                    child: Text(
+                    child: AppText.literal(
                       context.isArabic ? role.titleAr : role.titleEn,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        fontSize: 9,
-                        color: colors.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      fontSize: 9,
+                      color: colors.primary,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ],
@@ -341,20 +319,17 @@ class HomeNavigationRail extends StatelessWidget {
                       if (isExpanded) ...[
                         const SizedBox(width: 10),
                         Expanded(
-                          child: Text(
-                            context.tr(dest.titleKey),
+                          child: AppText.label(
+                            dest.titleKey,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: AppAssets.fontPrimary,
-                              fontWeight: isSelected
-                                  ? FontWeight.bold
-                                  : FontWeight.w500,
-                              fontSize: 13,
-                              color: isSelected
-                                  ? colors.primary
-                                  : colors.onSurface,
-                            ),
+                            fontSize: 13,
+                            fontWeight: isSelected
+                                ? FontWeight.bold
+                                : FontWeight.w500,
+                            color: isSelected
+                                ? colors.primary
+                                : colors.onSurface,
                           ),
                         ),
                       ],
@@ -434,12 +409,11 @@ class HomeNavigationRail extends StatelessWidget {
                   child: InkWell(
                     borderRadius: BorderRadius.circular(12),
                     onTap: () async {
-                      final confirm = await AppConfirmDialog.show(
+                      final confirm = await AppDialogService.danger(
                         context: context,
                         title: context.tr('confirm_logout_title'),
                         message: context.tr('confirm_logout_msg'),
                         confirmText: context.tr('confirm_logout_button'),
-                        variant: ConfirmDialogVariant.danger,
                       );
                       if (confirm) {
                         onLogout();
@@ -461,16 +435,13 @@ class HomeNavigationRail extends StatelessWidget {
                                 ),
                                 const SizedBox(width: 10),
                                 Expanded(
-                                  child: Text(
-                                    context.tr('logout'),
+                                  child: AppText.label(
+                                    'logout',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontFamily: AppAssets.fontPrimary,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                      color: colors.error,
-                                    ),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 12,
+                                    color: colors.error,
                                   ),
                                 ),
                               ],

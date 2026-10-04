@@ -1,16 +1,12 @@
+import 'package:al_fateh_management/core/constants/app_assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_assets.dart';
+
 import '../../../../core/rbac/role_permissions.dart';
+import '../../../../core/services/services.dart';
 import '../../../../core/utils/context_extensions.dart';
-import '../../../../core/widgets/app_animations.dart';
-import '../../../../core/widgets/app_app_bar.dart';
-import '../../../../core/widgets/app_button.dart';
-import '../../../../core/widgets/app_card.dart';
-import '../../../../core/widgets/app_confirm_dialog.dart';
-import '../../../../core/widgets/app_skeleton.dart';
-import '../../../../core/widgets/responsive_builder.dart';
+import '../../../../core/widgets/widgets.dart';
 import '../../../auth/domain/models/user_model.dart';
 import '../cubit/home_cubit.dart';
 import '../cubit/home_state.dart';
@@ -69,7 +65,8 @@ class _HomeViewBody extends StatelessWidget {
 
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
-        if (state is HomeError && state.errorMessage == 'auth_session_expired') {
+        if (state is HomeError &&
+            state.errorMessage == 'auth_session_expired') {
           context.go('/login');
         }
       },
@@ -81,7 +78,11 @@ class _HomeViewBody extends StatelessWidget {
     );
   }
 
-  Widget _buildStateView(BuildContext context, HomeState state, ColorScheme colors) {
+  Widget _buildStateView(
+    BuildContext context,
+    HomeState state,
+    ColorScheme colors,
+  ) {
     if (state is HomeLoading || state is HomeInitial) {
       final cachedUser = state is HomeLoading ? state.cachedUser : null;
       return KeyedSubtree(
@@ -91,9 +92,10 @@ class _HomeViewBody extends StatelessWidget {
     }
 
     if (state is HomeError) {
-      return Scaffold(
+      return AppScaffold(
         key: const ValueKey('home_error'),
-        backgroundColor: colors.surface,
+        useDefaultAppBar: false,
+        applyPadding: false,
         body: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 480),
@@ -104,23 +106,19 @@ class _HomeViewBody extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.error_outline_rounded, size: 48, color: colors.error),
-                    const SizedBox(height: 16),
-                    Text(
-                      context.tr('error_unknown'),
-                      style: context.textTheme.titleMedium?.copyWith(
-                        fontFamily: AppAssets.fontSecondary,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Icon(
+                      Icons.error_outline_rounded,
+                      size: 48,
+                      color: colors.error,
                     ),
+                    const SizedBox(height: 16),
+                    AppText.title('error_unknown', textAlign: TextAlign.center),
                     const SizedBox(height: 8),
-                    Text(
+                    AppText.bodySmall(
                       state.errorMessage,
+                      isTranslated: false,
                       textAlign: TextAlign.center,
-                      style: context.textTheme.bodySmall?.copyWith(
-                        fontFamily: AppAssets.fontPrimary,
-                        color: colors.onSurfaceVariant,
-                      ),
+                      color: colors.onSurfaceVariant,
                     ),
                     const SizedBox(height: 24),
                     Row(
@@ -129,7 +127,8 @@ class _HomeViewBody extends StatelessWidget {
                           child: AppButton(
                             label: context.tr('refresh'),
                             icon: Icons.refresh_rounded,
-                            onPressed: () => context.read<HomeCubit>().loadHomeData(),
+                            onPressed: () =>
+                                context.read<HomeCubit>().loadHomeData(),
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -158,96 +157,101 @@ class _HomeViewBody extends StatelessWidget {
     return KeyedSubtree(
       key: const ValueKey('home_loaded'),
       child: ResponsiveBuilder(
-          desktop: (ctx) => Scaffold(
-            backgroundColor: colors.surface,
-            body: Row(
-              children: [
-                HomeNavigationRail(
+        desktop: (ctx) => AppScaffold(
+          useDefaultAppBar: false,
+          applyPadding: false,
+          body: Row(
+            children: [
+              HomeNavigationRail(
+                user: user,
+                selectedIndex: loaded.selectedNavIndex,
+                onDestinationSelected: (idx) =>
+                    _handleDestinationSelected(ctx, idx),
+                isExpanded: true,
+                onLogout: () => _handleLogout(ctx),
+              ),
+              Expanded(
+                child: _buildMainDashboardContent(
+                  context: ctx,
                   user: user,
-                  selectedIndex: loaded.selectedNavIndex,
-                  onDestinationSelected: (idx) => _handleDestinationSelected(ctx, idx),
-                  isExpanded: true,
-                  onLogout: () => _handleLogout(ctx),
+                  role: role,
+                  state: loaded,
                 ),
-                Expanded(
-                  child: _buildMainDashboardContent(
-                    context: ctx,
-                    user: user,
-                    role: role,
-                    state: loaded,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          tablet: (ctx) => Scaffold(
-            backgroundColor: colors.surface,
-            body: Row(
-              children: [
-                HomeNavigationRail(
-                  user: user,
-                  selectedIndex: loaded.selectedNavIndex,
-                  onDestinationSelected: (idx) => _handleDestinationSelected(ctx, idx),
-                  isExpanded: false,
-                  onLogout: () => _handleLogout(ctx),
-                ),
-                Expanded(
-                  child: _buildMainDashboardContent(
-                    context: ctx,
-                    user: user,
-                    role: role,
-                    state: loaded,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          mobile: (ctx) => Scaffold(
-            backgroundColor: colors.surface,
-            appBar: AppAppBar(
-              extraActions: [
-                IconButton(
-                  constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(Icons.refresh_rounded, size: 18),
-                  tooltip: ctx.tr('refresh'),
-                  onPressed: () => ctx.read<HomeCubit>().refreshData(),
-                ),
-                IconButton(
-                  constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(Icons.logout_rounded, size: 18),
-                  tooltip: ctx.tr('logout'),
-                  onPressed: () async {
-                    final confirm = await AppConfirmDialog.show(
-                      context: ctx,
-                      title: ctx.tr('confirm_logout_title'),
-                      message: ctx.tr('confirm_logout_msg'),
-                      confirmText: ctx.tr('confirm_logout_button'),
-                      variant: ConfirmDialogVariant.danger,
-                    );
-                    if (confirm && ctx.mounted) {
-                      _handleLogout(ctx);
-                    }
-                  },
-                ),
-              ],
-            ),
-            body: _buildMainDashboardContent(
-              context: ctx,
-              user: user,
-              role: role,
-              state: loaded,
-            ),
-            bottomNavigationBar: HomeMobileNavBar(
-              user: user,
-              selectedIndex: loaded.selectedNavIndex,
-              onDestinationSelected: (idx) => _handleDestinationSelected(ctx, idx),
-            ),
+              ),
+            ],
           ),
         ),
-      );
-    }
+        tablet: (ctx) => AppScaffold(
+          useDefaultAppBar: false,
+          applyPadding: false,
+          body: Row(
+            children: [
+              HomeNavigationRail(
+                user: user,
+                selectedIndex: loaded.selectedNavIndex,
+                onDestinationSelected: (idx) =>
+                    _handleDestinationSelected(ctx, idx),
+                isExpanded: false,
+                onLogout: () => _handleLogout(ctx),
+              ),
+              Expanded(
+                child: _buildMainDashboardContent(
+                  context: ctx,
+                  user: user,
+                  role: role,
+                  state: loaded,
+                ),
+              ),
+            ],
+          ),
+        ),
+        mobile: (ctx) => AppScaffold(
+          useDefaultAppBar: false,
+          applyPadding: false,
+          appBar: AppAppBar(
+            extraActions: [
+              IconButton(
+                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                padding: EdgeInsets.zero,
+                icon: const Icon(Icons.refresh_rounded, size: 18),
+                tooltip: ctx.tr('refresh'),
+                onPressed: () => ctx.read<HomeCubit>().refreshData(),
+              ),
+              IconButton(
+                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                padding: EdgeInsets.zero,
+                icon: const Icon(Icons.logout_rounded, size: 18),
+                tooltip: ctx.tr('logout'),
+                onPressed: () async {
+                  final confirm = await AppDialogService.danger(
+                    context: ctx,
+                    title: ctx.tr('confirm_logout_title'),
+                    message: ctx.tr('confirm_logout_msg'),
+                    confirmText: ctx.tr('confirm_logout_button'),
+                  );
+                  if (confirm && ctx.mounted) {
+                    _handleLogout(ctx);
+                  }
+                },
+              ),
+            ],
+          ),
+          body: _buildMainDashboardContent(
+            context: ctx,
+            user: user,
+            role: role,
+            state: loaded,
+          ),
+          bottomNavigationBar: HomeMobileNavBar(
+            user: user,
+            selectedIndex: loaded.selectedNavIndex,
+            onDestinationSelected: (idx) =>
+                _handleDestinationSelected(ctx, idx),
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildMainDashboardContent({
     required BuildContext context,
@@ -276,26 +280,34 @@ class _HomeViewBody extends StatelessWidget {
                 child: AppCard(
                   backgroundColor: colors.warningContainer,
                   borderColor: colors.warning.withValues(alpha: 0.5),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   child: Row(
                     children: [
-                      Icon(Icons.cloud_off_rounded, color: colors.onWarningContainer, size: 22),
+                      Icon(
+                        Icons.cloud_off_rounded,
+                        color: colors.onWarningContainer,
+                        size: 22,
+                      ),
                       const SizedBox(width: 12),
                       Expanded(
-                        child: Text(
-                          context.tr('stat_offline_indicator'),
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontPrimary,
-                            color: colors.onWarningContainer,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 13,
-                          ),
+                        child: AppText.bodySmall(
+                          'stat_offline_indicator',
+                          color: colors.onWarningContainer,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       IconButton(
-                        icon: Icon(Icons.sync_rounded, color: colors.onWarningContainer, size: 20),
+                        icon: Icon(
+                          Icons.sync_rounded,
+                          color: colors.onWarningContainer,
+                          size: 20,
+                        ),
                         tooltip: context.tr('stat_refresh_data'),
-                        onPressed: () => context.read<HomeCubit>().refreshData(),
+                        onPressed: () =>
+                            context.read<HomeCubit>().refreshData(),
                       ),
                     ],
                   ),
@@ -316,18 +328,14 @@ class _HomeViewBody extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
+                          AppText.title(
                             '${context.tr('welcome_admin')}: ${user.fullName.isNotEmpty ? user.fullName : user.username}',
+                            isTranslated: false,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: (isCompact
-                                    ? context.textTheme.titleMedium
-                                    : context.textTheme.headlineSmall)
-                                ?.copyWith(
-                              fontFamily: AppAssets.fontSecondary,
-                              fontWeight: FontWeight.bold,
-                              color: colors.primary,
-                            ),
+                            fontFamily: AppAssets.fontSecondary,
+                            fontWeight: FontWeight.bold,
+                            color: colors.primary,
                           ),
                           const SizedBox(height: 6),
                           Wrap(
@@ -336,27 +344,27 @@ class _HomeViewBody extends StatelessWidget {
                             runSpacing: 4,
                             children: [
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 3,
+                                ),
                                 decoration: BoxDecoration(
                                   color: colors.primaryContainer,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
-                                child: Text(
-                                  context.isArabic ? role.titleAr : role.titleEn,
-                                  style: TextStyle(
-                                    fontFamily: AppAssets.fontPrimary,
-                                    fontSize: 11,
-                                    fontWeight: FontWeight.bold,
-                                    color: colors.onPrimaryContainer,
-                                  ),
+                                child: AppText.literal(
+                                  context.isArabic
+                                      ? role.titleAr
+                                      : role.titleEn,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                  color: colors.onPrimaryContainer,
                                 ),
                               ),
-                              Text(
+                              AppText.bodySmall(
                                 '•  ${user.department}',
-                                style: context.textTheme.bodySmall?.copyWith(
-                                  fontFamily: AppAssets.fontPrimary,
-                                  color: colors.onSurfaceVariant,
-                                ),
+                                isTranslated: false,
+                                color: colors.onSurfaceVariant,
                               ),
                             ],
                           ),
@@ -382,10 +390,7 @@ class _HomeViewBody extends StatelessWidget {
             const SizedBox(height: 24),
 
             // 1. شبكة بطاقات الإحصائيات (Stats Grid)
-            HomeStatsGrid(
-              stats: state.stats,
-              user: user,
-            ),
+            HomeStatsGrid(stats: state.stats, user: user),
             const SizedBox(height: 28),
 
             // 2. قسم الإجراءات السريعة المخصص بالدور (Role-Gated Quick Actions)
@@ -400,8 +405,13 @@ class _HomeViewBody extends StatelessWidget {
     );
   }
 
-  Widget _buildSkeletonDashboard(BuildContext context, ColorScheme colors, UserModel? user) {
-    final effectiveUser = user ??
+  Widget _buildSkeletonDashboard(
+    BuildContext context,
+    ColorScheme colors,
+    UserModel? user,
+  ) {
+    final effectiveUser =
+        user ??
         const UserModel(
           userId: 'USR-000',
           username: 'admin',
@@ -414,8 +424,10 @@ class _HomeViewBody extends StatelessWidget {
     final isCompact = context.isMobile;
 
     return ResponsiveBuilder(
-      desktop: (ctx) => Scaffold(
-        backgroundColor: colors.surface,
+      desktop: (ctx) => AppScaffold(
+        useDefaultAppBar: false,
+        applyPadding: false,
+        withGradientBackground: false,
         body: Row(
           children: [
             HomeNavigationRail(
@@ -426,13 +438,19 @@ class _HomeViewBody extends StatelessWidget {
               onLogout: () {},
             ),
             Expanded(
-              child: _buildSkeletonDashboardContent(context, isCompact, effectiveUser),
+              child: _buildSkeletonDashboardContent(
+                context,
+                isCompact,
+                effectiveUser,
+              ),
             ),
           ],
         ),
       ),
-      tablet: (ctx) => Scaffold(
-        backgroundColor: colors.surface,
+      tablet: (ctx) => AppScaffold(
+        useDefaultAppBar: false,
+        applyPadding: false,
+        withGradientBackground: false,
         body: Row(
           children: [
             HomeNavigationRail(
@@ -443,13 +461,19 @@ class _HomeViewBody extends StatelessWidget {
               onLogout: () {},
             ),
             Expanded(
-              child: _buildSkeletonDashboardContent(context, isCompact, effectiveUser),
+              child: _buildSkeletonDashboardContent(
+                context,
+                isCompact,
+                effectiveUser,
+              ),
             ),
           ],
         ),
       ),
-      mobile: (ctx) => Scaffold(
-        backgroundColor: colors.surface,
+      mobile: (ctx) => AppScaffold(
+        useDefaultAppBar: false,
+        applyPadding: false,
+        withGradientBackground: false,
         appBar: const AppAppBar(showStatus: false),
         body: _buildSkeletonDashboardContent(context, isCompact, effectiveUser),
         bottomNavigationBar: HomeMobileNavBar(
@@ -461,7 +485,11 @@ class _HomeViewBody extends StatelessWidget {
     );
   }
 
-  Widget _buildSkeletonDashboardContent(BuildContext context, bool isCompact, UserModel user) {
+  Widget _buildSkeletonDashboardContent(
+    BuildContext context,
+    bool isCompact,
+    UserModel user,
+  ) {
     return SingleChildScrollView(
       padding: EdgeInsets.symmetric(
         horizontal: isCompact ? 16.0 : 28.0,

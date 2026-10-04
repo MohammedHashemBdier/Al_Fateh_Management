@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/utils/context_extensions.dart';
-import '../../../../../core/widgets/app_button.dart';
-import '../../../../../core/widgets/app_text_field.dart';
-import '../../../../../core/widgets/app_tooltip.dart';
+import '../../../../../core/widgets/widgets.dart';
 import '../../../domain/models/ticket_filter.dart';
 import '../../../domain/models/ticket_model.dart';
 
@@ -165,19 +162,12 @@ class _TicketFilterBarState extends State<TicketFilterBar> {
 
               // زر مسح الفلاتر
               if (widget.filter.hasActiveFilters) ...[
-                TextButton.icon(
-                  style: TextButton.styleFrom(
-                    foregroundColor: colors.error,
-                  ),
-                  icon: const Icon(Icons.clear_all_rounded, size: 18),
-                  label: Text(
-                    context.tr('clear_filters'),
-                    style: const TextStyle(
-                      fontFamily: AppAssets.fontPrimary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                AppButton(
+                  label: context.tr('clear_filters'),
+                  icon: Icons.clear_all_rounded,
+                  variant: AppButtonVariant.text,
+                  customColor: colors.error,
+                  height: 34,
                   onPressed: () {
                     _searchController.clear();
                     widget.onReset();
@@ -193,14 +183,11 @@ class _TicketFilterBarState extends State<TicketFilterBar> {
                   color: colors.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(16),
                 ),
-                child: Text(
+                child: AppText.literal(
                   '${context.tr('showing')}: ${widget.filteredCount} / ${widget.totalCount}',
-                  style: TextStyle(
-                    fontFamily: AppAssets.fontPrimary,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    color: colors.onSurfaceVariant,
-                  ),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  color: colors.onSurfaceVariant,
                 ),
               ),
             ],
@@ -244,37 +231,28 @@ class _TicketFilterBarState extends State<TicketFilterBar> {
             size: 18,
             color: isSelected ? colors.primary : colors.onSurfaceVariant,
           ),
-          hint: Text(
+          hint: AppText.literal(
             label,
-            style: TextStyle(
-              fontFamily: AppAssets.fontPrimary,
-              fontSize: 12,
-              color: isSelected ? colors.primary : colors.onSurfaceVariant,
-              fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-            ),
+            fontSize: 12,
+            color: isSelected ? colors.primary : colors.onSurfaceVariant,
+            fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
           ),
           items: [
             DropdownMenuItem<T?>(
               value: null,
-              child: Text(
+              child: AppText.literal(
                 '${context.tr('all')} $label',
-                style: TextStyle(
-                  fontFamily: AppAssets.fontPrimary,
-                  fontSize: 12,
-                  color: colors.onSurface,
-                ),
+                fontSize: 12,
+                color: colors.onSurface,
               ),
             ),
             ...items.map(
               (item) => DropdownMenuItem<T?>(
                 value: item,
-                child: Text(
+                child: AppText.literal(
                   itemLabel(item),
-                  style: TextStyle(
-                    fontFamily: AppAssets.fontPrimary,
-                    fontSize: 12,
-                    color: colors.onSurface,
-                  ),
+                  fontSize: 12,
+                  color: colors.onSurface,
                 ),
               ),
             ),

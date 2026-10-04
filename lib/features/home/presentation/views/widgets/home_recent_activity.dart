@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:al_fateh_management/core/constants/app_assets.dart';
 import 'package:al_fateh_management/core/utils/context_extensions.dart';
-import 'package:al_fateh_management/core/widgets/app_animations.dart';
-import 'package:al_fateh_management/core/widgets/app_card.dart';
-import 'package:al_fateh_management/core/widgets/app_empty_state.dart';
-import 'package:al_fateh_management/core/widgets/app_hover.dart';
-import 'package:al_fateh_management/core/widgets/app_status_badge.dart';
+import 'package:al_fateh_management/core/widgets/widgets.dart';
 import 'package:al_fateh_management/features/home/domain/models/dashboard_stats_model.dart';
 
 /// قائمة بأحدث التذاكر والمتابعات المسجلة مع تأثيرات Hover وروابط الانتقال
@@ -26,15 +21,11 @@ class HomeRecentActivity extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-              child: Text(
-                context.tr('stat_recent_tickets'),
+              child: AppText.title(
+                'stat_recent_tickets',
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
-                style: context.textTheme.titleMedium?.copyWith(
-                  fontFamily: AppAssets.fontSecondary,
-                  fontWeight: FontWeight.bold,
-                  color: colors.onSurface,
-                ),
+                color: colors.onSurface,
               ),
             ),
             const SizedBox(width: 6),
@@ -46,14 +37,11 @@ class HomeRecentActivity extends StatelessWidget {
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      context.tr('stat_view_all'),
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        color: colors.primary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    AppText.caption(
+                      'stat_view_all',
+                      color: colors.primary,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 12,
                     ),
                     const SizedBox(width: 4),
                     Icon(Icons.arrow_forward_ios_rounded, size: 11, color: colors.primary),
@@ -124,7 +112,7 @@ class HomeRecentActivity extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Text(
+                                AppText.literal(
                                   ticket.subscriberName.isNotEmpty
                                       ? ticket.subscriberName
                                       : (ticket.landline.isNotEmpty
@@ -132,25 +120,19 @@ class HomeRecentActivity extends StatelessWidget {
                                           : context.tr('subscriber')),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontFamily: AppAssets.fontSecondary,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 12.5,
-                                    color: colors.onSurface,
-                                  ),
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12.5,
+                                  color: colors.onSurface,
                                 ),
                                 const SizedBox(height: 2),
-                                Text(
+                                AppText.literal(
                                   ticket.subscriberName.isNotEmpty && ticket.landline.isNotEmpty
                                       ? '${ticket.problem} • ${ticket.landline}'
                                       : '${ticket.problem}${ticket.employee.isNotEmpty ? ' • ${ticket.employee}' : ''}',
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontFamily: AppAssets.fontPrimary,
-                                    fontSize: 10.5,
-                                    color: colors.onSurfaceVariant,
-                                  ),
+                                  fontSize: 10.5,
+                                  color: colors.onSurfaceVariant,
                                 ),
                               ],
                             ),
@@ -169,15 +151,12 @@ class HomeRecentActivity extends StatelessWidget {
                               ),
                               if (ticket.cleanDate.isNotEmpty) ...[
                                 const SizedBox(height: 3),
-                                Text(
+                                AppText.literal(
                                   ticket.cleanTime.isNotEmpty
                                       ? ticket.cleanTime
                                       : ticket.cleanDate,
-                                  style: TextStyle(
-                                    fontFamily: AppAssets.fontPrimary,
-                                    fontSize: 9.5,
-                                    color: colors.outline,
-                                  ),
+                                  fontSize: 9.5,
+                                  color: colors.outline,
                                 ),
                               ],
                             ],

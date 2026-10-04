@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constants/app_assets.dart';
+import '../services/dialog/app_dialog_service.dart';
 import '../utils/context_extensions.dart';
-import 'app_button.dart';
-import 'app_card.dart';
+import 'widgets.dart';
 
 /// منتقي قابل للبحث مرن وموديرن مع دعم إضافة عنصر جديد تلقائياً
 class AppSearchablePicker extends StatelessWidget {
@@ -28,7 +27,7 @@ class AppSearchablePicker extends StatelessWidget {
   });
 
   void _openSearchDialog(BuildContext context) {
-    showDialog(
+    AppDialogService.custom(
       context: context,
       barrierDismissible: true,
       builder: (ctx) => _SearchDialog(
@@ -70,18 +69,14 @@ class AppSearchablePicker extends StatelessWidget {
             Icon(prefixIcon, size: 20, color: colors.primary),
             const SizedBox(width: 10),
             Expanded(
-              child: Text(
+              child: AppText.body(
                 displayVal,
-                style: TextStyle(
-                  fontFamily: AppAssets.fontPrimary,
-                  fontSize: 13,
-                  fontWeight: (value != null && value!.isNotEmpty)
-                      ? FontWeight.w600
-                      : FontWeight.normal,
-                  color: (value != null && value!.isNotEmpty)
-                      ? colors.onSurface
-                      : colors.onSurfaceVariant,
-                ),
+                fontWeight: (value != null && value!.isNotEmpty)
+                    ? FontWeight.w600
+                    : FontWeight.normal,
+                color: (value != null && value!.isNotEmpty)
+                    ? colors.onSurface
+                    : colors.onSurfaceVariant,
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -201,18 +196,13 @@ class _SearchDialogState extends State<_SearchDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  AppText.title(
                     widget.title,
-                    style: TextStyle(
-                      fontFamily: AppAssets.fontSecondary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: colors.onSurface,
-                    ),
+                    fontWeight: FontWeight.bold,
+                    color: colors.onSurface,
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.close_rounded),
-                    visualDensity: VisualDensity.compact,
+                  AppIconButton(
+                    icon: Icons.close_rounded,
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ],
@@ -263,14 +253,10 @@ class _SearchDialogState extends State<_SearchDialog> {
                           size: 18, color: colors.primary),
                       const SizedBox(width: 8),
                       Expanded(
-                        child: Text(
+                        child: AppText.caption(
                           '${widget.addNewItemLabel ?? context.tr('add_new_problem_type')}: "$query"',
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontPrimary,
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: colors.primary,
-                          ),
+                          fontWeight: FontWeight.bold,
+                          color: colors.primary,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -291,13 +277,9 @@ class _SearchDialogState extends State<_SearchDialog> {
               Expanded(
                 child: _filteredItems.isEmpty
                     ? Center(
-                        child: Text(
+                        child: AppText.body(
                           context.tr('no_tickets_found_title'),
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontPrimary,
-                            fontSize: 13,
-                            color: colors.onSurfaceVariant,
-                          ),
+                          color: colors.onSurfaceVariant,
                         ),
                       )
                     : ListView.builder(
@@ -323,18 +305,14 @@ class _SearchDialogState extends State<_SearchDialog> {
                                   ? colors.primary
                                   : colors.onSurfaceVariant,
                             ),
-                            title: Text(
+                            title: AppText.body(
                               item,
-                              style: TextStyle(
-                                fontFamily: AppAssets.fontPrimary,
-                                fontSize: 13,
-                                fontWeight: isSelected
-                                    ? FontWeight.bold
-                                    : FontWeight.normal,
-                                color: isSelected
-                                    ? colors.primary
-                                    : colors.onSurface,
-                              ),
+                              fontWeight: isSelected
+                                  ? FontWeight.bold
+                                  : FontWeight.normal,
+                              color: isSelected
+                                  ? colors.primary
+                                  : colors.onSurface,
                             ),
                             onTap: () => widget.onSelected(item),
                           );

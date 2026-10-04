@@ -30,6 +30,8 @@ class AppText extends StatelessWidget {
   final bool isTranslated;
   final FontWeight? fontWeight;
   final double? fontSize;
+  final String? fontFamily;
+  final TextStyle? style;
 
   const AppText(
     this.text, {
@@ -42,6 +44,8 @@ class AppText extends StatelessWidget {
     this.isTranslated = true,
     this.fontWeight,
     this.fontSize,
+    this.fontFamily,
+    this.style,
   });
 
   /// نص من عنوان شاشة أو قسم كبير
@@ -55,6 +59,8 @@ class AppText extends StatelessWidget {
     this.isTranslated = true,
     this.fontWeight,
     this.fontSize,
+    this.fontFamily,
+    this.style,
   }) : variant = AppTextVariant.headline;
 
   /// نص من عنوان بطاقة أو عنصر
@@ -68,6 +74,8 @@ class AppText extends StatelessWidget {
     this.isTranslated = true,
     this.fontWeight,
     this.fontSize,
+    this.fontFamily,
+    this.style,
   }) : variant = AppTextVariant.titleMedium;
 
   /// نص من عنوان بارز
@@ -81,6 +89,8 @@ class AppText extends StatelessWidget {
     this.isTranslated = true,
     this.fontWeight,
     this.fontSize,
+    this.fontFamily,
+    this.style,
   }) : variant = AppTextVariant.titleLarge;
 
   /// نص عادي لجسم الصفحة
@@ -94,6 +104,8 @@ class AppText extends StatelessWidget {
     this.isTranslated = true,
     this.fontWeight,
     this.fontSize,
+    this.fontFamily,
+    this.style,
   }) : variant = AppTextVariant.bodyMedium;
 
   /// نص صغير وتفاصيل
@@ -107,6 +119,8 @@ class AppText extends StatelessWidget {
     this.isTranslated = true,
     this.fontWeight,
     this.fontSize,
+    this.fontFamily,
+    this.style,
   }) : variant = AppTextVariant.bodySmall;
 
   /// نص أزرار وبادجات
@@ -120,6 +134,8 @@ class AppText extends StatelessWidget {
     this.isTranslated = true,
     this.fontWeight,
     this.fontSize,
+    this.fontFamily,
+    this.style,
   }) : variant = AppTextVariant.labelMedium;
 
   /// نص حاشية وتلميح صغير
@@ -133,6 +149,8 @@ class AppText extends StatelessWidget {
     this.isTranslated = true,
     this.fontWeight,
     this.fontSize,
+    this.fontFamily,
+    this.style,
   }) : variant = AppTextVariant.caption;
 
   /// نص مباشر لا يحتاج ترجمة (مثل اسم المشترك، التوقيت، أو البيانات الواردة من السيرفر)
@@ -146,6 +164,8 @@ class AppText extends StatelessWidget {
     this.overflow,
     this.fontWeight,
     this.fontSize,
+    this.fontFamily,
+    this.style,
   }) : isTranslated = false;
 
   @override
@@ -153,12 +173,13 @@ class AppText extends StatelessWidget {
     final colors = context.colors;
     final resolvedText = isTranslated ? context.tr(text) : text;
     final defaultColor = color ?? _resolveDefaultColor(colors, variant);
-    final baseStyle = _resolveStyle(variant);
+    final baseStyle = style ?? _resolveStyle(variant);
 
     final finalStyle = baseStyle.copyWith(
       color: defaultColor,
       fontWeight: fontWeight,
       fontSize: fontSize,
+      fontFamily: fontFamily,
     );
 
     return Text(

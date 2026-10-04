@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/utils/context_extensions.dart';
-import '../../../../../core/widgets/app_card.dart';
-import '../../../../../core/widgets/app_status_badge.dart';
-import '../../../../../core/widgets/app_tooltip.dart';
+import '../../../../../core/widgets/widgets.dart';
 import '../../../domain/models/ticket_model.dart';
 
 /// بطاقة التذكرة المخصصة للعرض على الموبايل والشاشات الصغيرة
@@ -60,14 +57,11 @@ class TicketCard extends StatelessWidget {
                           color: colors.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(6),
                         ),
-                        child: Text(
+                        child: AppText.literal(
                           '#${ticket.rowId > 0 ? ticket.rowId : 'OFFLINE'}',
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontPrimary,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                            color: colors.primary,
-                          ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
+                          color: colors.primary,
                         ),
                       ),
                       if (ticket.syncState != SyncState.synced) ...[
@@ -100,16 +94,13 @@ class TicketCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 8),
                 Expanded(
-                  child: Text(
+                  child: AppText.literal(
                     ticket.subscriberName,
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
-                    style: TextStyle(
-                      fontFamily: AppAssets.fontPrimary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: colors.onSurface,
-                    ),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                    color: colors.onSurface,
                   ),
                 ),
                 if (ticket.landline.isNotEmpty) ...[
@@ -121,16 +112,13 @@ class TicketCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Flexible(
-                    child: Text(
+                    child: AppText.literal(
                       ticket.landline,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                        color: colors.primary,
-                      ),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                      color: colors.primary,
                     ),
                   ),
                 ],
@@ -158,16 +146,13 @@ class TicketCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 6),
                   Flexible(
-                    child: Text(
+                    child: AppText.literal(
                       ticket.problem,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 1,
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                        color: colors.onSurface,
-                      ),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 13,
+                      color: colors.onSurface,
                     ),
                   ),
                 ],
@@ -176,16 +161,12 @@ class TicketCard extends StatelessWidget {
 
             if (ticket.description.isNotEmpty) ...[
               const SizedBox(height: 8),
-              Text(
+              AppText.literal(
                 ticket.description,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontFamily: AppAssets.fontPrimary,
-                  fontSize: 12,
-                  color: colors.onSurfaceVariant,
-                  height: 1.4,
-                ),
+                fontSize: 12,
+                color: colors.onSurfaceVariant,
               ),
             ],
 
@@ -210,17 +191,14 @@ class TicketCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 6),
                       Expanded(
-                        child: Text(
+                        child: AppText.literal(
                           ticket.employee.isNotEmpty
                               ? ticket.employee
                               : context.tr('unassigned'),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontPrimary,
-                            fontSize: 12,
-                            color: colors.onSurfaceVariant,
-                          ),
+                          fontSize: 12,
+                          color: colors.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -239,15 +217,12 @@ class TicketCard extends StatelessWidget {
                       ),
                       const SizedBox(width: 4),
                       Flexible(
-                        child: Text(
+                        child: AppText.literal(
                           '$formattedDate $formattedTime'.trim(),
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
-                          style: TextStyle(
-                            fontFamily: AppAssets.fontPrimary,
-                            fontSize: 11,
-                            color: colors.onSurfaceVariant.withValues(alpha: 0.8),
-                          ),
+                          fontSize: 11,
+                          color: colors.onSurfaceVariant.withValues(alpha: 0.8),
                         ),
                       ),
                     ],

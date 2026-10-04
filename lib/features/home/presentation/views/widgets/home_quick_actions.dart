@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:al_fateh_management/core/constants/app_assets.dart';
 import 'package:al_fateh_management/core/rbac/role_permissions.dart';
 import 'package:al_fateh_management/core/utils/context_extensions.dart';
-import 'package:al_fateh_management/core/widgets/app_animations.dart';
-import 'package:al_fateh_management/core/widgets/app_card.dart';
-import 'package:al_fateh_management/core/widgets/app_hover.dart';
-import 'package:al_fateh_management/core/widgets/app_tooltip.dart';
-import 'package:al_fateh_management/core/widgets/role_gate.dart';
+import 'package:al_fateh_management/core/widgets/widgets.dart';
 import 'package:al_fateh_management/features/auth/domain/models/user_model.dart';
 
 /// قسم الإجراءات السريعة المخصص والمفلتر حسب الصلاحيات (Role-Based Quick Actions)
@@ -23,13 +18,9 @@ class HomeQuickActions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          context.tr('stat_quick_actions'),
-          style: context.textTheme.titleMedium?.copyWith(
-            fontFamily: AppAssets.fontSecondary,
-            fontWeight: FontWeight.bold,
-            color: context.colors.onSurface,
-          ),
+        AppText.title(
+          'stat_quick_actions',
+          color: context.colors.onSurface,
         ),
         const SizedBox(height: 12),
         Wrap(
@@ -160,16 +151,12 @@ class HomeQuickActions extends StatelessWidget {
                     ),
                     const SizedBox(width: 10),
                     Flexible(
-                      child: Text(
-                        context.tr(labelKey),
+                      child: AppText.label(
+                        labelKey,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: AppAssets.fontPrimary,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                          color: context.colors.onSurface,
-                        ),
+                        fontSize: 13,
+                        color: context.colors.onSurface,
                       ),
                     ),
                   ],

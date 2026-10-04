@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../../../../../core/constants/app_assets.dart';
+import '../../../../../core/services/services.dart';
 import '../../../../../core/utils/context_extensions.dart';
 import '../../../../../core/utils/input_validators.dart';
-import '../../../../../core/widgets/app_animations.dart';
-import '../../../../../core/widgets/app_button.dart';
-import '../../../../../core/widgets/app_searchable_picker.dart';
-import '../../../../../core/widgets/app_text_field.dart';
+import '../../../../../core/widgets/widgets.dart';
 import '../../../domain/models/ticket_model.dart';
 
 /// نافذة إضافة تذكرة دعم فني جديدة أو متابعة شكوى
@@ -34,7 +32,7 @@ class TicketAddDialog extends StatefulWidget {
     required Future<bool> Function(TicketModel ticket) onSave,
     required Future<bool> Function(String newProblem) onAddNewProblem,
   }) {
-    return showDialog<bool>(
+    return AppDialogService.custom<bool>(
       context: context,
       barrierDismissible: true,
       builder: (ctx) => TicketAddDialog(
@@ -108,7 +106,7 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
     if (!_formKey.currentState!.validate()) return;
     if (_selectedProblem == null || _selectedProblem!.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(context.tr('select_problem_required'))),
+        SnackBar(content: AppText.body(context.tr('select_problem_required'))),
       );
       return;
     }
@@ -205,22 +203,17 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            context.tr('dialog_add_ticket_title'),
-                            style: TextStyle(
-                              fontFamily: AppAssets.fontSecondary,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: colors.onSurface,
-                            ),
+                          AppText.titleLarge(
+                            'dialog_add_ticket_title',
+                            fontWeight: FontWeight.bold,
+                            fontFamily: AppAssets.fontSecondary,
+                            fontSize: 18,
+                            color: colors.onSurface,
                           ),
-                          Text(
-                            context.tr('dialog_add_ticket_desc'),
-                            style: TextStyle(
-                              fontFamily: AppAssets.fontPrimary,
-                              fontSize: 12,
-                              color: colors.onSurfaceVariant,
-                            ),
+                          AppText.caption(
+                            'dialog_add_ticket_desc',
+                            fontSize: 12,
+                            color: colors.onSurfaceVariant,
                           ),
                         ],
                       ),
@@ -307,35 +300,21 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(
-                                  context.tr('problem_type_label'),
-                                  style: TextStyle(
-                                    fontFamily: AppAssets.fontPrimary,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                    color: colors.onSurface,
-                                  ),
+                                AppText.label(
+                                  'problem_type_label',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 13,
+                                  color: colors.onSurface,
                                 ),
-                                TextButton.icon(
-                                  style: TextButton.styleFrom(
-                                    visualDensity: VisualDensity.compact,
-                                    foregroundColor: colors.primary,
-                                  ),
-                                  icon: Icon(
-                                    _isAddingCustomProblem
-                                        ? Icons.close_rounded
-                                        : Icons.add_circle_outline_rounded,
-                                    size: 16,
-                                  ),
-                                  label: Text(
-                                    _isAddingCustomProblem
-                                        ? context.tr('cancel')
-                                        : context.tr('add_new_problem_type'),
-                                    style: const TextStyle(
-                                      fontFamily: AppAssets.fontPrimary,
-                                      fontSize: 12,
-                                    ),
-                                  ),
+                                AppButton(
+                                  label: _isAddingCustomProblem
+                                      ? context.tr('cancel')
+                                      : context.tr('add_new_problem_type'),
+                                  icon: _isAddingCustomProblem
+                                      ? Icons.close_rounded
+                                      : Icons.add_circle_outline_rounded,
+                                  variant: AppButtonVariant.text,
+                                  height: 32,
                                   onPressed: () {
                                     setState(() {
                                       _isAddingCustomProblem =
@@ -398,14 +377,11 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              context.tr('assigned_to_label'),
-                              style: TextStyle(
-                                fontFamily: AppAssets.fontPrimary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: colors.onSurface,
-                              ),
+                            AppText.label(
+                              'assigned_to_label',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              color: colors.onSurface,
                             ),
                             const SizedBox(height: 6),
                             Container(
@@ -430,14 +406,10 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
                                   items: _employees.map((emp) {
                                     return DropdownMenuItem<String>(
                                       value: emp,
-                                      child: Text(
+                                      child: AppText.literal(
                                         emp,
-                                        style: TextStyle(
-                                          fontFamily:
-                                              AppAssets.fontPrimary,
-                                          fontSize: 13,
-                                          color: colors.onSurface,
-                                        ),
+                                        fontSize: 13,
+                                        color: colors.onSurface,
                                       ),
                                     );
                                   }).toList(),
@@ -458,14 +430,11 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              context.tr('col_status'),
-                              style: TextStyle(
-                                fontFamily: AppAssets.fontPrimary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 13,
-                                color: colors.onSurface,
-                              ),
+                            AppText.label(
+                              'col_status',
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                              color: colors.onSurface,
                             ),
                             const SizedBox(height: 6),
                             Container(
@@ -491,13 +460,10 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
                                           Icon(Icons.hourglass_top_rounded,
                                               size: 16, color: colors.primary),
                                           const SizedBox(width: 8),
-                                          Text(
+                                          AppText.literal(
                                             'قيد الحل (مفتوحة للمتابعة)',
-                                            style: TextStyle(
-                                              fontFamily: AppAssets.fontPrimary,
-                                              fontSize: 13,
-                                              color: colors.onSurface,
-                                            ),
+                                            fontSize: 13,
+                                            color: colors.onSurface,
                                           ),
                                         ],
                                       ),
@@ -509,13 +475,10 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
                                           Icon(Icons.check_circle_outline_rounded,
                                               size: 16, color: colors.tertiary),
                                           const SizedBox(width: 8),
-                                          Text(
+                                          AppText.literal(
                                             'تم الحل (إغلاق فوري للتذكرة)',
-                                            style: TextStyle(
-                                              fontFamily: AppAssets.fontPrimary,
-                                              fontSize: 13,
-                                              color: colors.onSurface,
-                                            ),
+                                            fontSize: 13,
+                                            color: colors.onSurface,
                                           ),
                                         ],
                                       ),
@@ -570,16 +533,12 @@ class _TicketAddDialogState extends State<TicketAddDialog> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    TextButton(
+                    AppButton(
+                      label: context.tr('cancel'),
+                      variant: AppButtonVariant.ghost,
+                      customColor: colors.onSurfaceVariant,
                       onPressed:
                           _isLoading ? null : () => Navigator.of(context).pop(),
-                      child: Text(
-                        context.tr('cancel'),
-                        style: TextStyle(
-                          fontFamily: AppAssets.fontPrimary,
-                          color: colors.onSurfaceVariant,
-                        ),
-                      ),
                     ),
                     const SizedBox(width: 12),
                     AppButton(
