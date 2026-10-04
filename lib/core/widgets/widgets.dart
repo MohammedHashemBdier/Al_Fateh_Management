@@ -22,3 +22,5 @@ export 'app_confirm_dialog.dart';
 export 'role_gate.dart';
 export 'theme_toggle_button.dart';
 export 'app_animations.dart';
+export 'app_pagination_bar.dart';
+export 'app_searchable_picker.dart';

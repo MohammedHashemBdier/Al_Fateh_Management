@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_hover.dart';
@@ -13,6 +14,8 @@ class AppTextField extends StatefulWidget {
   final Widget? suffix;
   final bool isPassword;
   final TextInputType keyboardType;
+  final List<TextInputFormatter>? inputFormatters;
+  final int? maxLength;
   final String? Function(String?)? validator;
   final void Function(String)? onChanged;
   final void Function(String)? onFieldSubmitted;
@@ -31,6 +34,8 @@ class AppTextField extends StatefulWidget {
     this.suffix,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
+    this.inputFormatters,
+    this.maxLength,
     this.validator,
     this.onChanged,
     this.onFieldSubmitted,
@@ -81,6 +86,8 @@ class _AppTextFieldState extends State<AppTextField> {
           focusNode: widget.focusNode,
           obscureText: _obscureText,
           keyboardType: widget.keyboardType,
+          inputFormatters: widget.inputFormatters,
+          maxLength: widget.maxLength,
           validator: widget.validator,
           onChanged: widget.onChanged,
           onFieldSubmitted: widget.onFieldSubmitted,
@@ -92,6 +99,7 @@ class _AppTextFieldState extends State<AppTextField> {
             fontSize: 14,
           ),
           decoration: InputDecoration(
+            counterText: widget.maxLength != null ? '' : null,
             labelText: widget.label,
             hintText: widget.hint,
             labelStyle: TextStyle(

@@ -17,19 +17,19 @@ class InputValidators {
     return null;
   }
 
-  /// Validate landline phone number (الرقم الأرضي)
+  /// Validate landline phone number (الرقم الأرضي / الهاتف)
   static String? validateLandline(String? value, {BuildContext? context}) {
     if (value == null || value.trim().isEmpty) {
-      return context?.tr('val_landline_empty') ?? 'يرجى إدخال الرقم الأرضي';
+      return context?.tr('val_landline_empty') ?? 'يرجى إدخال رقم الهاتف';
     }
     final cleanValue = value.replaceAll(RegExp(r'\s+'), '');
     if (!RegExp(r'^[0-9]+$').hasMatch(cleanValue)) {
       return context?.tr('val_landline_digits') ??
-          'الرقم الأرضي يجب أن يحتوي على أرقام فقط';
+          'رقم الهاتف يجب أن يحتوي على أرقام فقط';
     }
-    if (cleanValue.length < 6 || cleanValue.length > 10) {
+    if (cleanValue.length != 10) {
       return context?.tr('val_landline_length') ??
-          'طول الرقم الأرضي غير صحيح (بين 6 و 10 أرقام)';
+          'رقم الهاتف يجب أن يتألف من 10 أرقام تماماً';
     }
     return null;
   }
@@ -47,14 +47,26 @@ class InputValidators {
   }
 
   /// Validate mobile number
-  static String? validateMobile(String? value, {BuildContext? context}) {
+  static String? validateMobile(
+    String? value, {
+    BuildContext? context,
+    bool isRequired = false,
+  }) {
     if (value == null || value.trim().isEmpty) {
-      return context?.tr('val_mobile_empty') ?? 'يرجى إدخال رقم الهاتف المحمول';
+      if (isRequired) {
+        return context?.tr('val_mobile_empty') ??
+            'يرجى إدخال رقم الهاتف المحمول';
+      }
+      return null;
     }
     final cleanValue = value.replaceAll(RegExp(r'\s+'), '');
-    if (!RegExp(r'^(09|\+9639)[0-9]{8}$').hasMatch(cleanValue)) {
+    if (!RegExp(r'^[0-9]+$').hasMatch(cleanValue)) {
+      return context?.tr('val_landline_digits') ??
+          'رقم الموبايل يجب أن يحتوي على أرقام فقط';
+    }
+    if (cleanValue.length != 10) {
       return context?.tr('val_mobile_invalid') ??
-          'يرجى إدخال رقم محمول صحيح (مثال: 09xxxxxxxx)';
+          'رقم الموبايل يجب أن يتألف من 10 أرقام (مثال: 09xxxxxxxx)';
     }
     return null;
   }

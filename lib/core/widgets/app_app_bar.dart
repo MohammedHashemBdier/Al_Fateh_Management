@@ -137,42 +137,39 @@ class _AppAppBarState extends State<AppAppBar>
               const SizedBox(width: 10),
             ],
             Expanded(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                alignment: AlignmentDirectional.centerStart,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    displayTitle,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: (isCompact
+                            ? context.textTheme.titleMedium
+                            : context.textTheme.titleLarge)
+                        ?.copyWith(
+                      fontFamily: AppAssets.fontSecondary,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 0.1,
+                      color: colors.onSurface,
+                    ),
+                  ),
+                  if (!isCompact && displaySubtitle.isNotEmpty) ...[
+                    const SizedBox(height: 2),
                     Text(
-                      displayTitle,
+                      displaySubtitle,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: (isCompact
-                              ? context.textTheme.titleSmall
-                              : context.textTheme.titleMedium)
-                          ?.copyWith(
-                        fontFamily: AppAssets.fontSecondary,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.2,
-                        color: colors.onSurface,
+                      style: context.textTheme.bodySmall?.copyWith(
+                        fontFamily: AppAssets.fontPrimary,
+                        fontSize: 11,
+                        color: colors.onSurfaceVariant,
                       ),
                     ),
-                    if (!isCompact && displaySubtitle.isNotEmpty) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        displaySubtitle,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: context.textTheme.bodySmall?.copyWith(
-                          fontFamily: AppAssets.fontPrimary,
-                          fontSize: 11,
-                          color: colors.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
                   ],
-                ),
+                ],
               ),
             ),
           ],
@@ -185,7 +182,7 @@ class _AppAppBarState extends State<AppAppBar>
           ],
 
           // مبدلات الثيم واللغة (تظهر إذا لم تكن هناك أزرار إضافية تملأ المساحة)
-          if (!isCompact || widget.extraActions == null) ...[
+          if (!isCompact && widget.extraActions == null) ...[
             if (widget.showLanguageToggle && widget.showThemeToggle) ...[
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
@@ -218,7 +215,7 @@ class _AppAppBarState extends State<AppAppBar>
           if (widget.extraActions != null)
             ...widget.extraActions!.map(
               (action) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 child: AppHover(
                   builder: (ctx, isHovered) {
                     return AnimatedContainer(
@@ -241,7 +238,7 @@ class _AppAppBarState extends State<AppAppBar>
                 ),
               ),
             ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 4),
         ],
       ),
     );

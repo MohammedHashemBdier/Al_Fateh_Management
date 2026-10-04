@@ -13,8 +13,9 @@ class DioClient {
         connectTimeout: const Duration(seconds: 20),
         receiveTimeout: const Duration(seconds: 20),
         sendTimeout: const Duration(seconds: 20),
-        followRedirects: true,
+        followRedirects: false, // Disabling automatic redirect on POST allows catching 302 and redirecting via GET
         maxRedirects: 5,
+        validateStatus: (status) => status != null && status < 400,
         responseType: ResponseType.json,
         headers: {
           'Accept': 'application/json',
@@ -47,12 +48,29 @@ class DioClient {
     Options? options,
     CancelToken? cancelToken,
   }) async {
-    return _dio.get<T>(
+    final response = await _dio.get<T>(
       path,
       queryParameters: queryParameters,
       options: options,
       cancelToken: cancelToken,
     );
+
+    if (response.statusCode == 302 || response.statusCode == 301 || response.statusCode == 307) {
+      final location = response.headers.value('location');
+      if (location != null && location.isNotEmpty) {
+        return Dio().get<T>(
+          location,
+          options: Options(
+            responseType: options?.responseType ?? ResponseType.json,
+            headers: options?.headers,
+            validateStatus: (status) => status != null && status < 500,
+          ),
+          cancelToken: cancelToken,
+        );
+      }
+    }
+
+    return response;
   }
 
   Future<Response<T>> post<T>(
@@ -62,12 +80,30 @@ class DioClient {
     Options? options,
     CancelToken? cancelToken,
   }) async {
-    return _dio.post<T>(
+    final response = await _dio.post<T>(
       path,
       data: data,
       queryParameters: queryParameters,
       options: options,
       cancelToken: cancelToken,
     );
+
+    // Google Apps Script redirects (302) return Location header pointing to script.googleusercontent.com
+    if (response.statusCode == 302 || response.statusCode == 301 || response.statusCode == 307) {
+      final location = response.headers.value('location');
+      if (location != null && location.isNotEmpty) {
+        return Dio().get<T>(
+          location,
+          options: Options(
+            responseType: options?.responseType ?? ResponseType.json,
+            headers: options?.headers,
+            validateStatus: (status) => status != null && status < 500,
+          ),
+          cancelToken: cancelToken,
+        );
+      }
+    }
+
+    return response;
   }
 }

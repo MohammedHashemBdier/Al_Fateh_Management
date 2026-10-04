@@ -1,83 +1,429 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:al_fateh_management/core/constants/app_assets.dart';
-import 'package:al_fateh_management/core/utils/context_extensions.dart';
-import 'package:al_fateh_management/core/widgets/app_app_bar.dart';
-import 'package:al_fateh_management/core/widgets/app_button.dart';
-import 'package:al_fateh_management/core/widgets/app_card.dart';
-import 'package:al_fateh_management/core/widgets/app_scaffold.dart';
-import 'package:al_fateh_management/core/widgets/app_status_badge.dart';
+import '../../../../core/constants/app_assets.dart';
+import '../../../../core/utils/app_snackbars.dart';
+import '../../../../core/utils/context_extensions.dart';
+import '../../../../core/widgets/app_animations.dart';
+import '../../../../core/widgets/app_app_bar.dart';
+import '../../../../core/widgets/app_card.dart';
+import '../../../../core/widgets/app_confirm_dialog.dart';
+import '../../../../core/widgets/app_empty_state.dart';
+import '../../../../core/widgets/app_pagination_bar.dart';
+import '../../../../core/widgets/app_scaffold.dart';
+import '../../../../core/widgets/app_skeleton.dart';
+import '../../../../core/widgets/app_tooltip.dart';
+import '../../data/repositories/tickets_repository_impl.dart';
+import '../../domain/models/ticket_model.dart';
+import '../cubit/tickets_cubit.dart';
+import '../cubit/tickets_state.dart';
+import 'widgets/ticket_add_dialog.dart';
+import 'widgets/ticket_card.dart';
+import 'widgets/ticket_data_table.dart';
+import 'widgets/ticket_details_dialog.dart';
+import 'widgets/ticket_filter_bar.dart';
+import 'widgets/ticket_sync_badge.dart';
 
-/// واجهة إدارة المتابعات الفنية والأعطال (Tickets View)
+/// الشاشة الرئيسية المتكاملة لإدارة التذاكر والدعم الفني
 class TicketsView extends StatelessWidget {
   const TicketsView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
+    return BlocProvider(
+      create: (context) => TicketsCubit(
+        repository: TicketsRepositoryImpl(),
+      )..loadTickets(),
+      child: const _TicketsViewContent(),
+    );
+  }
+}
 
-    return AppScaffold(
-      appBar: AppAppBar(
-        title: context.tr('tickets_view_title'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          tooltip: context.tr('back'),
-          onPressed: () => context.go('/home'),
-        ),
+class _TicketsViewContent extends StatelessWidget {
+  const _TicketsViewContent();
+
+  void _openAddTicketDialog(BuildContext context, TicketsState state) {
+    final cubit = context.read<TicketsCubit>();
+    final user = state.currentUser?.fullName ?? 'الدعم الفني';
+
+    TicketAddDialog.show(
+      context,
+      problems: state.problemTypes,
+      employees: state.employeeList,
+      currentUser: user,
+      onSave: (ticket) => cubit.addTicket(ticket),
+      onAddNewProblem: (name) => cubit.addProblemType(name, userId: user),
+    );
+  }
+
+  void _openDetailsDialog(
+      BuildContext context, TicketModel ticket, TicketsState state) {
+    final cubit = context.read<TicketsCubit>();
+    final user = state.currentUser?.fullName ?? 'الدعم الفني';
+
+    TicketDetailsDialog.show(
+      context,
+      ticket: ticket,
+      statuses: state.statusList,
+      employees: state.employeeList,
+      currentUser: user,
+      onDelete: (rowId) => cubit.deleteTicket(rowId),
+      onUpdate: ({
+        required int rowId,
+        String? status,
+        String? solution,
+        String? description,
+        String? employee,
+        String? problem,
+        required String actorName,
+        String? auditNote,
+      }) =>
+          cubit.updateTicket(
+        rowId: rowId,
+        status: status,
+        solution: solution,
+        description: description,
+        employee: employee,
+        problem: problem,
+        actorName: actorName,
+        auditNote: auditNote,
       ),
-      body: Center(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 680),
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24.0),
-            child: AppCard(
-              padding: const EdgeInsets.all(32.0),
+    );
+  }
+
+  Future<void> _confirmCloseAllTickets(BuildContext context, TicketsCubit cubit) async {
+    final confirmed = await AppConfirmDialog.show(
+      context: context,
+      title: context.tr('tickets_bulk_close_title'),
+      message: context.tr('tickets_bulk_close_confirm'),
+      confirmText: context.tr('confirm'),
+      cancelText: context.tr('cancel'),
+      variant: ConfirmDialogVariant.warning,
+    );
+
+    if (confirmed && context.mounted) {
+      await cubit.closeAllOpenTickets();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final isCompact = context.isMobile;
+
+    return PopScope(
+      canPop: false,
+      onPopInvokedWithResult: (didPop, result) {
+        if (didPop) return;
+        if (Navigator.of(context).canPop()) {
+          Navigator.of(context).pop();
+        } else {
+          context.go('/home');
+        }
+      },
+      child: BlocConsumer<TicketsCubit, TicketsState>(
+        listener: (context, state) {
+          if (state.errorMessage != null) {
+            AppSnackbars.showError(context, state.errorMessage!);
+            context.read<TicketsCubit>().clearMessages();
+          } else if (state.successMessage != null) {
+            AppSnackbars.showSuccess(
+              context,
+              context.tr(state.successMessage!),
+            );
+            context.read<TicketsCubit>().clearMessages();
+          }
+        },
+        builder: (context, state) {
+          final cubit = context.read<TicketsCubit>();
+          final canCloseAll = state.currentUser?.roleId == 'ROLE_ADMIN' ||
+              state.currentUser?.roleId == 'ROLE_GM';
+
+          return AppScaffold(
+            appBar: AppAppBar(
+              title: context.tr('nav_tickets'),
+              showLogo: false,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_rounded),
+                tooltip: context.tr('back'),
+                onPressed: () {
+                  if (Navigator.of(context).canPop()) {
+                    Navigator.of(context).pop();
+                  } else {
+                    context.go('/home');
+                  }
+                },
+              ),
+              extraActions: [
+                if (canCloseAll) ...[
+                  AppTooltip(
+                    message: context.tr('close_all_tickets_btn'),
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.done_all_rounded,
+                        color: colors.tertiary,
+                      ),
+                      onPressed: () => _confirmCloseAllTickets(context, cubit),
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                ],
+                TicketSyncBadge(
+                  isOffline: state.isOffline,
+                  isSyncing: state.isSyncing,
+                  pendingCount: state.pendingSyncCount,
+                  onSyncNow: () => cubit.syncNow(),
+                ),
+                const SizedBox(width: 4),
+                AppTooltip(
+                  message: context.tr('refresh'),
+                  child: IconButton(
+                    icon: const Icon(Icons.refresh_rounded),
+                    onPressed: () => cubit.loadTickets(forceRefresh: true),
+                  ),
+                ),
+              ],
+            ),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
               child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  CircleAvatar(
-                    radius: 36,
-                    backgroundColor: colors.primaryContainer,
-                    child: Icon(
-                      Icons.support_agent_rounded,
-                      size: 42,
-                      color: colors.onPrimaryContainer,
+                  // ترويسة الشاشة مع العنوان المريح والتوصيف دون تضييق
+                  AppFadeSlide(
+                    delay: const Duration(milliseconds: 40),
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                context.tr('tickets_view_title'),
+                                style: TextStyle(
+                                  fontFamily: AppAssets.fontSecondary,
+                                  fontSize: isCompact ? 16 : 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: colors.onSurface,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                context.tr('tickets_view_desc'),
+                                style: TextStyle(
+                                  fontFamily: AppAssets.fontPrimary,
+                                  fontSize: 12,
+                                  color: colors.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    context.tr('tickets_view_title'),
-                    textAlign: TextAlign.center,
-                    style: context.textTheme.headlineSmall?.copyWith(
-                      fontFamily: AppAssets.fontSecondary,
-                      fontWeight: FontWeight.bold,
-                      color: colors.onSurface,
+                  const SizedBox(height: 12),
+
+                  // شريط البحث والفلاتر المتقدم
+                  AppFadeSlide(
+                    delay: const Duration(milliseconds: 80),
+                    child: TicketFilterBar(
+                      filter: state.filter,
+                      problems: state.problemTypes,
+                      statuses: state.statusList,
+                      employees: state.employeeList,
+                      isTableView: state.showTableView(isCompact),
+                      totalCount: state.allTickets.length,
+                      filteredCount: state.filteredTickets.length,
+                      onSearch: (q) => cubit.onSearchChanged(q),
+                      onFilterChange: (f) => cubit.applyFilter(f),
+                      onReset: () => cubit.resetFilters(),
+                      onToggleView: (isTable) => cubit.toggleViewMode(isTable),
+                      onAddTicket: () => _openAddTicketDialog(context, state),
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  Text(
-                    context.tr('tickets_view_desc'),
-                    textAlign: TextAlign.center,
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      fontFamily: AppAssets.fontPrimary,
-                      color: colors.onSurfaceVariant,
-                      height: 1.5,
+                  const SizedBox(height: 12),
+
+                  // شريط العمليات الجماعية (Bulk Actions) عند تحديد عناصر
+                  if (state.selectedTicketIds.isNotEmpty) ...[
+                    AppFadeSlide(
+                      delay: const Duration(milliseconds: 50),
+                      scaleIn: true,
+                      child: _buildBulkActionBar(context, state, cubit),
+                    ),
+                    const SizedBox(height: 12),
+                  ],
+
+                  // المحتوى الرئيسي مع تبديل حركي انسيابي: حالة التحميل / الخطأ / البيانات
+                  Expanded(
+                    child: AppFadeSlide(
+                      delay: const Duration(milliseconds: 120),
+                      child: _buildMainContent(
+                        context,
+                        state,
+                        cubit,
+                        isCompact,
+                      ),
                     ),
                   ),
-                  const SizedBox(height: 24),
-                  AppStatusBadge(status: context.tr('coming_soon')),
-                  const SizedBox(height: 28),
-                  AppButton(
-                    label: context.tr('back'),
-                    icon: Icons.arrow_back_rounded,
-                    onPressed: () => context.go('/home'),
-                  ),
+
+                  // شريط الترقيم والتنقل بين الصفحات (Pagination)
+                  if (state.filteredTickets.isNotEmpty) ...[
+                    const SizedBox(height: 8),
+                    AppFadeSlide(
+                      delay: const Duration(milliseconds: 160),
+                      child: AppPaginationBar(
+                        currentPage: state.currentPage,
+                        totalPages: state.totalPages,
+                        totalCount: state.filteredTickets.length,
+                        pageSize: state.pageSize,
+                        onPageChanged: (p) => cubit.goToPage(p),
+                        onPageSizeChanged: (s) => cubit.changePageSize(s),
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildMainContent(
+    BuildContext context,
+    TicketsState state,
+    TicketsCubit cubit,
+    bool isCompact,
+  ) {
+    return AppAnimatedSwitch(
+      child: _buildContentChild(context, state, cubit, isCompact),
+    );
+  }
+
+  Widget _buildContentChild(
+    BuildContext context,
+    TicketsState state,
+    TicketsCubit cubit,
+    bool isCompact,
+  ) {
+    if (state.isLoading) {
+      return ListView.builder(
+        key: const ValueKey('tickets_loading_list'),
+        itemCount: 6,
+        itemBuilder: (_, index) => Padding(
+          padding: const EdgeInsets.only(bottom: 12.0),
+          child: AppFadeSlide(
+            delay: Duration(milliseconds: index * 40),
+            child: const AppSkeleton(height: 80, borderRadius: 12),
           ),
         ),
+      );
+    }
+
+    if (state.filteredTickets.isEmpty) {
+      return KeyedSubtree(
+        key: const ValueKey('tickets_empty_state'),
+        child: AppEmptyState(
+          title: context.tr('no_tickets_found_title'),
+          subtitle: context.tr('no_tickets_found_desc'),
+          icon: Icons.search_off_rounded,
+          actionLabel: state.filter.hasActiveFilters
+              ? context.tr('clear_filters')
+              : null,
+          onAction: state.filter.hasActiveFilters
+              ? () => cubit.resetFilters()
+              : null,
+        ),
+      );
+    }
+
+    // التبديل بين طريقة العرض (جدول أو بطاقات) وفق حجم الشاشة أو اختيار المستخدم
+    final showTable = state.showTableView(isCompact);
+
+    if (showTable) {
+      return KeyedSubtree(
+        key: const ValueKey('tickets_table_view'),
+        child: AppFadeSlide(
+          scaleIn: true,
+          initialScale: 0.98,
+          duration: const Duration(milliseconds: 260),
+          child: TicketDataTable(
+            tickets: state.paginatedTickets,
+            selectedIds: state.selectedTicketIds,
+            searchQuery: state.filter.searchQuery,
+            sortField: state.filter.sortField,
+            sortDirection: state.filter.sortDirection,
+            onSort: (field) => cubit.sort(field),
+            onToggleSelect: (id) => cubit.toggleTicketSelection(id),
+            onSelectAll: (val) => cubit.toggleSelectAll(val),
+            onTicketTap: (t) => _openDetailsDialog(context, t, state),
+            onEditTap: (t) => _openDetailsDialog(context, t, state),
+          ),
+        ),
+      );
+    }
+
+    return KeyedSubtree(
+      key: const ValueKey('tickets_cards_list'),
+      child: ListView.builder(
+        itemCount: state.paginatedTickets.length,
+        itemBuilder: (context, index) {
+          final ticket = state.paginatedTickets[index];
+          return AppFadeSlide(
+            delay: Duration(milliseconds: (index.clamp(0, 8)) * 35),
+            scaleIn: true,
+            initialScale: 0.96,
+            child: TicketCard(
+              ticket: ticket,
+              onTap: () => _openDetailsDialog(context, ticket, state),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildBulkActionBar(
+    BuildContext context,
+    TicketsState state,
+    TicketsCubit cubit,
+  ) {
+    final colors = context.colors;
+    final count = state.selectedTicketIds.length;
+
+    return AppCard(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      backgroundColor: colors.primaryContainer.withValues(alpha: 0.35),
+      child: Row(
+        children: [
+          Icon(Icons.check_circle_outline_rounded,
+              size: 20, color: colors.primary),
+          const SizedBox(width: 8),
+          Text(
+            '${context.tr('selected_items')}: $count',
+            style: TextStyle(
+              fontFamily: AppAssets.fontPrimary,
+              fontWeight: FontWeight.bold,
+              fontSize: 13,
+              color: colors.onSurface,
+            ),
+          ),
+          const Spacer(),
+          TextButton.icon(
+            style: TextButton.styleFrom(foregroundColor: colors.error),
+            icon: const Icon(Icons.clear_rounded, size: 16),
+            label: Text(
+              context.tr('clear_selection'),
+              style: const TextStyle(
+                fontFamily: AppAssets.fontPrimary,
+                fontSize: 12,
+              ),
+            ),
+            onPressed: () => cubit.toggleSelectAll(false),
+          ),
+        ],
       ),
     );
   }
