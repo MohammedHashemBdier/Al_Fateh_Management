@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:al_fateh_management/core/constants/app_assets.dart';
 import 'package:al_fateh_management/core/rbac/role_permissions.dart';
 import 'package:al_fateh_management/core/utils/context_extensions.dart';
+import 'package:al_fateh_management/core/widgets/widgets.dart';
 import 'package:al_fateh_management/features/auth/domain/models/user_model.dart';
 import 'package:al_fateh_management/features/home/domain/models/nav_destination_item.dart';
 
@@ -147,17 +147,14 @@ class _NavBarItemState extends State<_NavBarItem> {
                   // نص الوجهة مع ملاءمة تلقائية (FittedBox) تمنع أي Overflow
                   FittedBox(
                     fit: BoxFit.scaleDown,
-                    child: Text(
-                      context.tr(dest.titleKey),
+                    child: AppText.caption(
+                      dest.titleKey,
                       maxLines: 1,
-                      style: TextStyle(
-                        fontFamily: AppAssets.fontPrimary,
-                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                        fontSize: 10.5,
-                        color: isSelected
-                            ? colors.primary
-                            : colors.onSurfaceVariant.withValues(alpha: 0.8),
-                      ),
+                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                      fontSize: 10.5,
+                      color: isSelected
+                          ? colors.primary
+                          : colors.onSurfaceVariant.withValues(alpha: 0.8),
                     ),
                   ),
                 ],

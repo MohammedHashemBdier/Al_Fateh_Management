@@ -91,6 +91,23 @@ class AppDialogService implements IDialogService {
     );
   }
 
+  static Future<bool> danger({
+    required BuildContext context,
+    required String title,
+    required String message,
+    String? confirmText,
+    String? cancelText,
+  }) {
+    return confirm(
+      context: context,
+      title: title,
+      message: message,
+      confirmText: confirmText,
+      cancelText: cancelText,
+      variant: ConfirmDialogVariant.danger,
+    );
+  }
+
   static Future<bool> error({
     required BuildContext context,
     required String title,

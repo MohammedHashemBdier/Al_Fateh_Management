@@ -1,13 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:al_fateh_management/core/constants/app_assets.dart';
 import 'package:al_fateh_management/core/rbac/role_permissions.dart';
 import 'package:al_fateh_management/core/utils/context_extensions.dart';
-import 'package:al_fateh_management/core/widgets/app_animations.dart';
-import 'package:al_fateh_management/core/widgets/app_card.dart';
-import 'package:al_fateh_management/core/widgets/app_hover.dart';
-import 'package:al_fateh_management/core/widgets/app_skeleton.dart';
-import 'package:al_fateh_management/core/widgets/app_tooltip.dart';
-import 'package:al_fateh_management/core/widgets/responsive_builder.dart';
+import 'package:al_fateh_management/core/widgets/widgets.dart';
 import 'package:al_fateh_management/features/auth/domain/models/user_model.dart';
 import 'package:al_fateh_management/features/home/domain/models/dashboard_stats_model.dart';
 
@@ -175,30 +169,20 @@ class HomeStatsGrid extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Text(
+                          AppText.literal(
                             data.value,
                             maxLines: 1,
-                            style: context.textTheme.titleMedium?.copyWith(
-                              fontFamily: AppAssets.fontSecondary,
-                              fontWeight: FontWeight.w800,
-                              color: colors.onSurface,
-                              fontSize: 18,
-                              letterSpacing: -0.3,
-                              height: 1.1,
-                            ),
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                            color: colors.onSurface,
                           ),
                           const SizedBox(height: 2),
-                          Text(
-                            context.tr(data.titleKey),
+                          AppText.caption(
+                            data.titleKey,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: AppAssets.fontPrimary,
-                              color: colors.onSurfaceVariant,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w500,
-                              height: 1.1,
-                            ),
+                            color: colors.onSurfaceVariant,
+                            fontSize: 11,
                           ),
                         ],
                       ),
