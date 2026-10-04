@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_assets.dart';
+import '../../../../core/design_system/design_system.dart';
 import '../../../../core/utils/utils.dart';
 import '../../../../core/widgets/widgets.dart';
 import '../cubit/splash_cubit.dart';
@@ -65,13 +65,16 @@ class _SplashViewState extends State<SplashView>
           context.go(state.targetRoute);
         }
       },
-      child: Scaffold(
+      child: AppScaffold(
+        useDefaultAppBar: false,
+        applyPadding: false,
+        withGradientBackground: false,
         body: Stack(
           children: [
             // خلفية متدرجة حديثة تتكيف مع الثيم
             Positioned.fill(
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 600),
+                duration: AppDurations.medium,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
@@ -109,13 +112,13 @@ class _SplashViewState extends State<SplashView>
             ),
 
             // أدوات التحكم السريعة بالأعلى (أزرار اللغة والثيم الموحدة والمجردة)
-            const SafeArea(
+            SafeArea(
               child: Padding(
                 padding:
-                    EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    EdgeInsets.symmetric(horizontal: AppDimens.paddingLarge, vertical: AppDimens.paddingMedium),
                 child: AppThemeLanguageSwitchers(
                   spread: true,
-                  themeIconSize: 22,
+                  themeIconSize: AppDimens.iconMedium,
                 ),
               ),
             ),
@@ -125,7 +128,7 @@ class _SplashViewState extends State<SplashView>
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 580),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  padding: EdgeInsets.symmetric(horizontal: AppDimens.paddingXLarge),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -148,35 +151,26 @@ class _SplashViewState extends State<SplashView>
                           );
                         },
                       ),
-                      const SizedBox(height: 36),
+                      SizedBox(height: AppDimens.spacingXLarge),
 
                       // اسم المنظومة
                       FadeTransition(
                         opacity: _fadeAnimation,
-                        child: Text(
-                          context.tr('app_name'),
+                        child: AppText.headline(
+                          'app_name',
                           textAlign: TextAlign.center,
-                          style: context.textTheme.headlineMedium?.copyWith(
-                            fontFamily: AppAssets.fontSecondary,
-                            fontWeight: FontWeight.bold,
-                            color: colors.onSurface,
-                            letterSpacing: isArabic ? 0 : 0.8,
-                          ),
+                          color: colors.onSurface,
                         ),
                       ),
-                      const SizedBox(height: 10),
+                      SizedBox(height: AppDimens.spacingSmall),
 
                       // الوصف الفرعي
                       FadeTransition(
                         opacity: _fadeAnimation,
-                        child: Text(
-                          context.tr('app_subtitle'),
+                        child: AppText.body(
+                          'app_subtitle',
                           textAlign: TextAlign.center,
-                          style: context.textTheme.bodyMedium?.copyWith(
-                            fontFamily: AppAssets.fontPrimary,
-                            color: colors.onSurfaceVariant,
-                            letterSpacing: 0.3,
-                          ),
+                          color: colors.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(height: 48),
@@ -201,13 +195,13 @@ class _SplashViewState extends State<SplashView>
                                 width: 280,
                                 height: 5,
                                 child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
+                                  borderRadius: AppRadii.full,
                                   child: TweenAnimationBuilder<double>(
                                     tween: Tween<double>(
                                         begin: 0.0, end: progress),
                                     duration:
-                                        const Duration(milliseconds: 350),
-                                    curve: Curves.easeInOut,
+                                        AppDurations.normal,
+                                    curve: AppCurves.standard,
                                     builder: (context, value, _) {
                                       return LinearProgressIndicator(
                                         value: value,
@@ -223,17 +217,15 @@ class _SplashViewState extends State<SplashView>
                                   ),
                                 ),
                               ),
-                              const SizedBox(height: 14),
+                              SizedBox(height: AppDimens.spacingMedium),
                               AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 250),
-                                child: Text(
+                                duration: AppDurations.fast,
+                                child: AppText.bodySmall(
                                   message,
                                   key: ValueKey<String>(message),
-                                  style: context.textTheme.bodySmall?.copyWith(
-                                    fontFamily: AppAssets.fontPrimary,
-                                    color: colors.onSurfaceVariant
-                                        .withValues(alpha: 0.8),
-                                  ),
+                                  isTranslated: false,
+                                  color: colors.onSurfaceVariant
+                                      .withValues(alpha: 0.8),
                                 ),
                               ),
                             ],
@@ -248,17 +240,13 @@ class _SplashViewState extends State<SplashView>
 
             // تذييل الشاشة بالإصدار
             Positioned(
-              bottom: 24,
+              bottom: AppDimens.paddingLarge,
               left: 0,
               right: 0,
               child: Center(
-                child: Text(
-                  context.tr('splash_version'),
-                  style: context.textTheme.labelSmall?.copyWith(
-                    fontFamily: AppAssets.fontPrimary,
-                    color: colors.onSurfaceVariant.withValues(alpha: 0.6),
-                    letterSpacing: 1.2,
-                  ),
+                child: AppText.caption(
+                  'splash_version',
+                  color: colors.onSurfaceVariant.withValues(alpha: 0.6),
                 ),
               ),
             ),

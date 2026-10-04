@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../../../../../core/constants/app_assets.dart';
+import '../../../../../core/services/services.dart';
 import '../../../../../core/utils/context_extensions.dart';
 import '../../../../../core/utils/app_snackbars.dart';
 import '../../../../../core/widgets/app_button.dart';
 import '../../../../../core/widgets/app_checkbox.dart';
 import '../../../../../core/widgets/app_link.dart';
+import '../../../../../core/widgets/app_text.dart';
 import '../../../../../core/widgets/app_text_field.dart';
 import '../../../../../core/widgets/app_tooltip.dart';
 import '../../../../../core/widgets/app_animations.dart';
@@ -59,30 +60,11 @@ class _LoginFormCardState extends State<LoginFormCard> {
   }
 
   void _showForgotPasswordDialog(BuildContext context) {
-    showDialog(
+    AppDialogService.info(
       context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text(
-          context.tr('forgot_password'),
-          style: const TextStyle(
-            fontFamily: AppAssets.fontSecondary,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Text(
-          context.tr('forgot_password_desc'),
-          style: const TextStyle(fontFamily: AppAssets.fontPrimary),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(
-              context.tr('close'),
-              style: const TextStyle(fontFamily: AppAssets.fontPrimary),
-            ),
-          ),
-        ],
-      ),
+      title: context.tr('forgot_password'),
+      message: context.tr('forgot_password_desc'),
+      confirmText: context.tr('close'),
     );
   }
 
@@ -136,21 +118,14 @@ class _LoginFormCardState extends State<LoginFormCard> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              context.tr('login_title'),
-                              style: context.textTheme.headlineSmall?.copyWith(
-                                fontFamily: AppAssets.fontSecondary,
-                                fontWeight: FontWeight.bold,
-                                color: colors.onSurface,
-                              ),
+                            AppText.headline(
+                              'login_title',
+                              color: colors.onSurface,
                             ),
                             const SizedBox(height: 6),
-                            Text(
-                              context.tr('login_subtitle'),
-                              style: context.textTheme.bodyMedium?.copyWith(
-                                fontFamily: AppAssets.fontPrimary,
-                                color: colors.onSurfaceVariant,
-                              ),
+                            AppText.body(
+                              'login_subtitle',
+                              color: colors.onSurfaceVariant,
                             ),
                           ],
                         ),
