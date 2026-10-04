@@ -1,13 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/constants/app_assets.dart';
 import '../../../../core/utils/context_extensions.dart';
 import '../../../../core/utils/app_snackbars.dart';
-import '../../../../core/widgets/app_animations.dart';
-import '../../../../core/widgets/app_card.dart';
-import '../../../../core/widgets/app_logo.dart';
-import '../../../../core/widgets/app_theme_language_switchers.dart';
+import '../../../../core/widgets/widgets.dart';
 import '../cubit/login_cubit.dart';
 import '../cubit/login_state.dart';
 import 'widgets/login_branding_panel.dart';
@@ -72,8 +68,6 @@ class _LoginViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final colors = context.colors;
-
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state is LoginFailure) {
@@ -95,8 +89,10 @@ class _LoginViewBody extends StatelessWidget {
           context.go('/home');
         }
       },
-      child: Scaffold(
-        backgroundColor: colors.surface,
+      child: AppScaffold(
+        useDefaultAppBar: false,
+        applyPadding: false,
+        withGradientBackground: false,
         body: LayoutBuilder(
           builder: (context, constraints) {
             final isDesktop = constraints.maxWidth > 880;
@@ -212,14 +208,10 @@ class _LoginViewBody extends StatelessWidget {
 
                     AppFadeSlide(
                       delay: const Duration(milliseconds: 130),
-                      child: Text(
-                        context.tr('app_name'),
+                      child: AppText.title(
+                        'app_name',
                         textAlign: TextAlign.center,
-                        style: context.textTheme.titleMedium?.copyWith(
-                          fontFamily: AppAssets.fontSecondary,
-                          fontWeight: FontWeight.bold,
-                          color: colors.onSurface,
-                        ),
+                        color: colors.onSurface,
                       ),
                     ),
                     const SizedBox(height: 20),
@@ -251,13 +243,10 @@ class _LoginViewBody extends StatelessWidget {
                           ),
                           const SizedBox(width: 6),
                           Flexible(
-                            child: Text(
-                              context.tr('security_badge'),
+                            child: AppText.caption(
+                              'security_badge',
                               overflow: TextOverflow.ellipsis,
-                              style: context.textTheme.labelSmall?.copyWith(
-                                fontFamily: AppAssets.fontPrimary,
-                                color: colors.onSurfaceVariant.withValues(alpha: 0.7),
-                              ),
+                              color: colors.onSurfaceVariant.withValues(alpha: 0.7),
                             ),
                           ),
                         ],

@@ -7,6 +7,7 @@ class AppCurves {
   static const Curve easeIn = Curves.easeIn;
   static const Curve easeOut = Curves.easeOut;
   static const Curve easeInOut = Curves.easeInOut;
+  static const Curve standard = Curves.easeInOut;
 
   // Modern Cubic Curves
   static const Curve expressive = Curves.easeOutCubic;

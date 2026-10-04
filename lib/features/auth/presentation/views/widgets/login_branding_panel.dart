@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/utils/context_extensions.dart';
 import '../../../../../core/widgets/app_animations.dart';
 import '../../../../../core/widgets/app_logo.dart';
+import '../../../../../core/widgets/app_text.dart';
 
 /// اللوحة الترويجية والهوية البصرية المعروضة على الشاشات الكبيرة (Desktop / Web)
 class LoginBrandingPanel extends StatelessWidget {
@@ -78,26 +78,17 @@ class LoginBrandingPanel extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(
-                                    context.tr('app_name'),
+                                  AppText.titleLarge(
+                                    'app_name',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: TextStyle(
-                                      fontFamily: AppAssets.fontSecondary,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                      color: colors.onSurface,
-                                    ),
+                                    color: colors.onSurface,
                                   ),
-                                  Text(
-                                    context.tr('app_subtitle'),
+                                  AppText.caption(
+                                    'app_subtitle',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
-                                    style: TextStyle(
-                                      fontFamily: AppAssets.fontPrimary,
-                                      fontSize: 12,
-                                      color: colors.onSurfaceVariant,
-                                    ),
+                                    color: colors.onSurfaceVariant,
                                   ),
                                 ],
                               ),
@@ -113,28 +104,17 @@ class LoginBrandingPanel extends StatelessWidget {
                         children: [
                           AppFadeSlide(
                             delay: const Duration(milliseconds: 140),
-                            child: Text(
-                              context.tr('welcome_admin'),
-                              style: TextStyle(
-                                fontFamily: AppAssets.fontSecondary,
-                                fontSize: 28,
-                                fontWeight: FontWeight.bold,
-                                color: colors.onSurface,
-                                height: 1.4,
-                              ),
+                            child: AppText.headline(
+                              'welcome_admin',
+                              color: colors.onSurface,
                             ),
                           ),
                           const SizedBox(height: 14),
                           AppFadeSlide(
                             delay: const Duration(milliseconds: 200),
-                            child: Text(
-                              context.tr('login_brand_desc'),
-                              style: TextStyle(
-                                fontFamily: AppAssets.fontPrimary,
-                                fontSize: 14,
-                                color: colors.onSurfaceVariant,
-                                height: 1.6,
-                              ),
+                            child: AppText.body(
+                              'login_brand_desc',
+                              color: colors.onSurfaceVariant,
                             ),
                           ),
                           const SizedBox(height: 28),
@@ -191,15 +171,11 @@ class LoginBrandingPanel extends StatelessWidget {
                               Icon(Icons.lock_outline_rounded, size: 16, color: colors.success),
                               const SizedBox(width: 8),
                               Flexible(
-                                child: Text(
-                                  context.tr('security_badge'),
+                                child: AppText.caption(
+                                  'security_badge',
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,
-                                  style: TextStyle(
-                                    fontFamily: AppAssets.fontPrimary,
-                                    fontSize: 12,
-                                    color: colors.onSurfaceVariant,
-                                  ),
+                                  color: colors.onSurfaceVariant,
                                 ),
                               ),
                             ],
@@ -240,23 +216,17 @@ class LoginBrandingPanel extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              AppText.label(
                 title,
-                style: TextStyle(
-                  fontFamily: AppAssets.fontPrimary,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: colors.onSurface,
-                ),
+                isTranslated: false,
+                fontWeight: FontWeight.bold,
+                color: colors.onSurface,
               ),
               const SizedBox(height: 2),
-              Text(
+              AppText.caption(
                 subtitle,
-                style: TextStyle(
-                  fontFamily: AppAssets.fontPrimary,
-                  fontSize: 12,
-                  color: colors.onSurfaceVariant,
-                ),
+                isTranslated: false,
+                color: colors.onSurfaceVariant,
               ),
             ],
           ),

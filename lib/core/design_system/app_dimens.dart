@@ -23,6 +23,17 @@ class AppDimens {
   static const double space56 = 56.0;
   static const double space64 = 64.0;
 
+  // Semantic Padding & Spacing Aliases
+  static const double paddingSmall = space8;
+  static const double paddingMedium = space16;
+  static const double paddingLarge = space24;
+  static const double paddingXLarge = space32;
+
+  static const double spacingSmall = space8;
+  static const double spacingMedium = space16;
+  static const double spacingLarge = space24;
+  static const double spacingXLarge = space32;
+
   // Icon Sizes
   static const double iconXs = 14.0;
   static const double iconSm = 16.0;
@@ -30,6 +41,10 @@ class AppDimens {
   static const double iconLg = 24.0;
   static const double iconXl = 32.0;
   static const double iconHero = 48.0;
+
+  static const double iconSmall = iconSm;
+  static const double iconMedium = iconMd;
+  static const double iconLarge = iconLg;
 
   // Button Heights & Dimensions
   static const double buttonHeightSm = 34.0;
