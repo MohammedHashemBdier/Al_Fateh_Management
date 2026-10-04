@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:al_fateh_management/core/constants/app_assets.dart';
 import 'package:al_fateh_management/core/utils/context_extensions.dart';
-import 'package:al_fateh_management/core/widgets/app_app_bar.dart';
-import 'package:al_fateh_management/core/widgets/app_button.dart';
-import 'package:al_fateh_management/core/widgets/app_card.dart';
-import 'package:al_fateh_management/core/widgets/app_scaffold.dart';
-import 'package:al_fateh_management/core/widgets/app_status_badge.dart';
+import 'package:al_fateh_management/core/widgets/widgets.dart';
 
 /// واجهة إدارة الحضور والانصراف والدوام عبر الـ GPS
 class AttendanceView extends StatelessWidget {
@@ -46,24 +42,18 @@ class AttendanceView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  Text(
-                    context.tr('attendance_view_title'),
+                  AppText.headline(
+                    'attendance_view_title',
                     textAlign: TextAlign.center,
-                    style: context.textTheme.headlineSmall?.copyWith(
-                      fontFamily: AppAssets.fontSecondary,
-                      fontWeight: FontWeight.bold,
-                      color: colors.onSurface,
-                    ),
+                    fontFamily: AppAssets.fontSecondary,
+                    fontWeight: FontWeight.bold,
+                    color: colors.onSurface,
                   ),
                   const SizedBox(height: 10),
-                  Text(
-                    context.tr('attendance_view_desc'),
+                  AppText.body(
+                    'attendance_view_desc',
                     textAlign: TextAlign.center,
-                    style: context.textTheme.bodyMedium?.copyWith(
-                      fontFamily: AppAssets.fontPrimary,
-                      color: colors.onSurfaceVariant,
-                      height: 1.5,
-                    ),
+                    color: colors.onSurfaceVariant,
                   ),
                   const SizedBox(height: 24),
                   AppStatusBadge(status: context.tr('coming_soon')),
