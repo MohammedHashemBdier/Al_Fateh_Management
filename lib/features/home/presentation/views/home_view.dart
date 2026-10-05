@@ -135,38 +135,12 @@ class _HomeViewBody extends StatelessWidget {
     return KeyedSubtree(
       key: const ValueKey('home_loaded'),
       child: AppScaffold(
-        title: 'app_name',
+        title: 'nav_home',
         currentRoute: '/home',
         user: user,
         useDefaultAppBar: true,
         showAppBar: true,
         applyPadding: false,
-        extraActions: [
-          IconButton(
-            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-            padding: EdgeInsets.zero,
-            icon: const Icon(Icons.refresh_rounded, size: 18),
-            tooltip: context.tr('refresh'),
-            onPressed: () => context.read<HomeCubit>().refreshData(),
-          ),
-          IconButton(
-            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-            padding: EdgeInsets.zero,
-            icon: const Icon(Icons.logout_rounded, size: 18),
-            tooltip: context.tr('logout'),
-            onPressed: () async {
-              final confirm = await AppDialogService.danger(
-                context: context,
-                title: context.tr('confirm_logout_title'),
-                message: context.tr('confirm_logout_msg'),
-                confirmText: context.tr('confirm_logout_button'),
-              );
-              if (confirm && context.mounted) {
-                _handleLogout(context);
-              }
-            },
-          ),
-        ],
         body: _buildMainDashboardContent(
           context: context,
           user: user,
@@ -295,18 +269,41 @@ class _HomeViewBody extends StatelessWidget {
                         ],
                       ),
                     ),
-                    if (!isCompact) ...[
-                      const SizedBox(width: 14),
-                      CircleAvatar(
-                        radius: 22,
-                        backgroundColor: colors.primaryContainer,
-                        child: Icon(
-                          Icons.dashboard_customize_rounded,
-                          color: colors.onPrimaryContainer,
-                          size: 22,
+                    const SizedBox(width: 8),
+                    // أزرار التحكم والإجراءات الخاصة بالصفحة
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppTooltip(
+                          message: context.tr('refresh'),
+                          child: AppIconButton(
+                            icon: Icons.refresh_rounded,
+                            onPressed: () =>
+                                context.read<HomeCubit>().refreshData(),
+                          ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 4),
+                        AppTooltip(
+                          message: context.tr('logout'),
+                          child: AppIconButton(
+                            icon: Icons.logout_rounded,
+                            color: colors.error,
+                            onPressed: () async {
+                              final confirm = await AppDialogService.danger(
+                                context: context,
+                                title: context.tr('confirm_logout_title'),
+                                message: context.tr('confirm_logout_msg'),
+                                confirmText:
+                                    context.tr('confirm_logout_button'),
+                              );
+                              if (confirm && context.mounted) {
+                                _handleLogout(context);
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -348,7 +345,7 @@ class _HomeViewBody extends StatelessWidget {
     final isCompact = context.isMobile;
 
     return AppScaffold(
-      title: 'app_name',
+      title: 'nav_home',
       currentRoute: '/home',
       user: effectiveUser,
       useDefaultAppBar: true,

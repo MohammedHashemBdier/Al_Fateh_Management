@@ -13,7 +13,7 @@ class AttendanceView extends StatelessWidget {
     final colors = context.colors;
 
     return AppDetailScaffold(
-      title: 'attendance_view_title',
+      title: 'nav_attendance',
       currentRoute: '/attendance',
       onBackPressed: () => context.go('/home'),
       detailContent: Center(

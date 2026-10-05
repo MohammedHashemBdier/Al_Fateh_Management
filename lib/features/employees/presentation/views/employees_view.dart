@@ -13,7 +13,7 @@ class EmployeesView extends StatelessWidget {
     final colors = context.colors;
 
     return AppDetailScaffold(
-      title: 'employees_view_title',
+      title: 'nav_employees',
       currentRoute: '/employees',
       onBackPressed: () => context.go('/home'),
       detailContent: Center(

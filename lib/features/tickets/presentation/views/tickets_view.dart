@@ -150,39 +150,13 @@ class _TicketsViewContent extends StatelessWidget {
                 context.go('/home');
               }
             },
-            extraActions: [
-              if (canCloseAll) ...[
-                AppTooltip(
-                  message: context.tr('close_all_tickets_btn'),
-                  child: IconButton(
-                    icon: Icon(Icons.done_all_rounded, color: colors.tertiary),
-                    onPressed: () => _confirmCloseAllTickets(context, cubit),
-                  ),
-                ),
-                const SizedBox(width: 4),
-              ],
-              TicketSyncBadge(
-                isOffline: state.isOffline,
-                isSyncing: state.isSyncing,
-                pendingCount: state.pendingSyncCount,
-                onSyncNow: () => cubit.syncNow(),
-              ),
-              const SizedBox(width: 4),
-              AppTooltip(
-                message: context.tr('refresh'),
-                child: IconButton(
-                  icon: const Icon(Icons.refresh_rounded),
-                  onPressed: () => cubit.loadTickets(forceRefresh: true),
-                ),
-              ),
-            ],
             withDividers: false,
             headerPadding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
             footerPadding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
             filterHeader: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // ترويسة الشاشة مع العنوان المريح والتوصيف دون تضييق
+                // ترويسة الشاشة مع العنوان وأزرار التحكم الخاصة بالشاشة
                 AppFadeSlide(
                   delay: const Duration(milliseconds: 40),
                   child: Row(
@@ -206,6 +180,39 @@ class _TicketsViewContent extends StatelessWidget {
                             ),
                           ],
                         ),
+                      ),
+                      // أزرار التحكم والإجراءات الخاصة بالصفحة
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (canCloseAll) ...[
+                            AppTooltip(
+                              message: context.tr('close_all_tickets_btn'),
+                              child: AppIconButton(
+                                icon: Icons.done_all_rounded,
+                                color: colors.tertiary,
+                                onPressed: () =>
+                                    _confirmCloseAllTickets(context, cubit),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                          ],
+                          TicketSyncBadge(
+                            isOffline: state.isOffline,
+                            isSyncing: state.isSyncing,
+                            pendingCount: state.pendingSyncCount,
+                            onSyncNow: () => cubit.syncNow(),
+                          ),
+                          const SizedBox(width: 4),
+                          AppTooltip(
+                            message: context.tr('refresh'),
+                            child: AppIconButton(
+                              icon: Icons.refresh_rounded,
+                              onPressed: () =>
+                                  cubit.loadTickets(forceRefresh: true),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),

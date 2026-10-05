@@ -122,8 +122,6 @@ class AppScaffold extends StatelessWidget {
               leading: leading,
               showBackButton: showBackButton,
               onBackPressed: onBackPressed,
-              actions: actions,
-              extraActions: extraActions,
             );
           }
 

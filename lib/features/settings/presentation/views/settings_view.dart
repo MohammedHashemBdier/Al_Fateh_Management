@@ -13,7 +13,7 @@ class SettingsView extends StatelessWidget {
     final colors = context.colors;
 
     return AppDetailScaffold(
-      title: 'settings_view_title',
+      title: 'nav_settings',
       currentRoute: '/settings',
       onBackPressed: () => context.go('/home'),
       detailContent: Center(

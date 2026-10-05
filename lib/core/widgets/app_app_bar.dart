@@ -7,9 +7,6 @@ import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_hover.dart';
 import 'app_logo.dart';
-import 'app_theme_language_switchers.dart';
-import 'locale_toggle_button.dart';
-import 'theme_toggle_button.dart';
 
 /// شريط عنوان علوي موديرن واحترافي مع تأثيرات أنيميشن وحالة الاتصال الحية (Modern Animated App Bar)
 class AppAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -90,7 +87,6 @@ class _AppAppBarState extends State<AppAppBar>
     final colors = context.colors;
     final screenWidth = MediaQuery.of(context).size.width;
     final isCompact = context.isMobile || screenWidth < 768;
-    final isNarrow = screenWidth < 480;
     final displayTitle = widget.title != null
         ? context.tr(widget.title!)
         : context.tr('app_name');
@@ -140,14 +136,14 @@ class _AppAppBarState extends State<AppAppBar>
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (widget.showLogo && !isNarrow) ...[
+            if (widget.showLogo) ...[
               AppHover(
                 builder: (ctx, isHovered) {
                   return AnimatedScale(
                     duration: const Duration(milliseconds: 200),
                     scale: isHovered ? 1.05 : 1.0,
                     child: AppLogo(
-                      size: isCompact ? 28 : 36,
+                      size: isCompact ? 28 : 34,
                       withContainer: true,
                       borderRadius: 10,
                       padding: const EdgeInsets.all(4),
@@ -197,81 +193,11 @@ class _AppAppBarState extends State<AppAppBar>
           ],
         ),
         actions: [
-          // شارة الاتصال الحية بالأنيميشن (Live Pulsing Status Badge)
-          if (widget.showStatus &&
-              !isCompact &&
-              (widget.extraActions == null && widget.actions == null)) ...[
+          // شارة الاتصال الحية كحالة فقط بدون أزرار
+          if (widget.showStatus && !isCompact) ...[
             _buildLiveStatusBadge(context, colors),
-            const SizedBox(width: 8),
+            const SizedBox(width: 12),
           ],
-
-          // مبدلات الثيم واللغة (تظهر إذا لم تكن هناك أزرار إضافية تملأ المساحة)
-          if (!isCompact &&
-              (widget.extraActions == null && widget.actions == null)) ...[
-            if (widget.showLanguageToggle && widget.showThemeToggle) ...[
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
-                decoration: BoxDecoration(
-                  color: colors.surfaceContainerHighest.withValues(alpha: 0.35),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: colors.outlineVariant.withValues(alpha: 0.2),
-                  ),
-                ),
-                child: const AppThemeLanguageSwitchers(
-                  compact: true,
-                  spacing: 4,
-                ),
-              ),
-              const SizedBox(width: 6),
-            ] else ...[
-              if (widget.showLanguageToggle) ...[
-                const LocaleToggleButton(compact: true),
-                const SizedBox(width: 4),
-              ],
-              if (widget.showThemeToggle) ...[
-                const ThemeToggleButton(size: 18),
-                const SizedBox(width: 4),
-              ],
-            ],
-          ],
-
-          // الأزرار الإضافية المعطاة مع تأثير Hover موديرن
-          if (widget.extraActions != null || widget.actions != null)
-            ...[...?widget.extraActions, ...?widget.actions].map(
-              (action) => Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2.0),
-                child: AppHover(
-                  builder: (ctx, isHovered) {
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 180),
-                      transform: Matrix4.translationValues(
-                        0,
-                        isHovered ? -1.5 : 0,
-                        0,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isHovered
-                            ? colors.surfaceContainerHighest.withValues(
-                                alpha: 0.6,
-                              )
-                            : colors.surfaceContainerHighest.withValues(
-                                alpha: 0.3,
-                              ),
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                          color: isHovered
-                              ? colors.primary.withValues(alpha: 0.3)
-                              : colors.outlineVariant.withValues(alpha: 0.15),
-                        ),
-                      ),
-                      child: action,
-                    );
-                  },
-                ),
-              ),
-            ),
-          const SizedBox(width: 4),
         ],
       ),
     );
