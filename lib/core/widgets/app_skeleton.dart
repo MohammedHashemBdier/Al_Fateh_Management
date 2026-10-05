@@ -56,6 +56,24 @@ class AppSkeleton extends StatefulWidget {
     this.margin,
   }) : shape = BoxShape.rectangle;
 
+  /// قالب هيكلي للنماذج والقوائم (Form Skeleton)
+  static Widget form({int fields = 4}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const AppSkeleton.text(width: 180, height: 24),
+        const SizedBox(height: 16),
+        for (int i = 0; i < fields; i++) ...[
+          const AppSkeleton.input(),
+          const SizedBox(height: 12),
+        ],
+        const SizedBox(height: 12),
+        const AppSkeleton.button(),
+      ],
+    );
+  }
+
   @override
   State<AppSkeleton> createState() => _AppSkeletonState();
 }

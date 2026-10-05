@@ -18,7 +18,10 @@ class AppAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool showLanguageToggle;
   final bool showThemeToggle;
   final List<Widget>? extraActions;
+  final List<Widget>? actions;
   final Widget? leading;
+  final bool showBackButton;
+  final VoidCallback? onBackPressed;
   final double height;
 
   const AppAppBar({
@@ -30,7 +33,10 @@ class AppAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.showLanguageToggle = true,
     this.showThemeToggle = true,
     this.extraActions,
+    this.actions,
     this.leading,
+    this.showBackButton = false,
+    this.onBackPressed,
     this.height = 68.0,
   });
 
@@ -112,10 +118,23 @@ class _AppAppBarState extends State<AppAppBar>
       child: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        scrolledUnderElevation: 0,
         toolbarHeight: widget.height,
         titleSpacing: isCompact ? 8 : 16,
-        leading: widget.leading,
+        leading: widget.leading ??
+            (widget.showBackButton
+                ? IconButton(
+                    icon: const Icon(Icons.arrow_back_rounded),
+                    tooltip: context.tr('back'),
+                    onPressed: widget.onBackPressed ??
+                        () {
+                          if (Navigator.of(context).canPop()) {
+                            Navigator.of(context).pop();
+                          } else {
+                            Navigator.of(context).maybePop();
+                          }
+                        },
+                  )
+                : null),
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -176,13 +195,16 @@ class _AppAppBarState extends State<AppAppBar>
         ),
         actions: [
           // شارة الاتصال الحية بالأنيميشن (Live Pulsing Status Badge)
-          if (widget.showStatus && !isCompact && widget.extraActions == null) ...[
+          if (widget.showStatus &&
+              !isCompact &&
+              (widget.extraActions == null && widget.actions == null)) ...[
             _buildLiveStatusBadge(context, colors),
             const SizedBox(width: 8),
           ],
 
           // مبدلات الثيم واللغة (تظهر إذا لم تكن هناك أزرار إضافية تملأ المساحة)
-          if (!isCompact && widget.extraActions == null) ...[
+          if (!isCompact &&
+              (widget.extraActions == null && widget.actions == null)) ...[
             if (widget.showLanguageToggle && widget.showThemeToggle) ...[
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
@@ -212,15 +234,19 @@ class _AppAppBarState extends State<AppAppBar>
           ],
 
           // الأزرار الإضافية المعطاة مع تأثير Hover موديرن
-          if (widget.extraActions != null)
-            ...widget.extraActions!.map(
+          if (widget.extraActions != null || widget.actions != null)
+            ...[
+              ...?widget.extraActions,
+              ...?widget.actions,
+            ].map(
               (action) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 child: AppHover(
                   builder: (ctx, isHovered) {
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 180),
-                      transform: Matrix4.translationValues(0, isHovered ? -1.5 : 0, 0),
+                      transform:
+                          Matrix4.translationValues(0, isHovered ? -1.5 : 0, 0),
                       decoration: BoxDecoration(
                         color: isHovered
                             ? colors.surfaceContainerHighest.withValues(alpha: 0.6)

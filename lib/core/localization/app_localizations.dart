@@ -144,7 +144,9 @@ class AppLocalizations {
       // Confirm Dialog
       'confirm_logout_title': 'تأكيد تسجيل الخروج',
       'confirm_logout_msg': 'هل أنت متأكد من رغبتك في تسجيل الخروج من منظومة الفتح؟',
+      'confirm_logout_message': 'هل أنت متأكد من رغبتك في تسجيل الخروج من منظومة الفتح؟',
       'confirm_logout_button': 'تسجيل الخروج',
+      'toggle_sidebar': 'تبديل القائمة الجانبية',
 
       // Dashboard & Statistics
       'stat_total_tickets': 'إجمالي التذاكر',
@@ -396,7 +398,9 @@ class AppLocalizations {
       // Confirm Dialog
       'confirm_logout_title': 'Confirm Sign Out',
       'confirm_logout_msg': 'Are you sure you want to sign out of Al-Fateh System?',
+      'confirm_logout_message': 'Are you sure you want to sign out of Al-Fateh System?',
       'confirm_logout_button': 'Sign Out',
+      'toggle_sidebar': 'Toggle Sidebar',
 
       // Dashboard & Statistics
       'stat_total_tickets': 'Total Tickets',
