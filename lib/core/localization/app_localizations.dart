@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'backend_message_translator.dart';
 
 class AppLocalizations {
@@ -60,9 +61,11 @@ class AppLocalizations {
       'service_subscribers': 'إدارة المشتركين والخطوط',
       'service_subscribers_desc': 'سجلات الحسابات، الباقات، وتجديد الاشتراكات',
       'service_network': 'مراقبة الشبكة والمقاسم',
-      'service_network_desc': 'مراقبة استقرار الخدمة، جودة الخطوط، وأداء السيرفرات',
+      'service_network_desc':
+          'مراقبة استقرار الخدمة، جودة الخطوط، وأداء السيرفرات',
       'service_billing': 'الفواتير والحسابات المالية',
-      'service_billing_desc': 'إدارة المقبوضات الشهرية، الذمم، والتقارير المالية للمزود',
+      'service_billing_desc':
+          'إدارة المقبوضات الشهرية، الذمم، والتقارير المالية للمزود',
       'coming_soon': 'قيد التطوير',
       'active_now': 'نشط ومتاح',
       'enter_service': 'دخول القسم',
@@ -92,7 +95,8 @@ class AppLocalizations {
       'val_subscriber_empty': 'يرجى إدخال اسم المشترك',
       'val_subscriber_length': 'اسم المشترك قصير جداً (3 أحرف على الأقل)',
       'val_mobile_empty': 'يرجى إدخال رقم الهاتف المحمول',
-      'val_mobile_invalid': 'رقم الموبايل يجب أن يتألف من 10 أرقام (مثال: 09xxxxxxxx)',
+      'val_mobile_invalid':
+          'رقم الموبايل يجب أن يتألف من 10 أرقام (مثال: 09xxxxxxxx)',
       'val_username_empty': 'يرجى إدخال اسم المستخدم',
       'val_password_empty': 'يرجى إدخال كلمة المرور',
       'val_password_short': 'كلمة المرور قصيرة جداً (4 خانات على الأقل)',
@@ -109,9 +113,11 @@ class AppLocalizations {
       'sign_in': 'تسجيل الدخول',
       'signing_in': 'جاري التحقق والمصادقة...',
       'login_success': 'تم تسجيل الدخول بنجاح',
-      'offline_mode_banner': 'تم الدخول في وضع عدم الاتصال (بيانات مخزنة محلياً)',
+      'offline_mode_banner':
+          'تم الدخول في وضع عدم الاتصال (بيانات مخزنة محلياً)',
       'forgot_password': 'نسيت كلمة المرور؟',
-      'forgot_password_desc': 'يرجى مراجعة إدارة منظومة الفتح لإعادة ضبط كلمة المرور',
+      'forgot_password_desc':
+          'يرجى مراجعة إدارة منظومة الفتح لإعادة ضبط كلمة المرور',
       'show_password': 'إظهار كلمة المرور',
       'hide_password': 'إخفاء كلمة المرور',
       'need_help': 'تحتاج إلى مساعدة؟',
@@ -120,19 +126,24 @@ class AppLocalizations {
       'preview_skeleton': 'معاينة التحميل الهيكلي (Skeleton)',
       'login_brand_desc': 'بوابة التحكم الموحدة لخدمات تزويد الإنترنت، متابعات المشتركين، وجداول الدوام الذكية.',
       'feature_tickets_title': 'إدارة تذاكر الدعم الفني اللحظية',
-      'feature_tickets_desc': 'مزامنة مباشرة مع Google Sheets وتحديث حالات المشتركين',
+      'feature_tickets_desc':
+          'مزامنة مباشرة مع Google Sheets وتحديث حالات المشتركين',
       'feature_geofence_title': 'الدوام الذكي مع التحقق الجغرافي (Geofence)',
       'feature_geofence_desc': 'حضور وانصراف دقيق داخل نطاق مقر ومقاسم الشركة',
       'feature_rbac_title': 'أمان متقدم ومصفوفة صلاحيات (RBAC)',
-      'feature_rbac_desc': 'فصل مهام دقيق لجميع أقسام الشركة مع سجل تدقيق غير قابل للتعديل',
+      'feature_rbac_desc':
+          'فصل مهام دقيق لجميع أقسام الشركة مع سجل تدقيق غير قابل للتعديل',
       'whatsapp_contact': 'تواصل مع الدعم الفني عبر واتساب',
       'whatsapp_launch_error': 'تعذر فتح تطبيق واتساب، يرجى المحاولة لاحقاً',
       'login_error_empty_fields': 'يرجى إدخال اسم المستخدم وكلمة المرور',
       'login_error_invalid_password': 'كلمة المرور غير صحيحة',
       'login_error_user_not_found': 'اسم المستخدم غير موجود',
-      'login_error_account_disabled': 'تم تعطيل هذا الحساب، يرجى مراجعة إدارة الفتح',
-      'login_error_network': 'تعذر الاتصال بالسيرفر، يرجى التحقق من اتصال الإنترنت',
-      'login_error_generic': 'فشل تسجيل الدخول، يرجى التحقق من اسم المستخدم وكلمة المرور',
+      'login_error_account_disabled':
+          'تم تعطيل هذا الحساب، يرجى مراجعة إدارة الفتح',
+      'login_error_network':
+          'تعذر الاتصال بالسيرفر، يرجى التحقق من اتصال الإنترنت',
+      'login_error_generic':
+          'فشل تسجيل الدخول، يرجى التحقق من اسم المستخدم وكلمة المرور',
 
       // Navigation & Sections
       'nav_home': 'الرئيسية',
@@ -143,8 +154,10 @@ class AppLocalizations {
 
       // Confirm Dialog
       'confirm_logout_title': 'تأكيد تسجيل الخروج',
-      'confirm_logout_msg': 'هل أنت متأكد من رغبتك في تسجيل الخروج من منظومة الفتح؟',
-      'confirm_logout_message': 'هل أنت متأكد من رغبتك في تسجيل الخروج من منظومة الفتح؟',
+      'confirm_logout_msg':
+          'هل أنت متأكد من رغبتك في تسجيل الخروج من منظومة الفتح؟',
+      'confirm_logout_message':
+          'هل أنت متأكد من رغبتك في تسجيل الخروج من منظومة الفتح؟',
       'confirm_logout_button': 'تسجيل الخروج',
       'toggle_sidebar': 'تبديل القائمة الجانبية',
 
@@ -175,7 +188,8 @@ class AppLocalizations {
       'employees_view_title': 'إدارة الموظفين والحسابات والصلاحيات',
       'employees_view_desc': 'إدارة بيانات كادر العمل، مصفوفة الصلاحيات (RBAC)، واستعراض سجل التدقيق والرقابة',
       'settings_view_title': 'إعدادات التطبيق والحساب الشخصي',
-      'settings_view_desc': 'إدارة تفضيلات المظهر واللغة، الأمان، وتفاصيل الحساب وجلسة الدخول',
+      'settings_view_desc':
+          'إدارة تفضيلات المظهر واللغة، الأمان، وتفاصيل الحساب وجلسة الدخول',
 
       // User Roles
       'role_admin': 'أدمن النظام',
@@ -225,7 +239,8 @@ class AppLocalizations {
       'status_offline_cache': 'بيانات محلية (أوفلاين)',
       'sync_now_tooltip': 'مزامنة فورية الآن',
       'no_tickets_found_title': 'لا توجد تذاكر مطابقة',
-      'no_tickets_found_desc': 'لم نتمكن من العثور على تذاكر مطابقة لمعايير البحث والفلترة',
+      'no_tickets_found_desc':
+          'لم نتمكن من العثور على تذاكر مطابقة لمعايير البحث والفلترة',
       'dialog_add_ticket_title': 'تسجيل تذكرة متابعة جديدة',
       'dialog_add_ticket_desc': 'إدخال بيانات المشترك وتوصيف المشكلة الفنية',
       'subscriber_name_label': 'اسم المشترك',
@@ -241,7 +256,8 @@ class AppLocalizations {
       'assigned_to_label': 'الموظف المسند إليه',
       'priority_label': 'مستوى الأولوية',
       'is_complaint_ticket': 'تيكيت شكوى فنية (Complaint)',
-      'is_complaint_ticket_desc': 'تحديد كشكوى لتفعيل أولوية المتابعة الخاصة والتصعيد',
+      'is_complaint_ticket_desc':
+          'تحديد كشكوى لتفعيل أولوية المتابعة الخاصة والتصعيد',
       'description_label': 'التوصيف وملاحظات الاتصال',
       'description_hint': 'أدخل تفاصيل المشكلة وتوجيهات المتابعة...',
       'save_ticket_btn': 'تسجيل وحفظ التذكرة',
@@ -312,11 +328,14 @@ class AppLocalizations {
       'service_support_desc': 'Track subscriber calls, resolve tickets, and real-time Google Sheets sync',
       'service_support_loading': 'Preparing tickets and follow-up table...',
       'service_subscribers': 'Subscribers & Lines Management',
-      'service_subscribers_desc': 'Account records, packages, and subscription renewal',
+      'service_subscribers_desc':
+          'Account records, packages, and subscription renewal',
       'service_network': 'Network & DSLAM Monitoring',
-      'service_network_desc': 'Monitor service stability, line quality, and server performance',
+      'service_network_desc':
+          'Monitor service stability, line quality, and server performance',
       'service_billing': 'Billing & Financial Accounts',
-      'service_billing_desc': 'Monthly collections, receivables, and ISP financial reports',
+      'service_billing_desc':
+          'Monthly collections, receivables, and ISP financial reports',
       'coming_soon': 'Under Development',
       'active_now': 'Active & Available',
       'enter_service': 'Open Service',
@@ -353,19 +372,22 @@ class AppLocalizations {
 
       // Authentication & Login
       'login_title': 'System Authentication',
-      'login_subtitle': 'Enter your credentials to access the management portal',
+      'login_subtitle':
+          'Enter your credentials to access the management portal',
       'username': 'Username',
       'username_hint': 'e.g. admin or hashem',
       'password': 'Password',
       'password_hint': '••••••••',
       'remember_me': 'Remember me on this device',
-      'remember_me_tooltip': 'Save session for quick offline access and auto-fill',
+      'remember_me_tooltip':
+          'Save session for quick offline access and auto-fill',
       'sign_in': 'Sign In',
       'signing_in': 'Authenticating credentials...',
       'login_success': 'Successfully authenticated',
       'offline_mode_banner': 'Logged in offline mode (cached local session)',
       'forgot_password': 'Forgot password?',
-      'forgot_password_desc': 'Please contact Al-Fateh Administration to reset credentials',
+      'forgot_password_desc':
+          'Please contact Al-Fateh Administration to reset credentials',
       'show_password': 'Show password',
       'hide_password': 'Hide password',
       'need_help': 'Need assistance?',
@@ -374,19 +396,26 @@ class AppLocalizations {
       'preview_skeleton': 'Preview Skeleton Loading',
       'login_brand_desc': 'Unified control portal for ISP operations, subscriber follow-ups, and intelligent attendance.',
       'feature_tickets_title': 'Real-time Support Tickets Management',
-      'feature_tickets_desc': 'Direct synchronization with Google Sheets & subscriber statuses',
+      'feature_tickets_desc':
+          'Direct synchronization with Google Sheets & subscriber statuses',
       'feature_geofence_title': 'Smart Attendance with Geofencing',
-      'feature_geofence_desc': 'Accurate check-in/out within HQ premises and branch locations',
+      'feature_geofence_desc':
+          'Accurate check-in/out within HQ premises and branch locations',
       'feature_rbac_title': 'Advanced Security & RBAC Permissions',
-      'feature_rbac_desc': 'Fine-grained role permissions with immutable audit trail logs',
+      'feature_rbac_desc':
+          'Fine-grained role permissions with immutable audit trail logs',
       'whatsapp_contact': 'Contact Support on WhatsApp',
-      'whatsapp_launch_error': 'Could not launch WhatsApp, please try again later',
+      'whatsapp_launch_error':
+          'Could not launch WhatsApp, please try again later',
       'login_error_empty_fields': 'Please enter username and password',
       'login_error_invalid_password': 'Incorrect password',
       'login_error_user_not_found': 'Username not found',
-      'login_error_account_disabled': 'This account has been disabled, please contact Al-Fateh admin',
-      'login_error_network': 'Unable to connect to server, please check your network connection',
-      'login_error_generic': 'Login failed, please check your credentials and try again',
+      'login_error_account_disabled':
+          'This account has been disabled, please contact Al-Fateh admin',
+      'login_error_network':
+          'Unable to connect to server, please check your network connection',
+      'login_error_generic':
+          'Login failed, please check your credentials and try again',
 
       // Navigation & Sections
       'nav_home': 'Home',
@@ -397,8 +426,10 @@ class AppLocalizations {
 
       // Confirm Dialog
       'confirm_logout_title': 'Confirm Sign Out',
-      'confirm_logout_msg': 'Are you sure you want to sign out of Al-Fateh System?',
-      'confirm_logout_message': 'Are you sure you want to sign out of Al-Fateh System?',
+      'confirm_logout_msg':
+          'Are you sure you want to sign out of Al-Fateh System?',
+      'confirm_logout_message':
+          'Are you sure you want to sign out of Al-Fateh System?',
       'confirm_logout_button': 'Sign Out',
       'toggle_sidebar': 'Toggle Sidebar',
 
@@ -441,7 +472,8 @@ class AppLocalizations {
       'role_sales': 'Sales Representative',
 
       // Errors
-      'error_network_connection': 'No internet connection, please check network',
+      'error_network_connection':
+          'No internet connection, please check network',
       'error_network_timeout': 'Server request timed out, please retry',
       'error_server_internal': 'Unexpected internal server error',
       'error_unauthorized': 'Unauthorized session, please log in again',
@@ -450,7 +482,8 @@ class AppLocalizations {
       'error_validation_failed': 'Form input validation failed',
       'error_cache_failure': 'Failed to access local encrypted storage',
       'error_unknown': 'An unexpected error occurred',
-      'auth_session_expired': 'Local session expired, please connect to internet and log in again',
+      'auth_session_expired':
+          'Local session expired, please connect to internet and log in again',
 
       // Tickets Module
       'search_tickets_hint': 'Search phone, subscriber, problem type...',
@@ -479,9 +512,11 @@ class AppLocalizations {
       'status_offline_cache': 'Offline Cache',
       'sync_now_tooltip': 'Sync now',
       'no_tickets_found_title': 'No Matching Tickets Found',
-      'no_tickets_found_desc': 'No tickets match your active search or filter criteria',
+      'no_tickets_found_desc':
+          'No tickets match your active search or filter criteria',
       'dialog_add_ticket_title': 'Create Support Ticket',
-      'dialog_add_ticket_desc': 'Enter subscriber details and describe the technical inquiry',
+      'dialog_add_ticket_desc':
+          'Enter subscriber details and describe the technical inquiry',
       'subscriber_name_label': 'Subscriber Name',
       'subscriber_name_hint': 'Enter subscriber full name',
       'val_subscriber_required': 'Subscriber name is required',
@@ -495,7 +530,8 @@ class AppLocalizations {
       'assigned_to_label': 'Assigned Employee',
       'priority_label': 'Priority Level',
       'is_complaint_ticket': 'Complaint Follow-up Ticket',
-      'is_complaint_ticket_desc': 'Flag as complaint for priority escalation and tracking',
+      'is_complaint_ticket_desc':
+          'Flag as complaint for priority escalation and tracking',
       'description_label': 'Call Description & Notes',
       'description_hint': 'Enter problem details and notes...',
       'save_ticket_btn': 'Save Ticket',
@@ -519,7 +555,8 @@ class AppLocalizations {
       'col_solution': 'Resolution Method',
       'rows_per_page': 'Rows per page:',
       'confirm_delete_ticket_title': 'Confirm Delete Ticket',
-      'confirm_delete_ticket_msg': 'Are you sure you want to delete this ticket?',
+      'confirm_delete_ticket_msg':
+          'Are you sure you want to delete this ticket?',
       'ticket_delete_success': 'Ticket deleted successfully',
       'search_problem_hint': 'Search problems or add a new one...',
       'problem_types': 'Problem Types',

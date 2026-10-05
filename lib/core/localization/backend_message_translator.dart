@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+
 import 'app_localizations.dart';
 
 /// محرك الترجمة الذكي الشامل لرسائل وأخطاء الباك إند (Google Apps Script / API / Exceptions)
@@ -16,37 +17,67 @@ class BackendMessageTranslator {
       key: 'auth_empty_fields',
       ar: 'يرجى إدخال اسم المستخدم وكلمة المرور',
       en: 'Please enter username and password',
-      keywords: ['اسم المستخدم وكلمة المرور', 'username and password', 'empty_fields', 'val_username_empty'],
+      keywords: [
+        'اسم المستخدم وكلمة المرور',
+        'username and password',
+        'empty_fields',
+        'val_username_empty',
+      ],
     ),
     _MessageEntry(
       key: 'auth_invalid_password',
       ar: 'كلمة المرور غير صحيحة',
       en: 'Incorrect password',
-      keywords: ['كلمة المرور غير صحيحة', 'incorrect password', 'wrong password', 'invalid_password'],
+      keywords: [
+        'كلمة المرور غير صحيحة',
+        'incorrect password',
+        'wrong password',
+        'invalid_password',
+      ],
     ),
     _MessageEntry(
       key: 'auth_user_not_found',
       ar: 'اسم المستخدم غير موجود',
       en: 'Username not found',
-      keywords: ['اسم المستخدم غير موجود', 'user not found', 'username not found', 'user_not_found'],
+      keywords: [
+        'اسم المستخدم غير موجود',
+        'user not found',
+        'username not found',
+        'user_not_found',
+      ],
     ),
     _MessageEntry(
       key: 'auth_account_disabled',
       ar: 'تم تعطيل هذا الحساب، يرجى مراجعة إدارة الفتح',
       en: 'This account has been disabled, please contact Al-Fateh admin',
-      keywords: ['تعطيل هذا الحساب', 'account disabled', 'account has been disabled', 'account_disabled'],
+      keywords: [
+        'تعطيل هذا الحساب',
+        'account disabled',
+        'account has been disabled',
+        'account_disabled',
+      ],
     ),
     _MessageEntry(
       key: 'auth_login_success',
       ar: 'تم تسجيل الدخول بنجاح',
       en: 'Logged in successfully',
-      keywords: ['تسجيل الدخول بنجاح', 'logged in successfully', 'login success', 'auth_success'],
+      keywords: [
+        'تسجيل الدخول بنجاح',
+        'logged in successfully',
+        'login success',
+        'auth_success',
+      ],
     ),
     _MessageEntry(
       key: 'auth_login_failed',
       ar: 'فشل تسجيل الدخول، يرجى التحقق من اسم المستخدم وكلمة المرور',
       en: 'Login failed, please check your credentials and try again',
-      keywords: ['فشل تسجيل الدخول', 'login failed', 'authentication failed', 'auth_failed'],
+      keywords: [
+        'فشل تسجيل الدخول',
+        'login failed',
+        'authentication failed',
+        'auth_failed',
+      ],
     ),
     _MessageEntry(
       key: 'auth_logout_success',
@@ -64,7 +95,13 @@ class BackendMessageTranslator {
       key: 'auth_permission_denied',
       ar: 'ليس لديك الصلاحية لتنفيذ هذا الإجراء',
       en: 'You do not have permission to perform this action',
-      keywords: ['ليس لديك الصلاحية', 'permission denied', 'access denied', 'unauthorized', 'forbidden'],
+      keywords: [
+        'ليس لديك الصلاحية',
+        'permission denied',
+        'access denied',
+        'unauthorized',
+        'forbidden',
+      ],
     ),
     _MessageEntry(
       key: 'auth_offline_mode',
@@ -94,13 +131,25 @@ class BackendMessageTranslator {
       key: 'net_timeout',
       ar: 'انتهت مهلة الاتصال بالسيرفر، يرجى إعادة المحاولة',
       en: 'Connection timed out, please try again',
-      keywords: ['time out', 'timed out', 'timeout', 'مهلة الاتصال', 'connecttimeout', 'receivetimeout'],
+      keywords: [
+        'time out',
+        'timed out',
+        'timeout',
+        'مهلة الاتصال',
+        'connecttimeout',
+        'receivetimeout',
+      ],
     ),
     _MessageEntry(
       key: 'net_server_error',
       ar: 'حدث خطأ داخلي في السيرفر، يرجى المحاولة لاحقاً',
       en: 'Internal server error occurred, please try again later',
-      keywords: ['internal server error', 'status code 500', 'خطأ داخلي في السيرفر', 'server error'],
+      keywords: [
+        'internal server error',
+        'status code 500',
+        'خطأ داخلي في السيرفر',
+        'server error',
+      ],
     ),
     _MessageEntry(
       key: 'net_not_found',
@@ -122,13 +171,21 @@ class BackendMessageTranslator {
       key: 'ticket_add_success',
       ar: 'تم تسجيل التذكرة بنجاح',
       en: 'Ticket registered successfully',
-      keywords: ['تم تسجيل التذكرة بنجاح', 'ticket registered successfully', 'ticket added'],
+      keywords: [
+        'تم تسجيل التذكرة بنجاح',
+        'ticket registered successfully',
+        'ticket added',
+      ],
     ),
     _MessageEntry(
       key: 'ticket_update_success',
       ar: 'تم تحديث التذكرة بنجاح',
       en: 'Ticket updated successfully',
-      keywords: ['تم تحديث التذكرة بنجاح', 'ticket updated successfully', 'ticket updated'],
+      keywords: [
+        'تم تحديث التذكرة بنجاح',
+        'ticket updated successfully',
+        'ticket updated',
+      ],
     ),
     _MessageEntry(
       key: 'ticket_delete_success',
@@ -174,13 +231,21 @@ class BackendMessageTranslator {
       key: 'att_checkin_success',
       ar: 'تم تسجيل الحضور بنجاح داخل مقر الشركة',
       en: 'Check-in recorded successfully within company premises',
-      keywords: ['تسجيل الحضور بنجاح', 'check-in recorded successfully', 'checkin success'],
+      keywords: [
+        'تسجيل الحضور بنجاح',
+        'check-in recorded successfully',
+        'checkin success',
+      ],
     ),
     _MessageEntry(
       key: 'att_checkout_success',
       ar: 'تم تسجيل الانصراف بنجاح',
       en: 'Check-out recorded successfully',
-      keywords: ['تسجيل الانصراف بنجاح', 'check-out recorded successfully', 'checkout success'],
+      keywords: [
+        'تسجيل الانصراف بنجاح',
+        'check-out recorded successfully',
+        'checkout success',
+      ],
     ),
     _MessageEntry(
       key: 'att_outside_geofence',
@@ -210,7 +275,12 @@ class BackendMessageTranslator {
       key: 'payroll_locked',
       ar: 'تم إقفال الشهر المالي للرواتب، لا يمكن تعديل السجلات',
       en: 'Payroll period is locked, modifications are disabled',
-      keywords: ['الراتب مقفل', 'إقفال الشهر المالي', 'payroll is locked', 'payroll_locked'],
+      keywords: [
+        'الراتب مقفل',
+        'إقفال الشهر المالي',
+        'payroll is locked',
+        'payroll_locked',
+      ],
     ),
 
     // -------------------------------------------------------------

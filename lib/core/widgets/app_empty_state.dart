@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_button.dart';
@@ -36,11 +37,7 @@ class AppEmptyState extends StatelessWidget {
                 color: colors.primaryContainer.withValues(alpha: 0.3),
                 shape: BoxShape.circle,
               ),
-              child: Icon(
-                icon,
-                size: 48,
-                color: colors.primary,
-              ),
+              child: Icon(icon, size: 48, color: colors.primary),
             ),
             const SizedBox(height: 16),
             Text(

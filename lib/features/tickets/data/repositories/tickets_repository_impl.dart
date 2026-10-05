@@ -1,4 +1,5 @@
 import 'dart:math';
+
 import '../../../../core/errors/app_exception.dart';
 import '../../domain/models/sync_operation.dart';
 import '../../domain/models/ticket_model.dart';
@@ -13,8 +14,8 @@ class TicketsRepositoryImpl implements TicketsRepository {
   TicketsRepositoryImpl({
     TicketsRemoteDataSource? remoteDataSource,
     TicketsLocalDataSource? localDataSource,
-  })  : _remoteDataSource = remoteDataSource ?? TicketsRemoteDataSourceImpl(),
-        _localDataSource = localDataSource ?? TicketsLocalDataSourceImpl();
+  }) : _remoteDataSource = remoteDataSource ?? TicketsRemoteDataSourceImpl(),
+       _localDataSource = localDataSource ?? TicketsLocalDataSourceImpl();
 
   @override
   Future<TicketsInitData> getInitialData({bool forceRefresh = false}) async {
@@ -70,8 +71,9 @@ class TicketsRepositoryImpl implements TicketsRepository {
     bool forceRefresh = false,
   }) async {
     try {
-      final remoteTickets =
-          await _remoteDataSource.fetchAllTickets(limit: limit);
+      final remoteTickets = await _remoteDataSource.fetchAllTickets(
+        limit: limit,
+      );
       await _localDataSource.cacheTickets(remoteTickets);
       return remoteTickets;
     } catch (e) {
@@ -135,10 +137,7 @@ class TicketsRepositoryImpl implements TicketsRepository {
       final op = SyncOperation(
         id: 'sync_add_${now.millisecondsSinceEpoch}',
         type: SyncOperationType.addTicket,
-        payload: {
-          ...payload,
-          'temp_row_id': tempId,
-        },
+        payload: {...payload, 'temp_row_id': tempId},
         createdAt: now,
       );
       await _localDataSource.enqueueSyncOperation(op);
@@ -159,10 +158,7 @@ class TicketsRepositoryImpl implements TicketsRepository {
     String? auditNote,
   }) async {
     final now = DateTime.now();
-    final payload = <String, dynamic>{
-      'row_id': rowId,
-      'user_id': actorName,
-    };
+    final payload = <String, dynamic>{'row_id': rowId, 'user_id': actorName};
     if (status != null) payload['status'] = status;
     if (solution != null) payload['solution'] = solution;
     if (description != null) payload['description'] = description;
@@ -270,7 +266,9 @@ class TicketsRepositoryImpl implements TicketsRepository {
         await updateTicket(
           rowId: ticket.rowId,
           status: 'تم الحل',
-          solution: ticket.solution.isNotEmpty ? ticket.solution : defaultSolution,
+          solution: ticket.solution.isNotEmpty
+              ? ticket.solution
+              : defaultSolution,
           actorName: actorName,
           auditNote: 'إغلاق جماعي من قبل $actorName',
         );
@@ -283,7 +281,11 @@ class TicketsRepositoryImpl implements TicketsRepository {
   }
 
   @override
-  Future<bool> deleteTicket(int rowId, {required String actorName, String? reason}) async {
+  Future<bool> deleteTicket(
+    int rowId, {
+    required String actorName,
+    String? reason,
+  }) async {
     // 1. Delete from local cache immediately
     await _localDataSource.deleteLocalTicket(rowId);
 
@@ -313,7 +315,10 @@ class TicketsRepositoryImpl implements TicketsRepository {
   }
 
   @override
-  Future<List<String>> addProblemType(String problemName, {String? userId}) async {
+  Future<List<String>> addProblemType(
+    String problemName, {
+    String? userId,
+  }) async {
     try {
       final updated = await _remoteDataSource.addProblemType(
         problemName,
@@ -398,10 +403,7 @@ class TicketsRepositoryImpl implements TicketsRepository {
       } catch (e) {
         // تحديث عدد المحاولات والخطأ
         await _localDataSource.updateSyncOperation(
-          op.copyWith(
-            retryCount: op.retryCount + 1,
-            lastError: e.toString(),
-          ),
+          op.copyWith(retryCount: op.retryCount + 1, lastError: e.toString()),
         );
       }
     }

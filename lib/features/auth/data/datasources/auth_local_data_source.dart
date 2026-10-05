@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../core/utils/app_crypto.dart';
 import '../../domain/models/auth_session.dart';
 
@@ -71,13 +73,18 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   @override
   Future<void> saveOfflineVerifier(String username, String verifier) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('$_keyOfflineVerifierPrefix${username.toLowerCase()}', verifier);
+    await prefs.setString(
+      '$_keyOfflineVerifierPrefix${username.toLowerCase()}',
+      verifier,
+    );
   }
 
   @override
   Future<String?> getOfflineVerifier(String username) async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('$_keyOfflineVerifierPrefix${username.toLowerCase()}');
+    return prefs.getString(
+      '$_keyOfflineVerifierPrefix${username.toLowerCase()}',
+    );
   }
 
   @override

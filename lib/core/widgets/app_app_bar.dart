@@ -1,6 +1,8 @@
 import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_hover.dart';
@@ -62,17 +64,11 @@ class _AppAppBarState extends State<AppAppBar>
     );
 
     _pulseScaleAnimation = Tween<double>(begin: 1.0, end: 2.3).animate(
-      CurvedAnimation(
-        parent: _pulseController,
-        curve: Curves.easeOutQuad,
-      ),
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeOutQuad),
     );
 
     _pulseOpacityAnimation = Tween<double>(begin: 0.7, end: 0.0).animate(
-      CurvedAnimation(
-        parent: _pulseController,
-        curve: Curves.easeOutQuad,
-      ),
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeOutQuad),
     );
 
     final isTest = !kIsWeb && Platform.environment.containsKey('FLUTTER_TEST');
@@ -120,12 +116,14 @@ class _AppAppBarState extends State<AppAppBar>
         elevation: 0,
         toolbarHeight: widget.height,
         titleSpacing: isCompact ? 8 : 16,
-        leading: widget.leading ??
+        leading:
+            widget.leading ??
             (widget.showBackButton
                 ? IconButton(
                     icon: const Icon(Icons.arrow_back_rounded),
                     tooltip: context.tr('back'),
-                    onPressed: widget.onBackPressed ??
+                    onPressed:
+                        widget.onBackPressed ??
                         () {
                           if (Navigator.of(context).canPop()) {
                             Navigator.of(context).pop();
@@ -165,15 +163,16 @@ class _AppAppBarState extends State<AppAppBar>
                     displayTitle,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: (isCompact
-                            ? context.textTheme.titleMedium
-                            : context.textTheme.titleLarge)
-                        ?.copyWith(
-                      fontFamily: AppAssets.fontSecondary,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 0.1,
-                      color: colors.onSurface,
-                    ),
+                    style:
+                        (isCompact
+                                ? context.textTheme.titleMedium
+                                : context.textTheme.titleLarge)
+                            ?.copyWith(
+                              fontFamily: AppAssets.fontSecondary,
+                              fontWeight: FontWeight.bold,
+                              letterSpacing: 0.1,
+                              color: colors.onSurface,
+                            ),
                   ),
                   if (!isCompact && displaySubtitle.isNotEmpty) ...[
                     const SizedBox(height: 2),
@@ -235,22 +234,26 @@ class _AppAppBarState extends State<AppAppBar>
 
           // الأزرار الإضافية المعطاة مع تأثير Hover موديرن
           if (widget.extraActions != null || widget.actions != null)
-            ...[
-              ...?widget.extraActions,
-              ...?widget.actions,
-            ].map(
+            ...[...?widget.extraActions, ...?widget.actions].map(
               (action) => Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 2.0),
                 child: AppHover(
                   builder: (ctx, isHovered) {
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 180),
-                      transform:
-                          Matrix4.translationValues(0, isHovered ? -1.5 : 0, 0),
+                      transform: Matrix4.translationValues(
+                        0,
+                        isHovered ? -1.5 : 0,
+                        0,
+                      ),
                       decoration: BoxDecoration(
                         color: isHovered
-                            ? colors.surfaceContainerHighest.withValues(alpha: 0.6)
-                            : colors.surfaceContainerHighest.withValues(alpha: 0.3),
+                            ? colors.surfaceContainerHighest.withValues(
+                                alpha: 0.6,
+                              )
+                            : colors.surfaceContainerHighest.withValues(
+                                alpha: 0.3,
+                              ),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color: isHovered

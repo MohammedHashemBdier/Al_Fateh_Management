@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../services/dialog/app_dialog_service.dart';
 import '../utils/context_extensions.dart';
 import 'widgets.dart';
@@ -150,8 +151,9 @@ class _SearchDialogState extends State<_SearchDialog> {
       if (q.isEmpty) {
         _filteredItems = List.from(_items);
       } else {
-        _filteredItems =
-            _items.where((i) => i.toLowerCase().contains(q)).toList();
+        _filteredItems = _items
+            .where((i) => i.toLowerCase().contains(q))
+            .toList();
       }
     });
   }
@@ -177,8 +179,9 @@ class _SearchDialogState extends State<_SearchDialog> {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final query = _searchController.text.trim();
-    final hasExactMatch =
-        _items.any((i) => i.trim().toLowerCase() == query.toLowerCase());
+    final hasExactMatch = _items.any(
+      (i) => i.trim().toLowerCase() == query.toLowerCase(),
+    );
 
     return Dialog(
       backgroundColor: colors.surface,
@@ -218,8 +221,9 @@ class _SearchDialogState extends State<_SearchDialog> {
                   prefixIcon: const Icon(Icons.search_rounded),
                   isDense: true,
                   filled: true,
-                  fillColor:
-                      colors.surfaceContainerHighest.withValues(alpha: 0.4),
+                  fillColor: colors.surfaceContainerHighest.withValues(
+                    alpha: 0.4,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(color: colors.outlineVariant),
@@ -227,7 +231,8 @@ class _SearchDialogState extends State<_SearchDialog> {
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
-                        color: colors.outlineVariant.withValues(alpha: 0.5)),
+                      color: colors.outlineVariant.withValues(alpha: 0.5),
+                    ),
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -243,14 +248,20 @@ class _SearchDialogState extends State<_SearchDialog> {
                   !hasExactMatch &&
                   widget.onAddNewItem != null) ...[
                 AppCard(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                  backgroundColor:
-                      colors.primaryContainer.withValues(alpha: 0.35),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  backgroundColor: colors.primaryContainer.withValues(
+                    alpha: 0.35,
+                  ),
                   child: Row(
                     children: [
-                      Icon(Icons.add_circle_outline_rounded,
-                          size: 18, color: colors.primary),
+                      Icon(
+                        Icons.add_circle_outline_rounded,
+                        size: 18,
+                        color: colors.primary,
+                      ),
                       const SizedBox(width: 8),
                       Expanded(
                         child: AppText.caption(

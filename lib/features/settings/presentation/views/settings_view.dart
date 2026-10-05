@@ -12,16 +12,11 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    return AppScaffold(
-      appBar: AppAppBar(
-        title: context.tr('settings_view_title'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          tooltip: context.tr('back'),
-          onPressed: () => context.go('/home'),
-        ),
-      ),
-      body: Center(
+    return AppDetailScaffold(
+      title: 'settings_view_title',
+      currentRoute: '/settings',
+      onBackPressed: () => context.go('/home'),
+      detailContent: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 720),
           child: ListView(
@@ -48,14 +43,20 @@ class SettingsView extends StatelessWidget {
                     const SizedBox(height: 16),
                     // تبديل المظهر
                     ListTile(
-                      leading: Icon(Icons.palette_outlined, color: colors.primary),
+                      leading: Icon(
+                        Icons.palette_outlined,
+                        color: colors.primary,
+                      ),
                       title: const AppText.body('theme_system'),
                       trailing: const ThemeToggleButton(),
                     ),
                     const SizedBox(height: 12),
                     // تبديل اللغة
                     ListTile(
-                      leading: Icon(Icons.language_rounded, color: colors.primary),
+                      leading: Icon(
+                        Icons.language_rounded,
+                        color: colors.primary,
+                      ),
                       title: const AppText.body('lang_switch'),
                       trailing: const LocaleToggleButton(),
                     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../core/widgets/app_skeleton.dart';
 
 /// بطاقة هيكلية نابضة (Skeleton Loader) تمثل شاشة تسجيل الدخول أثناء التحميل
@@ -44,9 +45,7 @@ class LoginSkeletonCard extends StatelessWidget {
         SizedBox(height: 24),
 
         // شارة الحماية الهيكلية
-        Center(
-          child: AppSkeleton.text(width: 160, height: 12),
-        ),
+        Center(child: AppSkeleton.text(width: 160, height: 12)),
       ],
     );
   }

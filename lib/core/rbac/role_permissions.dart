@@ -3,7 +3,12 @@ enum UserRole {
   admin('ROLE_ADMIN', 'أدمن النظام', 'System Administrator', 1),
   generalManager('ROLE_GM', 'المدير العام', 'General Manager', 1),
   finance('ROLE_FINANCE', 'المالية والمحاسبة', 'Finance & Accounting', 2),
-  supportManager('ROLE_SUPPORT_MANAGER', 'مدير الدعم الفني', 'Support Manager', 2),
+  supportManager(
+    'ROLE_SUPPORT_MANAGER',
+    'مدير الدعم الفني',
+    'Support Manager',
+    2,
+  ),
   salesManager('ROLE_SALES_MANAGER', 'مدير المبيعات', 'Sales Manager', 2),
   support('ROLE_SUPPORT', 'فني الدعم الفني', 'Technical Support', 3),
   sales('ROLE_SALES', 'موظف المبيعات', 'Sales Representative', 3);
@@ -29,20 +34,25 @@ enum UserRole {
   bool get isExecutive => hierarchyLevel == 1;
   bool get isDepartmentManager => hierarchyLevel <= 2;
   bool get isFinance => this == UserRole.finance;
-  bool get isSupport => this == UserRole.support || this == UserRole.supportManager;
+  bool get isSupport =>
+      this == UserRole.support || this == UserRole.supportManager;
   bool get isSales => this == UserRole.sales || this == UserRole.salesManager;
 
   /// هل يملك صلاحية إدارة المستخدمين وتعديل الصلاحيات
   bool get canManageUsers => this == UserRole.admin;
 
   /// هل يملك صلاحية مشاهدة الرواتب والمالية
-  bool get canViewPayroll => this == UserRole.finance || this == UserRole.generalManager || this == UserRole.admin;
+  bool get canViewPayroll =>
+      this == UserRole.finance ||
+      this == UserRole.generalManager ||
+      this == UserRole.admin;
 
   /// هل يملك صلاحية اعتماد الحذف وتصحيح الدوام
   bool get canApproveRequests => hierarchyLevel <= 2;
 
   /// هل يملك صلاحية الوصول لسجل التدقيق Audit Logs
-  bool get canViewAuditLogs => this == UserRole.admin || this == UserRole.generalManager;
+  bool get canViewAuditLogs =>
+      this == UserRole.admin || this == UserRole.generalManager;
 }
 
 /// نطاق البيانات المصرح بالوصول إليها (Permission Scope)
@@ -75,7 +85,8 @@ class AppPermissions {
   static const String attendanceCheckin = 'attendance.checkin';
   static const String attendanceView = 'attendance.view';
   static const String attendanceCorrectionReq = 'attendance.correction.req';
-  static const String attendanceCorrectionApprove = 'attendance.correction.approve';
+  static const String attendanceCorrectionApprove =
+      'attendance.correction.approve';
 
   // Tickets
   static const String ticketsCreate = 'tickets.create';
@@ -128,7 +139,9 @@ class AppPermissions {
 
   /// استخراج النطاق الافتراضي للدور
   static PermissionScope getDefaultScope(UserRole role) {
-    if (role == UserRole.admin || role == UserRole.generalManager || role == UserRole.finance) {
+    if (role == UserRole.admin ||
+        role == UserRole.generalManager ||
+        role == UserRole.finance) {
       return PermissionScope.all;
     }
     if (role.isDepartmentManager) {

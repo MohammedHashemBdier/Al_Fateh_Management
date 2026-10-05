@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+
 import 'api_endpoints.dart';
 
 class DioClient {
@@ -55,7 +56,9 @@ class DioClient {
       cancelToken: cancelToken,
     );
 
-    if (response.statusCode == 302 || response.statusCode == 301 || response.statusCode == 307) {
+    if (response.statusCode == 302 ||
+        response.statusCode == 301 ||
+        response.statusCode == 307) {
       final location = response.headers.value('location');
       if (location != null && location.isNotEmpty) {
         return Dio().get<T>(
@@ -89,7 +92,9 @@ class DioClient {
     );
 
     // Google Apps Script redirects (302) return Location header pointing to script.googleusercontent.com
-    if (response.statusCode == 302 || response.statusCode == 301 || response.statusCode == 307) {
+    if (response.statusCode == 302 ||
+        response.statusCode == 301 ||
+        response.statusCode == 307) {
       final location = response.headers.value('location');
       if (location != null && location.isNotEmpty) {
         return Dio().get<T>(

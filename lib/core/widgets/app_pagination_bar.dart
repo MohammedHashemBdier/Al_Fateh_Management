@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 
@@ -66,14 +67,16 @@ class AppPaginationBar extends StatelessWidget {
                       ],
                       Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 6, vertical: 2),
+                          horizontal: 6,
+                          vertical: 2,
+                        ),
                         decoration: BoxDecoration(
-                          color: colors.surfaceContainerHighest
-                              .withValues(alpha: 0.4),
+                          color: colors.surfaceContainerHighest.withValues(
+                            alpha: 0.4,
+                          ),
                           borderRadius: BorderRadius.circular(6),
                           border: Border.all(
-                            color: colors.outlineVariant
-                                .withValues(alpha: 0.4),
+                            color: colors.outlineVariant.withValues(alpha: 0.4),
                           ),
                         ),
                         child: DropdownButtonHideUnderline(
@@ -125,8 +128,10 @@ class AppPaginationBar extends StatelessWidget {
                     : null,
               ),
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: colors.primaryContainer.withValues(alpha: 0.35),
                   borderRadius: BorderRadius.circular(6),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../utils/context_extensions.dart';
 import 'locale_toggle_button.dart';
 import 'theme_toggle_button.dart';
@@ -60,13 +61,12 @@ class AppThemeLanguageSwitchers extends StatelessWidget {
 
     if (withContainer) {
       return Container(
-        padding: padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        padding:
+            padding ?? const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
         decoration: BoxDecoration(
           color: colors.surfaceContainerHighest.withValues(alpha: 0.4),
           borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: colors.outline.withValues(alpha: 0.15),
-          ),
+          border: Border.all(color: colors.outline.withValues(alpha: 0.15)),
         ),
         child: content,
       );

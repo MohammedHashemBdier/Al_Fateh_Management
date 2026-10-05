@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../core/utils/context_extensions.dart';
 import '../../../../../core/widgets/widgets.dart';
 
@@ -24,14 +25,14 @@ class TicketSyncBadge extends StatelessWidget {
     final badgeColor = isSyncing
         ? colors.info
         : isOffline
-            ? colors.warning
-            : colors.success;
+        ? colors.warning
+        : colors.success;
 
     final label = isSyncing
         ? context.tr('status_syncing')
         : isOffline
-            ? context.tr('status_offline_cache')
-            : context.tr('status_connected');
+        ? context.tr('status_offline_cache')
+        : context.tr('status_connected');
 
     return InkWell(
       onTap: isSyncing ? null : onSyncNow,
@@ -41,9 +42,7 @@ class TicketSyncBadge extends StatelessWidget {
         decoration: BoxDecoration(
           color: badgeColor.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: badgeColor.withValues(alpha: 0.35),
-          ),
+          border: Border.all(color: badgeColor.withValues(alpha: 0.35)),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -92,11 +91,7 @@ class TicketSyncBadge extends StatelessWidget {
             const SizedBox(width: 4),
             AppTooltip(
               message: context.tr('sync_now_tooltip'),
-              child: Icon(
-                Icons.sync_rounded,
-                size: 14,
-                color: badgeColor,
-              ),
+              child: Icon(Icons.sync_rounded, size: 14, color: badgeColor),
             ),
           ],
         ),

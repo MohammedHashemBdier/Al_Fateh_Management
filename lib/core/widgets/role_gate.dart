@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../rbac/role_permissions.dart';
 
 /// ويدجت بوابة الأدوار (RoleGate) لإظهار أو إخفاء العناصر البرمجية بحسب دور المستخدم
@@ -80,7 +81,8 @@ class ScopeGate extends StatelessWidget {
       return required != PermissionScope.all;
     }
     if (current == PermissionScope.team) {
-      return required == PermissionScope.team || required == PermissionScope.self;
+      return required == PermissionScope.team ||
+          required == PermissionScope.self;
     }
     return required == PermissionScope.self;
   }

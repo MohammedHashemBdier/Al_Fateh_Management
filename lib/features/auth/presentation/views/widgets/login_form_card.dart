@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 import '../../../../../core/services/services.dart';
 import '../../../../../core/utils/context_extensions.dart';
 import '../../../../../core/utils/app_snackbars.dart';
@@ -53,9 +54,9 @@ class _LoginFormCardState extends State<LoginFormCard> {
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
       context.read<LoginCubit>().login(
-            username: _usernameController.text,
-            password: _passwordController.text,
-          );
+        username: _usernameController.text,
+        password: _passwordController.text,
+      );
     }
   }
 
@@ -99,7 +100,9 @@ class _LoginFormCardState extends State<LoginFormCard> {
       },
       builder: (context, state) {
         final isLoading = state is LoginLoading;
-        final isSkeleton = state is LoginLoading || (state is LoginInitial && state.isSkeletonPreview);
+        final isSkeleton =
+            state is LoginLoading ||
+            (state is LoginInitial && state.isSkeletonPreview);
         final rememberMe = state is LoginInitial ? state.rememberMe : true;
 
         return AppAnimatedSwitch(
@@ -142,7 +145,8 @@ class _LoginFormCardState extends State<LoginFormCard> {
                           prefixIcon: Icons.person_outline_rounded,
                           tooltip: context.tr('username_hint'),
                           keyboardType: TextInputType.text,
-                          onFieldSubmitted: (_) => _passwordFocusNode.requestFocus(),
+                          onFieldSubmitted: (_) =>
+                              _passwordFocusNode.requestFocus(),
                           validator: (val) {
                             if (val == null || val.trim().isEmpty) {
                               return context.tr('val_username_empty');
@@ -194,8 +198,8 @@ class _LoginFormCardState extends State<LoginFormCard> {
                                 onChanged: isLoading
                                     ? null
                                     : (val) => context
-                                        .read<LoginCubit>()
-                                        .toggleRememberMe(val ?? true),
+                                          .read<LoginCubit>()
+                                          .toggleRememberMe(val ?? true),
                               ),
                             ),
                             AppLink(

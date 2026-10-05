@@ -1,5 +1,7 @@
 import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../../auth/data/repositories/auth_repository_impl.dart';
 import '../../../auth/domain/repositories/auth_repository.dart';
 import '../../data/repositories/tickets_repository_impl.dart';
@@ -13,12 +15,10 @@ class TicketsCubit extends Cubit<TicketsState> {
   final AuthRepository _authRepository;
   Timer? _searchDebounceTimer;
 
-  TicketsCubit({
-    TicketsRepository? repository,
-    AuthRepository? authRepository,
-  })  : _repository = repository ?? TicketsRepositoryImpl(),
-        _authRepository = authRepository ?? AuthRepositoryImpl(),
-        super(const TicketsState());
+  TicketsCubit({TicketsRepository? repository, AuthRepository? authRepository})
+    : _repository = repository ?? TicketsRepositoryImpl(),
+      _authRepository = authRepository ?? AuthRepositoryImpl(),
+      super(const TicketsState());
 
   @override
   Future<void> close() {
@@ -28,36 +28,40 @@ class TicketsCubit extends Cubit<TicketsState> {
 
   /// تحميل التذاكر وبيانات التهيئة الأولية
   Future<void> loadTickets({bool forceRefresh = false}) async {
-    emit(state.copyWith(
-      status: TicketsStatus.loading,
-      errorMessage: () => null,
-    ));
+    emit(
+      state.copyWith(status: TicketsStatus.loading, errorMessage: () => null),
+    );
 
     try {
       final session = await _authRepository.getSavedSession();
-      final initData =
-          await _repository.getInitialData(forceRefresh: forceRefresh);
+      final initData = await _repository.getInitialData(
+        forceRefresh: forceRefresh,
+      );
       final pendingCount = await _repository.getPendingSyncCount();
 
       final filtered = state.filter.apply(initData.tickets);
 
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        currentUser: session?.user,
-        allTickets: initData.tickets,
-        filteredTickets: filtered,
-        problemTypes: initData.problems,
-        statusList: initData.statuses,
-        employeeList: initData.employees,
-        pendingSyncCount: pendingCount,
-        isOffline: initData.isFromCache,
-        currentPage: 1,
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          currentUser: session?.user,
+          allTickets: initData.tickets,
+          filteredTickets: filtered,
+          problemTypes: initData.problems,
+          statusList: initData.statuses,
+          employeeList: initData.employees,
+          pendingSyncCount: pendingCount,
+          isOffline: initData.isFromCache,
+          currentPage: 1,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: TicketsStatus.failure,
-        errorMessage: () => e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.failure,
+          errorMessage: () => e.toString(),
+        ),
+      );
     }
   }
 
@@ -68,33 +72,39 @@ class TicketsCubit extends Cubit<TicketsState> {
       final updatedFilter = state.filter.copyWith(searchQuery: query);
       final filtered = updatedFilter.apply(state.allTickets);
 
-      emit(state.copyWith(
-        filter: updatedFilter,
-        filteredTickets: filtered,
-        currentPage: 1,
-      ));
+      emit(
+        state.copyWith(
+          filter: updatedFilter,
+          filteredTickets: filtered,
+          currentPage: 1,
+        ),
+      );
     });
   }
 
   /// تحديث الفلاتر المتقدمة (الحالة، المشكلة، الموظف، التاريخ، الأولوية)
   void applyFilter(TicketFilterModel newFilter) {
     final filtered = newFilter.apply(state.allTickets);
-    emit(state.copyWith(
-      filter: newFilter,
-      filteredTickets: filtered,
-      currentPage: 1,
-    ));
+    emit(
+      state.copyWith(
+        filter: newFilter,
+        filteredTickets: filtered,
+        currentPage: 1,
+      ),
+    );
   }
 
   /// مسح جميع الفلاتر
   void resetFilters() {
     final clearedFilter = state.filter.clear();
     final filtered = clearedFilter.apply(state.allTickets);
-    emit(state.copyWith(
-      filter: clearedFilter,
-      filteredTickets: filtered,
-      currentPage: 1,
-    ));
+    emit(
+      state.copyWith(
+        filter: clearedFilter,
+        filteredTickets: filtered,
+        currentPage: 1,
+      ),
+    );
   }
 
   /// تغيير ترتيب الأعمدة
@@ -110,10 +120,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       sortDirection: nextDirection,
     );
     final filtered = updatedFilter.apply(state.allTickets);
-    emit(state.copyWith(
-      filter: updatedFilter,
-      filteredTickets: filtered,
-    ));
+    emit(state.copyWith(filter: updatedFilter, filteredTickets: filtered));
   }
 
   /// التنقل بين الصفحات
@@ -168,19 +175,23 @@ class TicketsCubit extends Cubit<TicketsState> {
       final filtered = state.filter.apply(updatedList);
       final pendingCount = await _repository.getPendingSyncCount();
 
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        allTickets: updatedList,
-        filteredTickets: filtered,
-        pendingSyncCount: pendingCount,
-        successMessage: () => 'ticket_add_success',
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          allTickets: updatedList,
+          filteredTickets: filtered,
+          pendingSyncCount: pendingCount,
+          successMessage: () => 'ticket_add_success',
+        ),
+      );
       return true;
     } catch (e) {
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        errorMessage: () => e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          errorMessage: () => e.toString(),
+        ),
+      );
       return false;
     }
   }
@@ -216,26 +227,32 @@ class TicketsCubit extends Cubit<TicketsState> {
       final filtered = state.filter.apply(updatedAll);
       final pendingCount = await _repository.getPendingSyncCount();
 
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        allTickets: updatedAll,
-        filteredTickets: filtered,
-        pendingSyncCount: pendingCount,
-        successMessage: () => 'ticket_update_success',
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          allTickets: updatedAll,
+          filteredTickets: filtered,
+          pendingSyncCount: pendingCount,
+          successMessage: () => 'ticket_update_success',
+        ),
+      );
       return true;
     } catch (e) {
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        errorMessage: () => e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          errorMessage: () => e.toString(),
+        ),
+      );
       return false;
     }
   }
 
   /// إغلاق كافة التذاكر المفتوحة دفعة واحدة (للأدمن والمدير العام)
   Future<int> closeAllOpenTickets({String? solution}) async {
-    final openTickets = state.allTickets.where((t) => t.status != 'تم الحل').toList();
+    final openTickets = state.allTickets
+        .where((t) => t.status != 'تم الحل')
+        .toList();
     if (openTickets.isEmpty) return 0;
 
     emit(state.copyWith(status: TicketsStatus.actionLoading));
@@ -252,7 +269,9 @@ class TicketsCubit extends Cubit<TicketsState> {
         if (t.status != 'تم الحل') {
           return t.copyWith(
             status: 'تم الحل',
-            solution: t.solution.isNotEmpty ? t.solution : (solution ?? 'إغلاق جماعي بواسطة الإدارة'),
+            solution: t.solution.isNotEmpty
+                ? t.solution
+                : (solution ?? 'إغلاق جماعي بواسطة الإدارة'),
           );
         }
         return t;
@@ -261,19 +280,23 @@ class TicketsCubit extends Cubit<TicketsState> {
       final filtered = state.filter.apply(updatedAll);
       final pendingCount = await _repository.getPendingSyncCount();
 
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        allTickets: updatedAll,
-        filteredTickets: filtered,
-        pendingSyncCount: pendingCount,
-        successMessage: () => 'tickets_bulk_close_success',
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          allTickets: updatedAll,
+          filteredTickets: filtered,
+          pendingSyncCount: pendingCount,
+          successMessage: () => 'tickets_bulk_close_success',
+        ),
+      );
       return closedCount;
     } catch (e) {
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        errorMessage: () => e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          errorMessage: () => e.toString(),
+        ),
+      );
       return 0;
     }
   }
@@ -286,17 +309,21 @@ class TicketsCubit extends Cubit<TicketsState> {
         problemName,
         userId: userId,
       );
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        problemTypes: updatedProblems,
-        successMessage: () => 'problem_add_success',
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          problemTypes: updatedProblems,
+          successMessage: () => 'problem_add_success',
+        ),
+      );
       return true;
     } catch (e) {
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        errorMessage: () => e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          errorMessage: () => e.toString(),
+        ),
+      );
       return false;
     }
   }
@@ -312,28 +339,32 @@ class TicketsCubit extends Cubit<TicketsState> {
         reason: reason,
       );
 
-      final updatedAll =
-          state.allTickets.where((t) => t.rowId != rowId).toList();
+      final updatedAll = state.allTickets
+          .where((t) => t.rowId != rowId)
+          .toList();
       final filtered = state.filter.apply(updatedAll);
       final selected = Set<int>.from(state.selectedTicketIds)..remove(rowId);
 
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        allTickets: updatedAll,
-        filteredTickets: filtered,
-        selectedTicketIds: selected,
-        successMessage: () => 'ticket_delete_success',
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          allTickets: updatedAll,
+          filteredTickets: filtered,
+          selectedTicketIds: selected,
+          successMessage: () => 'ticket_delete_success',
+        ),
+      );
       return success;
     } catch (e) {
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        errorMessage: () => e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          errorMessage: () => e.toString(),
+        ),
+      );
       return false;
     }
   }
-
 
   /// مزامنة العمليات المعلقة فوراً
   Future<void> syncNow() async {
@@ -345,27 +376,28 @@ class TicketsCubit extends Cubit<TicketsState> {
       final init = await _repository.getInitialData(forceRefresh: true);
       final filtered = state.filter.apply(init.tickets);
 
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        allTickets: init.tickets,
-        filteredTickets: filtered,
-        pendingSyncCount: pending,
-        isOffline: false,
-        successMessage: () => count > 0 ? 'sync_success' : null,
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          allTickets: init.tickets,
+          filteredTickets: filtered,
+          pendingSyncCount: pending,
+          isOffline: false,
+          successMessage: () => count > 0 ? 'sync_success' : null,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(
-        status: TicketsStatus.success,
-        errorMessage: () => e.toString(),
-      ));
+      emit(
+        state.copyWith(
+          status: TicketsStatus.success,
+          errorMessage: () => e.toString(),
+        ),
+      );
     }
   }
 
   /// مسح رسائل الخطأ والنجاح
   void clearMessages() {
-    emit(state.copyWith(
-      errorMessage: () => null,
-      successMessage: () => null,
-    ));
+    emit(state.copyWith(errorMessage: () => null, successMessage: () => null));
   }
 }

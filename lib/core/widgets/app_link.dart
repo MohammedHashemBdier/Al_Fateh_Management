@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_hover.dart';
@@ -41,18 +42,23 @@ class AppLink extends StatelessWidget {
                 text,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 1,
-                style: (style ??
-                        TextStyle(
-                          fontFamily: AppAssets.fontPrimary,
-                          fontSize: 13,
-                          color: colors.primary,
-                          fontWeight: FontWeight.w600,
-                        ))
-                    .copyWith(
-                  color: isHovered ? colors.primary : colors.primary.withValues(alpha: 0.85),
-                  decoration: isHovered ? TextDecoration.underline : TextDecoration.none,
-                  decorationColor: colors.primary,
-                ),
+                style:
+                    (style ??
+                            TextStyle(
+                              fontFamily: AppAssets.fontPrimary,
+                              fontSize: 13,
+                              color: colors.primary,
+                              fontWeight: FontWeight.w600,
+                            ))
+                        .copyWith(
+                          color: isHovered
+                              ? colors.primary
+                              : colors.primary.withValues(alpha: 0.85),
+                          decoration: isHovered
+                              ? TextDecoration.underline
+                              : TextDecoration.none,
+                          decorationColor: colors.primary,
+                        ),
               ),
             ),
           ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/design_system/app_dimens.dart';
 import '../../../../core/services/services.dart';
 import '../../../../core/utils/context_extensions.dart';
@@ -40,8 +41,9 @@ class AppBottomNav extends StatelessWidget {
                 : colors.surface.withValues(alpha: 0.96),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: colors.outlineVariant
-                  .withValues(alpha: isDark ? 0.25 : 0.35),
+              color: colors.outlineVariant.withValues(
+                alpha: isDark ? 0.25 : 0.35,
+              ),
               width: 1.0,
             ),
             boxShadow: [
@@ -66,8 +68,10 @@ class AppBottomNav extends StatelessWidget {
                         if (onDestinationSelected != null) {
                           onDestinationSelected!(item.route);
                         } else {
-                          AppNavigationService.instance
-                              .goTo(context, item.route);
+                          AppNavigationService.instance.goTo(
+                            context,
+                            item.route,
+                          );
                         }
                       }
                     },

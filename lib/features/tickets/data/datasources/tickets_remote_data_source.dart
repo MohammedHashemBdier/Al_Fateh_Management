@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:dio/dio.dart';
+
 import '../../../../core/errors/app_exception.dart';
 import '../../../../core/network/api_endpoints.dart';
 import '../../../../core/network/dio_client.dart';
@@ -11,7 +13,11 @@ abstract class TicketsRemoteDataSource {
   Future<List<TicketModel>> fetchAllTickets({int limit = 200});
   Future<int> addTicket(Map<String, dynamic> params);
   Future<bool> updateTicket(Map<String, dynamic> params);
-  Future<bool> deleteTicket(int rowId, {required String actorName, String? reason});
+  Future<bool> deleteTicket(
+    int rowId, {
+    required String actorName,
+    String? reason,
+  });
   Future<List<String>> addProblemType(String problemName, {String? userId});
 }
 
@@ -19,7 +25,7 @@ class TicketsRemoteDataSourceImpl implements TicketsRemoteDataSource {
   final DioClient _dioClient;
 
   TicketsRemoteDataSourceImpl({DioClient? dioClient})
-      : _dioClient = dioClient ?? DioClient();
+    : _dioClient = dioClient ?? DioClient();
 
   @override
   Future<TicketsInitData> fetchInitData() async {
@@ -160,7 +166,11 @@ class TicketsRemoteDataSourceImpl implements TicketsRemoteDataSource {
   }
 
   @override
-  Future<bool> deleteTicket(int rowId, {required String actorName, String? reason}) async {
+  Future<bool> deleteTicket(
+    int rowId, {
+    required String actorName,
+    String? reason,
+  }) async {
     try {
       final response = await _dioClient.post(
         ApiEndpoints.defaultBaseUrl,
@@ -180,7 +190,10 @@ class TicketsRemoteDataSourceImpl implements TicketsRemoteDataSource {
   }
 
   @override
-  Future<List<String>> addProblemType(String problemName, {String? userId}) async {
+  Future<List<String>> addProblemType(
+    String problemName, {
+    String? userId,
+  }) async {
     try {
       final response = await _dioClient.post(
         ApiEndpoints.defaultBaseUrl,

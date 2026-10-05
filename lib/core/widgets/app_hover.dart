@@ -29,12 +29,7 @@ class AppHover extends StatefulWidget {
     double scale = 1.02,
     VoidCallback? onTap,
   }) {
-    return AppHover(
-      key: key,
-      scale: scale,
-      onTap: onTap,
-      child: child,
-    );
+    return AppHover(key: key, scale: scale, onTap: onTap, child: child);
   }
 
   /// باني سريع مع رفع خفيف (Floating effect)

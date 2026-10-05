@@ -25,15 +25,25 @@ class DashboardStatsModel {
   factory DashboardStatsModel.fromJson(Map<String, dynamic> json) {
     return DashboardStatsModel(
       totalTickets: int.tryParse(json['total_tickets']?.toString() ?? '0') ?? 0,
-      inProgressTickets: int.tryParse(json['in_progress_tickets']?.toString() ?? '0') ?? 0,
-      resolvedToday: int.tryParse(json['resolved_today']?.toString() ?? '0') ?? 0,
+      inProgressTickets:
+          int.tryParse(json['in_progress_tickets']?.toString() ?? '0') ?? 0,
+      resolvedToday:
+          int.tryParse(json['resolved_today']?.toString() ?? '0') ?? 0,
       isCheckedInToday: json['is_checked_in_today'] == true,
       checkInTime: json['check_in_time']?.toString(),
-      activeEmployeesCount: int.tryParse(json['active_employees_count']?.toString() ?? '0') ?? 0,
+      activeEmployeesCount:
+          int.tryParse(json['active_employees_count']?.toString() ?? '0') ?? 0,
       isServerConnected: json['is_server_connected'] != false,
-      lastSyncTime: DateTime.tryParse(json['last_sync_time']?.toString() ?? '') ?? DateTime.now(),
-      recentTickets: (json['recent_tickets'] as List<dynamic>?)
-              ?.map((item) => RecentTicketItem.fromJson(Map<String, dynamic>.from(item as Map)))
+      lastSyncTime:
+          DateTime.tryParse(json['last_sync_time']?.toString() ?? '') ??
+          DateTime.now(),
+      recentTickets:
+          (json['recent_tickets'] as List<dynamic>?)
+              ?.map(
+                (item) => RecentTicketItem.fromJson(
+                  Map<String, dynamic>.from(item as Map),
+                ),
+              )
               .toList() ??
           [],
     );

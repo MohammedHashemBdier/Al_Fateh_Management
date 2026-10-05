@@ -38,15 +38,9 @@ class _AppFadeSlideState extends State<AppFadeSlide>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: widget.duration,
-    );
+    _controller = AnimationController(vsync: this, duration: widget.duration);
 
-    final curved = CurvedAnimation(
-      parent: _controller,
-      curve: widget.curve,
-    );
+    final curved = CurvedAnimation(parent: _controller, curve: widget.curve);
 
     _fadeAnimation = Tween<double>(
       begin: widget.fadeIn ? 0.0 : 1.0,
@@ -88,10 +82,7 @@ class _AppFadeSlideState extends State<AppFadeSlide>
       builder: (context, child) {
         Widget result = child!;
         if (widget.scaleIn) {
-          result = Transform.scale(
-            scale: _scaleAnimation.value,
-            child: result,
-          );
+          result = Transform.scale(scale: _scaleAnimation.value, child: result);
         }
         if (widget.offset != Offset.zero) {
           result = FractionalTranslation(
@@ -133,10 +124,7 @@ class AppAnimatedSwitch extends StatelessWidget {
       switchInCurve: Curves.easeOutCubic,
       switchOutCurve: Curves.easeInCubic,
       transitionBuilder: (Widget child, Animation<double> animation) {
-        return FadeTransition(
-          opacity: animation,
-          child: child,
-        );
+        return FadeTransition(opacity: animation, child: child);
       },
       child: child,
     );

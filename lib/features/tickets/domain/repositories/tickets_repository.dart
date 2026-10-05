@@ -54,7 +54,11 @@ abstract class TicketsRepository {
   });
 
   /// حذف تذكرة نهائياً أو إزالتها محلياً
-  Future<bool> deleteTicket(int rowId, {required String actorName, String? reason});
+  Future<bool> deleteTicket(
+    int rowId, {
+    required String actorName,
+    String? reason,
+  });
 
   /// إضافة نوع مشكلة جديد وحفظه في الشيت
   Future<List<String>> addProblemType(String problemName, {String? userId});

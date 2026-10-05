@@ -39,9 +39,15 @@ class HomeNavigationRail extends StatelessWidget {
         border: Border(
           right: isArabic
               ? BorderSide.none
-              : BorderSide(color: colors.outlineVariant.withValues(alpha: 0.25), width: 1),
+              : BorderSide(
+                  color: colors.outlineVariant.withValues(alpha: 0.25),
+                  width: 1,
+                ),
           left: isArabic
-              ? BorderSide(color: colors.outlineVariant.withValues(alpha: 0.25), width: 1)
+              ? BorderSide(
+                  color: colors.outlineVariant.withValues(alpha: 0.25),
+                  width: 1,
+                )
               : BorderSide.none,
         ),
       ),
@@ -59,13 +65,13 @@ class HomeNavigationRail extends StatelessWidget {
                     if (isExpanded) _buildUserCard(context, colors, role),
                     const SizedBox(height: 8),
                     ...destinations.asMap().entries.map(
-                          (entry) => _buildDestinationItem(
-                            context: context,
-                            colors: colors,
-                            dest: entry.value,
-                            index: entry.key,
-                          ),
-                        ),
+                      (entry) => _buildDestinationItem(
+                        context: context,
+                        colors: colors,
+                        dest: entry.value,
+                        index: entry.key,
+                      ),
+                    ),
                     const SizedBox(height: 8),
                     _buildDivider(colors),
                     _buildFooter(context, colors),
@@ -158,7 +164,11 @@ class HomeNavigationRail extends StatelessWidget {
     );
   }
 
-  Widget _buildUserCard(BuildContext context, ColorScheme colors, UserRole role) {
+  Widget _buildUserCard(
+    BuildContext context,
+    ColorScheme colors,
+    UserRole role,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       child: Container(
@@ -180,7 +190,9 @@ class HomeNavigationRail extends StatelessWidget {
                   radius: 17,
                   backgroundColor: colors.primaryContainer,
                   child: AppText.literal(
-                    user.username.isNotEmpty ? user.username[0].toUpperCase() : 'U',
+                    user.username.isNotEmpty
+                        ? user.username[0].toUpperCase()
+                        : 'U',
                     fontWeight: FontWeight.bold,
                     fontSize: 12,
                     color: colors.onPrimaryContainer,
@@ -217,7 +229,10 @@ class HomeNavigationRail extends StatelessWidget {
                   ),
                   const SizedBox(height: 2),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
                     decoration: BoxDecoration(
                       color: colors.primary.withValues(alpha: 0.12),
                       borderRadius: BorderRadius.circular(6),
@@ -266,8 +281,10 @@ class HomeNavigationRail extends StatelessWidget {
                 color: isSelected
                     ? colors.primary.withValues(alpha: 0.14)
                     : (isHovered
-                        ? colors.surfaceContainerHighest.withValues(alpha: 0.6)
-                        : Colors.transparent),
+                          ? colors.surfaceContainerHighest.withValues(
+                              alpha: 0.6,
+                            )
+                          : Colors.transparent),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: isSelected
@@ -296,7 +313,9 @@ class HomeNavigationRail extends StatelessWidget {
                           width: 3.5,
                           height: isSelected ? 18 : 0,
                           decoration: BoxDecoration(
-                            color: isSelected ? colors.primary : Colors.transparent,
+                            color: isSelected
+                                ? colors.primary
+                                : Colors.transparent,
                             borderRadius: BorderRadius.circular(2),
                           ),
                         ),

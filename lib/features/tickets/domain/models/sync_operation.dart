@@ -1,9 +1,5 @@
 /// نوع العملية المخزنة في طابور المزامنة عند عدم توفر الإنترنت
-enum SyncOperationType {
-  addTicket,
-  updateTicket,
-  addProblemType,
-}
+enum SyncOperationType { addTicket, updateTicket, addProblemType }
 
 /// كائن عملية المزامنة
 class SyncOperation {
@@ -23,10 +19,7 @@ class SyncOperation {
     this.lastError,
   });
 
-  SyncOperation copyWith({
-    int? retryCount,
-    String? lastError,
-  }) {
+  SyncOperation copyWith({int? retryCount, String? lastError}) {
     return SyncOperation(
       id: id,
       type: type,
@@ -38,13 +31,13 @@ class SyncOperation {
   }
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'type': type.name,
-        'payload': payload,
-        'created_at': createdAt.toIso8601String(),
-        'retry_count': retryCount,
-        'last_error': lastError,
-      };
+    'id': id,
+    'type': type.name,
+    'payload': payload,
+    'created_at': createdAt.toIso8601String(),
+    'retry_count': retryCount,
+    'last_error': lastError,
+  };
 
   factory SyncOperation.fromJson(Map<String, dynamic> json) {
     SyncOperationType t = SyncOperationType.addTicket;

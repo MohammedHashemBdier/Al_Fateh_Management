@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../core/utils/context_extensions.dart';
 import '../../../../../core/widgets/widgets.dart';
 import '../../../domain/models/ticket_model.dart';
@@ -52,7 +53,10 @@ class TicketCard extends StatelessWidget {
                   child: Row(
                     children: [
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 4,
+                        ),
                         decoration: BoxDecoration(
                           color: colors.surfaceContainerHighest,
                           borderRadius: BorderRadius.circular(6),

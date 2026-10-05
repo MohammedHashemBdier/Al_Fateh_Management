@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../core/utils/context_extensions.dart';
 import '../../../../../core/widgets/app_animations.dart';
 import '../../../../../core/widgets/app_logo.dart';
@@ -41,7 +42,9 @@ class LoginBrandingPanel extends StatelessWidget {
                 color: colors.primary.withValues(alpha: isDark ? 0.18 : 0.10),
                 boxShadow: [
                   BoxShadow(
-                    color: colors.primary.withValues(alpha: isDark ? 0.25 : 0.12),
+                    color: colors.primary.withValues(
+                      alpha: isDark ? 0.25 : 0.12,
+                    ),
                     blurRadius: 140,
                     spreadRadius: 40,
                   ),
@@ -52,9 +55,14 @@ class LoginBrandingPanel extends StatelessWidget {
 
           LayoutBuilder(
             builder: (context, constraints) {
-              final minH = constraints.maxHeight > 80 ? constraints.maxHeight - 80 : 0.0;
+              final minH = constraints.maxHeight > 80
+                  ? constraints.maxHeight - 80
+                  : 0.0;
               return SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 48.0, vertical: 40.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 48.0,
+                  vertical: 40.0,
+                ),
                 child: ConstrainedBox(
                   constraints: BoxConstraints(minHeight: minH),
                   child: Column(
@@ -157,18 +165,29 @@ class LoginBrandingPanel extends StatelessWidget {
                       AppFadeSlide(
                         delay: const Duration(milliseconds: 440),
                         child: Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 14,
+                            vertical: 8,
+                          ),
                           decoration: BoxDecoration(
-                            color: colors.surfaceContainerHighest.withValues(alpha: 0.5),
+                            color: colors.surfaceContainerHighest.withValues(
+                              alpha: 0.5,
+                            ),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: colors.outlineVariant.withValues(alpha: 0.4),
+                              color: colors.outlineVariant.withValues(
+                                alpha: 0.4,
+                              ),
                             ),
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              Icon(Icons.lock_outline_rounded, size: 16, color: colors.success),
+                              Icon(
+                                Icons.lock_outline_rounded,
+                                size: 16,
+                                color: colors.success,
+                              ),
                               const SizedBox(width: 8),
                               Flexible(
                                 child: AppText.caption(

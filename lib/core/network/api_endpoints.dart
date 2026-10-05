@@ -5,8 +5,7 @@ class ApiEndpoints {
   // Can be overridden via --dart-define=API_BASE_URL=... for production deployments
   static const String defaultBaseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue:
-        'https://script.google.com/macros/s/AKfycbwW7Ii78ftHFew0g2wxCfyWVaiax3VI9g2NtgMFdd8uocI2GaBWcnm1PhQov7Q4-nY4/exec',
+    defaultValue: 'https://script.google.com/macros/s/AKfycbwW7Ii78ftHFew0g2wxCfyWVaiax3VI9g2NtgMFdd8uocI2GaBWcnm1PhQov7Q4-nY4/exec',
   );
 
   // Tickets & Follow-ups

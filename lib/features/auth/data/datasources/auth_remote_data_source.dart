@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import '../../../../core/network/api_endpoints.dart';
 import '../../../../core/network/dio_client.dart';
 import '../../../../core/utils/app_crypto.dart';
@@ -16,7 +17,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   final DioClient _dioClient;
 
   AuthRemoteDataSourceImpl({DioClient? dioClient})
-      : _dioClient = dioClient ?? DioClient();
+    : _dioClient = dioClient ?? DioClient();
 
   @override
   Future<AuthSession> login({
@@ -44,11 +45,13 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     if (data is Map && data['success'] == true) {
       final userMap = Map<String, dynamic>.from(data['user'] ?? {});
       final user = UserModel.fromJson(userMap);
-      final permsVersion = int.tryParse(data['permissions_version']?.toString() ?? '1') ?? 1;
+      final permsVersion =
+          int.tryParse(data['permissions_version']?.toString() ?? '1') ?? 1;
 
       return AuthSession(
         user: user,
-        sessionToken: 'TOKEN_${user.userId}_${DateTime.now().millisecondsSinceEpoch}',
+        sessionToken:
+            'TOKEN_${user.userId}_${DateTime.now().millisecondsSinceEpoch}',
         loginTime: DateTime.now(),
         permissionsVersion: permsVersion,
         isOffline: false,

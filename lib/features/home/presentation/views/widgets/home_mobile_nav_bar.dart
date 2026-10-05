@@ -39,7 +39,9 @@ class HomeMobileNavBar extends StatelessWidget {
                 : colors.surface.withValues(alpha: 0.96),
             borderRadius: BorderRadius.circular(24),
             border: Border.all(
-              color: colors.outlineVariant.withValues(alpha: isDark ? 0.25 : 0.35),
+              color: colors.outlineVariant.withValues(
+                alpha: isDark ? 0.25 : 0.35,
+              ),
               width: 1.0,
             ),
             boxShadow: [
@@ -150,7 +152,9 @@ class _NavBarItemState extends State<_NavBarItem> {
                     child: AppText.caption(
                       dest.titleKey,
                       maxLines: 1,
-                      fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.w500,
                       fontSize: 10.5,
                       color: isSelected
                           ? colors.primary

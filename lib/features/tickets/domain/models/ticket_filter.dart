@@ -1,19 +1,9 @@
 import 'ticket_model.dart';
 
 /// خيارات ترتيب التذاكر
-enum TicketSortField {
-  rowId,
-  date,
-  subscriberName,
-  landline,
-  status,
-  employee,
-}
+enum TicketSortField { rowId, date, subscriberName, landline, status, employee }
 
-enum SortDirection {
-  ascending,
-  descending,
-}
+enum SortDirection { ascending, descending }
 
 /// كائن الفلترة المتقدم لجدول وبطاقات التذاكر
 class TicketFilterModel {
@@ -80,7 +70,8 @@ class TicketFilterModel {
       // 1. فحص البحث الفوري (اسم المشترك، الهاتف الأرضي، الموبايل، المشكلة، رقم التذكرة)
       if (searchQuery.trim().isNotEmpty) {
         final q = searchQuery.trim().toLowerCase();
-        final matchesQuery = ticket.subscriberName.toLowerCase().contains(q) ||
+        final matchesQuery =
+            ticket.subscriberName.toLowerCase().contains(q) ||
             ticket.landline.toLowerCase().contains(q) ||
             ticket.mobile.toLowerCase().contains(q) ||
             ticket.problem.toLowerCase().contains(q) ||
@@ -115,7 +106,8 @@ class TicketFilterModel {
       if (startDate != null || endDate != null) {
         final ticketDate = _parseTicketDate(ticket.date);
         if (ticketDate != null) {
-          if (startDate != null && ticketDate.isBefore(_startOfDay(startDate!))) {
+          if (startDate != null &&
+              ticketDate.isBefore(_startOfDay(startDate!))) {
             return false;
           }
           if (endDate != null && ticketDate.isAfter(_endOfDay(endDate!))) {
@@ -164,7 +156,8 @@ class TicketFilterModel {
     return DateTime.tryParse(clean);
   }
 
-  DateTime _startOfDay(DateTime dt) => DateTime(dt.year, dt.month, dt.day, 0, 0, 0);
+  DateTime _startOfDay(DateTime dt) =>
+      DateTime(dt.year, dt.month, dt.day, 0, 0, 0);
   DateTime _endOfDay(DateTime dt) =>
       DateTime(dt.year, dt.month, dt.day, 23, 59, 59, 999);
 }

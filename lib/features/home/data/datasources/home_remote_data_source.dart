@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import '../../../../core/network/api_endpoints.dart';
 import '../../../../core/network/dio_client.dart';
 import '../../domain/models/dashboard_stats_model.dart';
@@ -11,15 +12,13 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   final DioClient _dioClient;
 
   HomeRemoteDataSourceImpl({DioClient? dioClient})
-      : _dioClient = dioClient ?? DioClient();
+    : _dioClient = dioClient ?? DioClient();
 
   @override
   Future<DashboardStatsModel> fetchDashboardStats() async {
     final response = await _dioClient.get(
       ApiEndpoints.defaultBaseUrl,
-      queryParameters: {
-        'action': ApiEndpoints.actionInit,
-      },
+      queryParameters: {'action': ApiEndpoints.actionInit},
     );
 
     dynamic data = response.data;
@@ -82,13 +81,20 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
           : (usersRaw.isNotEmpty ? usersRaw.length : 7);
 
       // استخراج إجمالي التذاكر الحقيقي (من أحدث row_id في الشيت أو من المفتاح الصريح)
-      final explicitTotal = int.tryParse(data['total_tickets']?.toString() ?? '');
-      final calculatedTotal = explicitTotal ?? (maxRowId > 1 ? (maxRowId - 1) : recentRaw.length);
+      final explicitTotal = int.tryParse(
+        data['total_tickets']?.toString() ?? '',
+      );
+      final calculatedTotal =
+          explicitTotal ?? (maxRowId > 1 ? (maxRowId - 1) : recentRaw.length);
 
-      final explicitInProgress = int.tryParse(data['in_progress_tickets']?.toString() ?? '');
+      final explicitInProgress = int.tryParse(
+        data['in_progress_tickets']?.toString() ?? '',
+      );
       final inProgressTotal = explicitInProgress ?? inProgress;
 
-      final explicitResolvedToday = int.tryParse(data['resolved_today']?.toString() ?? '');
+      final explicitResolvedToday = int.tryParse(
+        data['resolved_today']?.toString() ?? '',
+      );
       final resolvedTodayTotal = explicitResolvedToday ?? resolvedTodayCount;
 
       return DashboardStatsModel(

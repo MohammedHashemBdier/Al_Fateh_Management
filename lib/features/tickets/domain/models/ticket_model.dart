@@ -65,12 +65,7 @@ enum TicketPriority {
 }
 
 /// حالة مزامنة التذكرة في النظام المحلي
-enum SyncState {
-  synced,
-  pendingAdd,
-  pendingUpdate,
-  conflict,
-}
+enum SyncState { synced, pendingAdd, pendingUpdate, conflict }
 
 /// سجل التدقيق والتعديلات على التذكرة
 class TicketAuditEntry {
@@ -91,13 +86,13 @@ class TicketAuditEntry {
   });
 
   Map<String, dynamic> toJson() => {
-        'actor_name': actorName,
-        'action': action,
-        'timestamp': timestamp,
-        'old_value': oldValue,
-        'new_value': newValue,
-        'notes': notes,
-      };
+    'actor_name': actorName,
+    'action': action,
+    'timestamp': timestamp,
+    'old_value': oldValue,
+    'new_value': newValue,
+    'notes': notes,
+  };
 
   factory TicketAuditEntry.fromJson(Map<String, dynamic> json) =>
       TicketAuditEntry(
@@ -200,25 +195,25 @@ class TicketModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'row_id': rowId,
-        'date': date,
-        'time': time,
-        'subscriber_name': subscriberName,
-        'landline': landline,
-        'mobile': mobile,
-        'problem': problem,
-        'solution': solution,
-        'status': status,
-        'description': description,
-        'employee': employee,
-        'created_by': createdBy,
-        'priority': priority.name,
-        'is_complaint': isComplaint,
-        'parent_ticket_id': parentTicketId,
-        'sync_state': syncState.name,
-        'audit_trail': auditTrail.map((e) => e.toJson()).toList(),
-        'updated_at': updatedAt.toIso8601String(),
-      };
+    'row_id': rowId,
+    'date': date,
+    'time': time,
+    'subscriber_name': subscriberName,
+    'landline': landline,
+    'mobile': mobile,
+    'problem': problem,
+    'solution': solution,
+    'status': status,
+    'description': description,
+    'employee': employee,
+    'created_by': createdBy,
+    'priority': priority.name,
+    'is_complaint': isComplaint,
+    'parent_ticket_id': parentTicketId,
+    'sync_state': syncState.name,
+    'audit_trail': auditTrail.map((e) => e.toJson()).toList(),
+    'updated_at': updatedAt.toIso8601String(),
+  };
 
   factory TicketModel.fromJson(Map<String, dynamic> json) {
     var rawAudit = json['audit_trail'];
@@ -264,7 +259,8 @@ class TicketModel {
       employee: json['employee']?.toString() ?? '',
       createdBy: json['created_by']?.toString() ?? '',
       priority: TicketPriority.fromString(json['priority']?.toString()),
-      isComplaint: json['is_complaint'] == true ||
+      isComplaint:
+          json['is_complaint'] == true ||
           json['is_complaint']?.toString() == 'true',
       parentTicketId: int.tryParse(json['parent_ticket_id']?.toString() ?? ''),
       syncState: sync,

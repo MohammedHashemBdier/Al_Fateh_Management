@@ -1,4 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../domain/repositories/home_repository.dart';
 import '../../data/repositories/home_repository_impl.dart';
 import 'home_state.dart';
@@ -7,8 +8,8 @@ class HomeCubit extends Cubit<HomeState> {
   final HomeRepository _repository;
 
   HomeCubit({HomeRepository? repository})
-      : _repository = repository ?? HomeRepositoryImpl(),
-        super(const HomeInitial()) {
+    : _repository = repository ?? HomeRepositoryImpl(),
+      super(const HomeInitial()) {
     loadHomeData();
   }
 
@@ -25,28 +26,36 @@ class HomeCubit extends Cubit<HomeState> {
       final cachedStats = await _repository.getCachedStats();
       if (cachedStats != null) {
         // إظهار لوحة التحكم والبيانات فوراً بدون أي شاشة انتظار
-        emit(HomeLoaded(
-          user: user,
-          stats: cachedStats,
-          selectedNavIndex: 0,
-          isOffline: !cachedStats.isServerConnected,
-          isRefreshing: true,
-        ));
+        emit(
+          HomeLoaded(
+            user: user,
+            stats: cachedStats,
+            selectedNavIndex: 0,
+            isOffline: !cachedStats.isServerConnected,
+            isRefreshing: true,
+          ),
+        );
       } else {
         // حالة الفتح لأول مرة إطلاقاً قبل أي كاش: عرض هيكل الـ Skeleton المتكامل
         emit(HomeLoading(cachedUser: user));
       }
 
       // 2. مزامنة وجلب أحدث البيانات الحية بالخلفية بدون تعطيل المستخدم
-      final freshStats = await _repository.getDashboardStats(forceRefresh: true);
-      final currentIndex = (state is HomeLoaded) ? (state as HomeLoaded).selectedNavIndex : 0;
-      emit(HomeLoaded(
-        user: user,
-        stats: freshStats,
-        selectedNavIndex: currentIndex,
-        isOffline: !freshStats.isServerConnected,
-        isRefreshing: false,
-      ));
+      final freshStats = await _repository.getDashboardStats(
+        forceRefresh: true,
+      );
+      final currentIndex = (state is HomeLoaded)
+          ? (state as HomeLoaded).selectedNavIndex
+          : 0;
+      emit(
+        HomeLoaded(
+          user: user,
+          stats: freshStats,
+          selectedNavIndex: currentIndex,
+          isOffline: !freshStats.isServerConnected,
+          isRefreshing: false,
+        ),
+      );
     } catch (e) {
       if (state is! HomeLoaded) {
         emit(HomeError(e.toString()));
@@ -67,11 +76,15 @@ class HomeCubit extends Cubit<HomeState> {
     if (state is HomeLoaded) {
       final current = state as HomeLoaded;
       try {
-        final newStats = await _repository.getDashboardStats(forceRefresh: true);
-        emit(current.copyWith(
-          stats: newStats,
-          isOffline: !newStats.isServerConnected,
-        ));
+        final newStats = await _repository.getDashboardStats(
+          forceRefresh: true,
+        );
+        emit(
+          current.copyWith(
+            stats: newStats,
+            isOffline: !newStats.isServerConnected,
+          ),
+        );
       } catch (_) {
         // الحفاظ على الحالة الحالية عند فشل التحديث
       }

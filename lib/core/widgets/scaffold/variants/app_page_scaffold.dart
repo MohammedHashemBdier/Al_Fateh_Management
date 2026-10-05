@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../app_scaffold.dart';
 
 /// هيكل صفحة عادية بمحتوى عام (Page Scaffold Variant)

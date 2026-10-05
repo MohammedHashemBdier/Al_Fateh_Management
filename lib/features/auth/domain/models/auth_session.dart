@@ -20,7 +20,8 @@ class AuthSession {
     return AuthSession(
       user: UserModel.fromJson(Map<String, dynamic>.from(json['user'] ?? {})),
       sessionToken: json['session_token']?.toString() ?? '',
-      loginTime: DateTime.tryParse(json['login_time']?.toString() ?? '') ??
+      loginTime:
+          DateTime.tryParse(json['login_time']?.toString() ?? '') ??
           DateTime.now(),
       permissionsVersion:
           int.tryParse(json['permissions_version']?.toString() ?? '1') ?? 1,

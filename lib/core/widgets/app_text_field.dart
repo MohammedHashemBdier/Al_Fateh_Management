@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_hover.dart';
@@ -113,7 +114,9 @@ class _AppTextFieldState extends State<AppTextField> {
             prefixIcon: widget.prefixIcon != null
                 ? Icon(
                     widget.prefixIcon,
-                    color: _isHovered ? colors.primary : colors.onSurfaceVariant,
+                    color: _isHovered
+                        ? colors.primary
+                        : colors.onSurfaceVariant,
                     size: 20,
                   )
                 : null,
@@ -163,8 +166,10 @@ class _AppTextFieldState extends State<AppTextField> {
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: colors.error),
             ),
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
+            contentPadding: const EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 15,
+            ),
           ),
         ),
       ),

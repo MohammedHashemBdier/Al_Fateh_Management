@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../constants/app_assets.dart';
 import '../localization/locale_cubit.dart';
 import '../utils/context_extensions.dart';
@@ -17,7 +18,9 @@ class LocaleToggleButton extends StatelessWidget {
     final isArabic = context.isArabic;
 
     // تحديد المفتاح الحالي
-    final currentKey = localeState == null ? 'system' : localeState.languageCode;
+    final currentKey = localeState == null
+        ? 'system'
+        : localeState.languageCode;
 
     // نص الزر في الواجهة العريضة
     final currentLabel = localeState == null
@@ -31,16 +34,18 @@ class LocaleToggleButton extends StatelessWidget {
               color: colors.surfaceContainerHighest.withValues(alpha: 0.5),
               shape: BoxShape.circle,
             ),
-            child: Icon(Icons.language_rounded, size: 20, color: colors.onSurface),
+            child: Icon(
+              Icons.language_rounded,
+              size: 20,
+              color: colors.onSurface,
+            ),
           )
         : Container(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
             decoration: BoxDecoration(
               color: colors.surfaceContainerHighest.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: colors.outline.withValues(alpha: 0.2),
-              ),
+              border: Border.all(color: colors.outline.withValues(alpha: 0.2)),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../localization/app_localizations.dart';
 
 class InputValidators {
@@ -35,7 +36,10 @@ class InputValidators {
   }
 
   /// Validate subscriber name (اسم المشترك)
-  static String? validateSubscriberName(String? value, {BuildContext? context}) {
+  static String? validateSubscriberName(
+    String? value, {
+    BuildContext? context,
+  }) {
     if (value == null || value.trim().isEmpty) {
       return context?.tr('val_subscriber_empty') ?? 'يرجى إدخال اسم المشترك';
     }

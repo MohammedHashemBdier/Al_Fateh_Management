@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/rbac/role_permissions.dart';
 
 /// كائن يمثل وجهة تصفح في المنظومة مع الصلاحيات والأيقونات
@@ -71,7 +72,8 @@ class NavDestinationItem {
     // فلترة الوجهات بناءً على دور المستخدم
     return all.where((dest) {
       if (dest.requiredRoles == null) return true;
-      return dest.requiredRoles!.contains(userRole) || userRole == UserRole.admin;
+      return dest.requiredRoles!.contains(userRole) ||
+          userRole == UserRole.admin;
     }).toList();
   }
 }

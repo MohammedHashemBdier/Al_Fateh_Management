@@ -52,8 +52,9 @@ class TicketsState {
   bool showTableView(bool isCompact) => isTableView ?? !isCompact;
 
   /// إجمالي عدد الصفحات بعد الفلترة
-  int get totalPages =>
-      (filteredTickets.isEmpty) ? 1 : ((filteredTickets.length - 1) ~/ pageSize) + 1;
+  int get totalPages => (filteredTickets.isEmpty)
+      ? 1
+      : ((filteredTickets.length - 1) ~/ pageSize) + 1;
 
   /// قائمة التذاكر الخاصة بالصفحة المعروضة حالياً
   List<TicketModel> get paginatedTickets {
@@ -101,10 +102,10 @@ class TicketsState {
       selectedTicketIds: selectedTicketIds ?? this.selectedTicketIds,
       pendingSyncCount: pendingSyncCount ?? this.pendingSyncCount,
       isOffline: isOffline ?? this.isOffline,
-      errorMessage:
-          errorMessage != null ? errorMessage() : this.errorMessage,
-      successMessage:
-          successMessage != null ? successMessage() : this.successMessage,
+      errorMessage: errorMessage != null ? errorMessage() : this.errorMessage,
+      successMessage: successMessage != null
+          ? successMessage()
+          : this.successMessage,
     );
   }
 }

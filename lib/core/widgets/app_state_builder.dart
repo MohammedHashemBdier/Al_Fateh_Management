@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../contracts/base_state.dart';
 import 'app_animations.dart';
 import 'app_button.dart';
@@ -33,9 +34,7 @@ class AppStateBuilder<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppAnimatedSwitch(
-      child: _buildCurrentState(context),
-    );
+    return AppAnimatedSwitch(child: _buildCurrentState(context));
   }
 
   Widget _buildCurrentState(BuildContext context) {

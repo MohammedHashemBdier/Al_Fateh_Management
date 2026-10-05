@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../utils/context_extensions.dart';
 
 /// ويدجت التحميل الهيكلي النابض (Skeleton Shimmer Loader)
@@ -20,14 +21,11 @@ class AppSkeleton extends StatefulWidget {
   });
 
   /// قالب هيكلي دائري (للصور الرمزية والأيقونات)
-  const AppSkeleton.circle({
-    super.key,
-    required double size,
-    this.margin,
-  })  : width = size,
-        height = size,
-        borderRadius = 0,
-        shape = BoxShape.circle;
+  const AppSkeleton.circle({super.key, required double size, this.margin})
+    : width = size,
+      height = size,
+      borderRadius = 0,
+      shape = BoxShape.circle;
 
   /// قالب هيكلي لحقول الإدخال
   const AppSkeleton.input({
@@ -137,11 +135,7 @@ class _AppSkeletonState extends State<AppSkeleton>
                 _animation.value.clamp(0.0, 1.0),
                 (_animation.value + 0.3).clamp(0.0, 1.0),
               ],
-              colors: [
-                baseColor,
-                highlightColor,
-                baseColor,
-              ],
+              colors: [baseColor, highlightColor, baseColor],
             ),
           ),
         );

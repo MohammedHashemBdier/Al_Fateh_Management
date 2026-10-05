@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../core/utils/context_extensions.dart';
 import '../../../../../core/widgets/widgets.dart';
 import '../../../domain/models/ticket_filter.dart';
@@ -98,7 +99,9 @@ class _TicketFilterBarState extends State<TicketFilterBar> {
                   ),
                 ),
                 icon: Icon(
-                  widget.isTableView ? Icons.grid_view_rounded : Icons.table_chart_rounded,
+                  widget.isTableView
+                      ? Icons.grid_view_rounded
+                      : Icons.table_chart_rounded,
                   color: colors.primary,
                 ),
                 onPressed: () => widget.onToggleView(!widget.isTableView),
@@ -129,7 +132,9 @@ class _TicketFilterBarState extends State<TicketFilterBar> {
                 items: TicketStatus.values,
                 itemLabel: (s) => context.isArabic ? s.labelAr : s.labelEn,
                 onSelected: (val) {
-                  widget.onFilterChange(widget.filter.copyWith(status: () => val));
+                  widget.onFilterChange(
+                    widget.filter.copyWith(status: () => val),
+                  );
                 },
               ),
               const SizedBox(width: 8),
@@ -142,7 +147,9 @@ class _TicketFilterBarState extends State<TicketFilterBar> {
                 items: widget.problems,
                 itemLabel: (p) => p,
                 onSelected: (val) {
-                  widget.onFilterChange(widget.filter.copyWith(problemType: () => val));
+                  widget.onFilterChange(
+                    widget.filter.copyWith(problemType: () => val),
+                  );
                 },
               ),
               const SizedBox(width: 8),
@@ -155,7 +162,9 @@ class _TicketFilterBarState extends State<TicketFilterBar> {
                 items: widget.employees,
                 itemLabel: (e) => e,
                 onSelected: (val) {
-                  widget.onFilterChange(widget.filter.copyWith(assignedEmployee: () => val));
+                  widget.onFilterChange(
+                    widget.filter.copyWith(assignedEmployee: () => val),
+                  );
                 },
               ),
               const SizedBox(width: 8),
@@ -178,7 +187,10 @@ class _TicketFilterBarState extends State<TicketFilterBar> {
 
               // عداد النتائج
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 6,
+                ),
                 decoration: BoxDecoration(
                   color: colors.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(16),

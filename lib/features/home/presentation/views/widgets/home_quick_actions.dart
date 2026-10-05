@@ -18,10 +18,7 @@ class HomeQuickActions extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        AppText.title(
-          'stat_quick_actions',
-          color: context.colors.onSurface,
-        ),
+        AppText.title('stat_quick_actions', color: context.colors.onSurface),
         const SizedBox(height: 12),
         Wrap(
           spacing: 12,
@@ -70,10 +67,7 @@ class HomeQuickActions extends StatelessWidget {
             // إدارة الموظفين والصلاحيات (أدمن، مدير عام)
             RoleGate(
               userRole: role,
-              allowedRoles: const [
-                UserRole.admin,
-                UserRole.generalManager,
-              ],
+              allowedRoles: const [UserRole.admin, UserRole.generalManager],
               child: _buildActionButton(
                 context: context,
                 labelKey: 'action_manage_users',
@@ -87,10 +81,7 @@ class HomeQuickActions extends StatelessWidget {
             // تدقيق الرواتب والدوام المالي (مالية، مدير عام)
             RoleGate(
               userRole: role,
-              allowedRoles: const [
-                UserRole.finance,
-                UserRole.generalManager,
-              ],
+              allowedRoles: const [UserRole.finance, UserRole.generalManager],
               child: _buildActionButton(
                 context: context,
                 labelKey: 'action_payroll_audit',
@@ -135,7 +126,10 @@ class HomeQuickActions extends StatelessWidget {
               transform: Matrix4.translationValues(0, isHovered ? -2 : 0, 0),
               child: AppCard(
                 onTap: onTap,
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
                 borderRadius: 14,
                 borderColor: isHovered ? color.withValues(alpha: 0.6) : null,
                 child: Row(

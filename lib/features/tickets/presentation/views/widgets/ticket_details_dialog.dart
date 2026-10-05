@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../core/constants/app_assets.dart';
 import '../../../../../core/services/services.dart';
 import '../../../../../core/utils/context_extensions.dart';
@@ -20,7 +21,8 @@ class TicketDetailsDialog extends StatefulWidget {
     String? problem,
     required String actorName,
     String? auditNote,
-  }) onUpdate;
+  })
+  onUpdate;
   final Future<bool> Function(int rowId)? onDelete;
 
   const TicketDetailsDialog({
@@ -48,7 +50,8 @@ class TicketDetailsDialog extends StatefulWidget {
       String? problem,
       required String actorName,
       String? auditNote,
-    }) onUpdate,
+    })
+    onUpdate,
     Future<bool> Function(int rowId)? onDelete,
   }) {
     return AppDialogService.custom<bool>(
@@ -84,8 +87,7 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
     _tabController = TabController(length: 2, vsync: this);
     _selectedStatus = widget.ticket.status;
     _selectedEmployee = widget.ticket.employee;
-    _solutionController =
-        TextEditingController(text: widget.ticket.solution);
+    _solutionController = TextEditingController(text: widget.ticket.solution);
     _notesController = TextEditingController();
   }
 
@@ -139,7 +141,6 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final colors = context.colors;
@@ -158,125 +159,128 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
           child: Padding(
             padding: const EdgeInsets.all(24.0),
             child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // الرأس: رقم التذكرة ومعلومات المشترك الأساسية
-              Row(
-                children: [
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: colors.primaryContainer,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: AppText.literal(
-                      '#${widget.ticket.rowId > 0 ? widget.ticket.rowId : 'OFFLINE'}',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: colors.onPrimaryContainer,
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        AppText.title(
-                          widget.ticket.subscriberName,
-                          isTranslated: false,
-                          fontFamily: AppAssets.fontSecondary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                          color: colors.onSurface,
-                        ),
-                        AppText.caption(
-                          '${widget.ticket.landline}  •  ${widget.ticket.date} ${widget.ticket.time}',
-                          isTranslated: false,
-                          fontSize: 12,
-                          color: colors.onSurfaceVariant,
-                        ),
-                      ],
-                    ),
-                  ),
-                  AppStatusBadge(status: widget.ticket.status),
-                  const SizedBox(width: 8),
-                  IconButton(
-                    icon: const Icon(Icons.close_rounded),
-                    onPressed: () => Navigator.of(context).pop(),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-
-              // التبويبات: التفاصيل والتحديث / سجل التدقيق
-              TabBar(
-                controller: _tabController,
-                labelColor: colors.primary,
-                unselectedLabelColor: colors.onSurfaceVariant,
-                indicatorColor: colors.primary,
-                tabs: [
-                  Tab(text: context.tr('tab_ticket_details')),
-                  Tab(
-                    text:
-                        '${context.tr('tab_audit_trail')} (${widget.ticket.auditTrail.length})',
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-
-              // محتوى التبويب
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // الرأس: رقم التذكرة ومعلومات المشترك الأساسية
+                Row(
                   children: [
-                    _buildDetailsTab(context),
-                    _buildAuditTrailTab(context),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      decoration: BoxDecoration(
+                        color: colors.primaryContainer,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: AppText.literal(
+                        '#${widget.ticket.rowId > 0 ? widget.ticket.rowId : 'OFFLINE'}',
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: colors.onPrimaryContainer,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          AppText.title(
+                            widget.ticket.subscriberName,
+                            isTranslated: false,
+                            fontFamily: AppAssets.fontSecondary,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 17,
+                            color: colors.onSurface,
+                          ),
+                          AppText.caption(
+                            '${widget.ticket.landline}  •  ${widget.ticket.date} ${widget.ticket.time}',
+                            isTranslated: false,
+                            fontSize: 12,
+                            color: colors.onSurfaceVariant,
+                          ),
+                        ],
+                      ),
+                    ),
+                    AppStatusBadge(status: widget.ticket.status),
+                    const SizedBox(width: 8),
+                    IconButton(
+                      icon: const Icon(Icons.close_rounded),
+                      onPressed: () => Navigator.of(context).pop(),
+                    ),
                   ],
                 ),
-              ),
+                const SizedBox(height: 12),
 
-              const SizedBox(height: 12),
-              Divider(color: colors.outlineVariant.withValues(alpha: 0.3)),
-              const SizedBox(height: 8),
-
-              // الأزرار السفلية
-              Row(
-                children: [
-                  if (widget.onDelete != null)
-                    AppButton(
-                      label: context.tr('delete'),
-                      icon: Icons.delete_outline_rounded,
-                      variant: AppButtonVariant.text,
-                      customColor: colors.error,
-                      height: 38,
-                      onPressed: _isLoading ? null : _handleDelete,
+                // التبويبات: التفاصيل والتحديث / سجل التدقيق
+                TabBar(
+                  controller: _tabController,
+                  labelColor: colors.primary,
+                  unselectedLabelColor: colors.onSurfaceVariant,
+                  indicatorColor: colors.primary,
+                  tabs: [
+                    Tab(text: context.tr('tab_ticket_details')),
+                    Tab(
+                      text:
+                          '${context.tr('tab_audit_trail')} (${widget.ticket.auditTrail.length})',
                     ),
-                  const Spacer(),
-                  AppButton(
-                    label: context.tr('close'),
-                    variant: AppButtonVariant.ghost,
-                    customColor: colors.onSurfaceVariant,
-                    height: 38,
-                    onPressed:
-                        _isLoading ? null : () => Navigator.of(context).pop(),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+                // محتوى التبويب
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: [
+                      _buildDetailsTab(context),
+                      _buildAuditTrailTab(context),
+                    ],
                   ),
-                  const SizedBox(width: 12),
-                  AppButton(
-                    label: context.tr('save_changes'),
-                    icon: Icons.check_circle_rounded,
-                    isLoading: _isLoading,
-                    onPressed: _handleSaveUpdate,
-                  ),
-                ],
-              ),
-            ],
+                ),
+
+                const SizedBox(height: 12),
+                Divider(color: colors.outlineVariant.withValues(alpha: 0.3)),
+                const SizedBox(height: 8),
+
+                // الأزرار السفلية
+                Row(
+                  children: [
+                    if (widget.onDelete != null)
+                      AppButton(
+                        label: context.tr('delete'),
+                        icon: Icons.delete_outline_rounded,
+                        variant: AppButtonVariant.text,
+                        customColor: colors.error,
+                        height: 38,
+                        onPressed: _isLoading ? null : _handleDelete,
+                      ),
+                    const Spacer(),
+                    AppButton(
+                      label: context.tr('close'),
+                      variant: AppButtonVariant.ghost,
+                      customColor: colors.onSurfaceVariant,
+                      height: 38,
+                      onPressed: _isLoading
+                          ? null
+                          : () => Navigator.of(context).pop(),
+                    ),
+                    const SizedBox(width: 12),
+                    AppButton(
+                      label: context.tr('save_changes'),
+                      icon: Icons.check_circle_rounded,
+                      isLoading: _isLoading,
+                      onPressed: _handleSaveUpdate,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   Widget _buildDetailsTab(BuildContext context) {
     final colors = context.colors;
@@ -293,8 +297,11 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
               children: [
                 Row(
                   children: [
-                    Icon(Icons.report_problem_outlined,
-                        size: 18, color: colors.tertiary),
+                    Icon(
+                      Icons.report_problem_outlined,
+                      size: 18,
+                      color: colors.tertiary,
+                    ),
                     const SizedBox(width: 8),
                     AppText.literal(
                       widget.ticket.problem,
@@ -334,8 +341,7 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
                 label: AppText.literal(
                   statusName,
                   fontSize: 12,
-                  fontWeight:
-                      isSelected ? FontWeight.bold : FontWeight.normal,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                   color: isSelected
                       ? colors.onPrimaryContainer
                       : colors.onSurface,
@@ -370,7 +376,8 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
             ),
             child: DropdownButtonHideUnderline(
               child: DropdownButton<String>(
-                value: _selectedEmployee.isNotEmpty &&
+                value:
+                    _selectedEmployee.isNotEmpty &&
                         widget.employees.contains(_selectedEmployee)
                     ? _selectedEmployee
                     : null,
@@ -450,8 +457,11 @@ class _TicketDetailsDialogState extends State<TicketDetailsDialog>
               CircleAvatar(
                 radius: 14,
                 backgroundColor: colors.surfaceContainerHighest,
-                child: Icon(Icons.history_rounded,
-                    size: 16, color: colors.primary),
+                child: Icon(
+                  Icons.history_rounded,
+                  size: 16,
+                  color: colors.primary,
+                ),
               ),
               const SizedBox(width: 10),
               Expanded(

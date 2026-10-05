@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/design_system/app_dimens.dart';
 import '../../../../core/design_system/app_radii.dart';
 import '../../../../core/rbac/role_permissions.dart';
@@ -132,14 +133,16 @@ class AppDrawer extends StatelessWidget {
                           : null,
                       leading: Icon(
                         isSelected ? (item.activeIcon ?? item.icon) : item.icon,
-                        color:
-                            isSelected ? colors.primary : colors.onSurfaceVariant,
+                        color: isSelected
+                            ? colors.primary
+                            : colors.onSurfaceVariant,
                         size: AppDimens.iconMedium,
                       ),
                       title: AppText.body(
                         context.tr(item.titleKey),
-                        fontWeight:
-                            isSelected ? FontWeight.bold : FontWeight.normal,
+                        fontWeight: isSelected
+                            ? FontWeight.bold
+                            : FontWeight.normal,
                         color: isSelected ? colors.primary : colors.onSurface,
                       ),
                       onTap: () {
@@ -148,7 +151,10 @@ class AppDrawer extends StatelessWidget {
                           if (onDestinationSelected != null) {
                             onDestinationSelected!(item.route);
                           } else {
-                            AppNavigationService.instance.goTo(context, item.route);
+                            AppNavigationService.instance.goTo(
+                              context,
+                              item.route,
+                            );
                           }
                         }
                       },

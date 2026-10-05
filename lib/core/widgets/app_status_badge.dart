@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 
@@ -6,11 +7,7 @@ class AppStatusBadge extends StatelessWidget {
   final String status;
   final bool showDot;
 
-  const AppStatusBadge({
-    super.key,
-    required this.status,
-    this.showDot = true,
-  });
+  const AppStatusBadge({super.key, required this.status, this.showDot = true});
 
   @override
   Widget build(BuildContext context) {

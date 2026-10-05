@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/rbac/role_permissions.dart';
 
 /// نموذج عنصر التنقل الموحد في منظومة الفتح (Unified Navigation Item)

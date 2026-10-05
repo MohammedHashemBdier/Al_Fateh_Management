@@ -1,5 +1,7 @@
 import 'dart:convert';
+
 import 'package:shared_preferences/shared_preferences.dart';
+
 import '../../../../core/utils/app_crypto.dart';
 import '../../domain/models/sync_operation.dart';
 import '../../domain/models/ticket_model.dart';
@@ -87,15 +89,18 @@ class TicketsLocalDataSourceImpl implements TicketsLocalDataSource {
 
       return TicketsInitData(
         tickets: tickets,
-        problems: (map['problems'] as List<dynamic>?)
+        problems:
+            (map['problems'] as List<dynamic>?)
                 ?.map((e) => e.toString())
                 .toList() ??
             [],
-        statuses: (map['statuses'] as List<dynamic>?)
+        statuses:
+            (map['statuses'] as List<dynamic>?)
                 ?.map((e) => e.toString())
                 .toList() ??
             [],
-        employees: (map['employees'] as List<dynamic>?)
+        employees:
+            (map['employees'] as List<dynamic>?)
                 ?.map((e) => e.toString())
                 .toList() ??
             [],

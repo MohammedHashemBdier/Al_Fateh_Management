@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/design_system/app_dimens.dart';
 import '../../app_scaffold.dart';
 
@@ -7,6 +8,9 @@ class AppListScaffold extends AppScaffold {
   final Widget? filterHeader;
   final Widget listBody;
   final Widget? paginationFooter;
+  final bool withDividers;
+  final EdgeInsetsGeometry? headerPadding;
+  final EdgeInsetsGeometry? footerPadding;
 
   const AppListScaffold({
     super.key,
@@ -15,6 +19,9 @@ class AppListScaffold extends AppScaffold {
     required this.listBody,
     this.filterHeader,
     this.paginationFooter,
+    this.withDividers = true,
+    this.headerPadding,
+    this.footerPadding,
     super.currentRoute,
     super.user,
     super.actions,
@@ -43,22 +50,26 @@ class AppListScaffold extends AppScaffold {
       children: [
         if (filterHeader != null) ...[
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppDimens.paddingMedium,
-              vertical: AppDimens.paddingSmall,
-            ),
+            padding:
+                headerPadding ??
+                const EdgeInsets.symmetric(
+                  horizontal: AppDimens.paddingMedium,
+                  vertical: AppDimens.paddingSmall,
+                ),
             child: filterHeader!,
           ),
-          const Divider(height: 1),
+          if (withDividers) const Divider(height: 1),
         ],
         Expanded(child: listBody),
         if (paginationFooter != null) ...[
-          const Divider(height: 1),
+          if (withDividers) const Divider(height: 1),
           Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppDimens.paddingMedium,
-              vertical: AppDimens.space6,
-            ),
+            padding:
+                footerPadding ??
+                const EdgeInsets.symmetric(
+                  horizontal: AppDimens.paddingMedium,
+                  vertical: AppDimens.space6,
+                ),
             child: paginationFooter!,
           ),
         ],

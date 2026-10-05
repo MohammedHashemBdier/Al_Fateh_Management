@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 
@@ -24,9 +25,7 @@ class AppDivider extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            child: Divider(
-              color: colors.outlineVariant.withValues(alpha: 0.3),
-            ),
+            child: Divider(color: colors.outlineVariant.withValues(alpha: 0.3)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -41,9 +40,7 @@ class AppDivider extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Divider(
-              color: colors.outlineVariant.withValues(alpha: 0.3),
-            ),
+            child: Divider(color: colors.outlineVariant.withValues(alpha: 0.3)),
           ),
         ],
       ),

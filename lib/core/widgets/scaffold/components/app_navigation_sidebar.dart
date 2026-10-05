@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../core/design_system/app_curves.dart';
 import '../../../../core/design_system/app_dimens.dart';
 import '../../../../core/design_system/app_durations.dart';
@@ -61,8 +62,9 @@ class AppNavigationSidebar extends StatelessWidget {
     final isArabic = context.isArabic;
     final navItems = RoleDefinitions.getItemsForRoleCode(user?.roleId);
     final role = UserRole.fromCode(user?.roleId);
-    final width =
-        isExpanded ? AppDimens.navRailExpandedWidth : AppDimens.navRailWidth;
+    final width = isExpanded
+        ? AppDimens.navRailExpandedWidth
+        : AppDimens.navRailWidth;
 
     return AnimatedContainer(
       duration: AppDurations.medium,
@@ -134,8 +136,9 @@ class AppNavigationSidebar extends StatelessWidget {
                 padding: const EdgeInsets.all(AppDimens.paddingSmall),
                 child: AppCard(
                   padding: const EdgeInsets.all(AppDimens.paddingSmall),
-                  backgroundColor:
-                      colors.surfaceContainerHighest.withValues(alpha: 0.35),
+                  backgroundColor: colors.surfaceContainerHighest.withValues(
+                    alpha: 0.35,
+                  ),
                   child: Row(
                     children: [
                       CircleAvatar(
@@ -214,8 +217,10 @@ class AppNavigationSidebar extends StatelessWidget {
                               if (onDestinationSelected != null) {
                                 onDestinationSelected!(item.route);
                               } else {
-                                AppNavigationService.instance
-                                    .goTo(context, item.route);
+                                AppNavigationService.instance.goTo(
+                                  context,
+                                  item.route,
+                                );
                               }
                             }
                           },
@@ -250,16 +255,17 @@ class AppNavigationSidebar extends StatelessWidget {
                           fontWeight: isSelected
                               ? FontWeight.bold
                               : FontWeight.normal,
-                          color:
-                              isSelected ? colors.primary : colors.onSurface,
+                          color: isSelected ? colors.primary : colors.onSurface,
                         ),
                         onTap: () {
                           if (!isSelected) {
                             if (onDestinationSelected != null) {
                               onDestinationSelected!(item.route);
                             } else {
-                              AppNavigationService.instance
-                                  .goTo(context, item.route);
+                              AppNavigationService.instance.goTo(
+                                context,
+                                item.route,
+                              );
                             }
                           }
                         },

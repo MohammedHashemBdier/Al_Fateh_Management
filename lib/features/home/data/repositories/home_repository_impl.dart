@@ -15,9 +15,9 @@ class HomeRepositoryImpl implements HomeRepository {
     HomeRemoteDataSource? remoteDataSource,
     HomeLocalDataSource? localDataSource,
     AuthRepository? authRepository,
-  })  : _remoteDataSource = remoteDataSource ?? HomeRemoteDataSourceImpl(),
-        _localDataSource = localDataSource ?? HomeLocalDataSourceImpl(),
-        _authRepository = authRepository ?? AuthRepositoryImpl();
+  }) : _remoteDataSource = remoteDataSource ?? HomeRemoteDataSourceImpl(),
+       _localDataSource = localDataSource ?? HomeLocalDataSourceImpl(),
+       _authRepository = authRepository ?? AuthRepositoryImpl();
 
   @override
   Future<UserModel?> getCurrentUser() async {
@@ -35,7 +35,9 @@ class HomeRepositoryImpl implements HomeRepository {
   }
 
   @override
-  Future<DashboardStatsModel> getDashboardStats({bool forceRefresh = false}) async {
+  Future<DashboardStatsModel> getDashboardStats({
+    bool forceRefresh = false,
+  }) async {
     try {
       // 1. محاولة الجلب الحي من الخادم السحابي
       final remoteStats = await _remoteDataSource.fetchDashboardStats();

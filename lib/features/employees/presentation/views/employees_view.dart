@@ -12,16 +12,11 @@ class EmployeesView extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
 
-    return AppScaffold(
-      appBar: AppAppBar(
-        title: context.tr('employees_view_title'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_rounded),
-          tooltip: context.tr('back'),
-          onPressed: () => context.go('/home'),
-        ),
-      ),
-      body: Center(
+    return AppDetailScaffold(
+      title: 'employees_view_title',
+      currentRoute: '/employees',
+      onBackPressed: () => context.go('/home'),
+      detailContent: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 680),
           child: SingleChildScrollView(

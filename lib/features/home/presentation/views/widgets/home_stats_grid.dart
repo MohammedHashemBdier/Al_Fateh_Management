@@ -77,19 +77,21 @@ class HomeStatsGrid extends StatelessWidget {
         children: cards
             .asMap()
             .entries
-            .map((entry) => Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: SizedBox(
-                      height: 76,
-                      child: AppFadeSlide(
-                        delay: Duration(milliseconds: 60 + entry.key * 50),
-                        scaleIn: true,
-                        child: _buildCardItem(ctx, entry.value),
-                      ),
+            .map(
+              (entry) => Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                  child: SizedBox(
+                    height: 76,
+                    child: AppFadeSlide(
+                      delay: Duration(milliseconds: 60 + entry.key * 50),
+                      scaleIn: true,
+                      child: _buildCardItem(ctx, entry.value),
                     ),
                   ),
-                ))
+                ),
+              ),
+            )
             .toList(),
       ),
       tablet: (ctx) => GridView.count(
@@ -102,11 +104,13 @@ class HomeStatsGrid extends StatelessWidget {
         children: cards
             .asMap()
             .entries
-            .map((entry) => AppFadeSlide(
-                  delay: Duration(milliseconds: 60 + entry.key * 50),
-                  scaleIn: true,
-                  child: _buildCardItem(ctx, entry.value),
-                ))
+            .map(
+              (entry) => AppFadeSlide(
+                delay: Duration(milliseconds: 60 + entry.key * 50),
+                scaleIn: true,
+                child: _buildCardItem(ctx, entry.value),
+              ),
+            )
             .toList(),
       ),
       mobile: (ctx) => GridView.count(
@@ -119,11 +123,13 @@ class HomeStatsGrid extends StatelessWidget {
         children: cards
             .asMap()
             .entries
-            .map((entry) => AppFadeSlide(
-                  delay: Duration(milliseconds: 60 + entry.key * 50),
-                  scaleIn: true,
-                  child: _buildCardItem(ctx, entry.value),
-                ))
+            .map(
+              (entry) => AppFadeSlide(
+                delay: Duration(milliseconds: 60 + entry.key * 50),
+                scaleIn: true,
+                child: _buildCardItem(ctx, entry.value),
+              ),
+            )
             .toList(),
       ),
     );
@@ -151,10 +157,14 @@ class HomeStatsGrid extends StatelessWidget {
                     width: 36,
                     height: 36,
                     decoration: BoxDecoration(
-                      color: data.color.withValues(alpha: isHovered ? 0.18 : 0.1),
+                      color: data.color.withValues(
+                        alpha: isHovered ? 0.18 : 0.1,
+                      ),
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: data.color.withValues(alpha: isHovered ? 0.4 : 0.18),
+                        color: data.color.withValues(
+                          alpha: isHovered ? 0.4 : 0.18,
+                        ),
                         width: 1,
                       ),
                     ),

@@ -11,8 +11,8 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl({
     AuthRemoteDataSource? remoteDataSource,
     AuthLocalDataSource? localDataSource,
-  })  : _remoteDataSource = remoteDataSource ?? AuthRemoteDataSourceImpl(),
-        _localDataSource = localDataSource ?? AuthLocalDataSourceImpl();
+  }) : _remoteDataSource = remoteDataSource ?? AuthRemoteDataSourceImpl(),
+       _localDataSource = localDataSource ?? AuthLocalDataSourceImpl();
 
   @override
   Future<AuthSession> login({
@@ -67,7 +67,9 @@ class AuthRepositoryImpl implements AuthRepository {
         }
 
         // التحقق الأمني من صحة كلمة المرور المدخلة عبر الـ Offline Verifier
-        final verifier = await _localDataSource.getOfflineVerifier(cleanUsername);
+        final verifier = await _localDataSource.getOfflineVerifier(
+          cleanUsername,
+        );
         if (verifier != null &&
             verifier != AppCrypto.hashOfflinePassword(password)) {
           throw Exception('login_error_invalid_password');

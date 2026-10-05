@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
 import '../../../../core/utils/context_extensions.dart';
 import '../../../../core/utils/app_snackbars.dart';
 import '../../../../core/widgets/widgets.dart';
@@ -63,7 +64,9 @@ class _LoginViewBody extends StatelessWidget {
       return context.tr('login_error_generic');
     }
     final translated = context.tr(clean);
-    return translated.isNotEmpty ? translated : context.tr('login_error_generic');
+    return translated.isNotEmpty
+        ? translated
+        : context.tr('login_error_generic');
   }
 
   @override
@@ -71,7 +74,10 @@ class _LoginViewBody extends StatelessWidget {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state is LoginFailure) {
-          final localizedError = _resolveErrorMessage(context, state.errorMessage);
+          final localizedError = _resolveErrorMessage(
+            context,
+            state.errorMessage,
+          );
           AppSnackbars.showError(context, localizedError);
         } else if (state is LoginSuccess) {
           if (state.session.isOffline) {
@@ -89,10 +95,7 @@ class _LoginViewBody extends StatelessWidget {
           context.go('/home');
         }
       },
-      child: AppScaffold(
-        useDefaultAppBar: false,
-        applyPadding: false,
-        withGradientBackground: false,
+      child: AppAuthScaffold(
         body: LayoutBuilder(
           builder: (context, constraints) {
             final isDesktop = constraints.maxWidth > 880;
@@ -113,10 +116,7 @@ class _LoginViewBody extends StatelessWidget {
     return Row(
       children: [
         // القسم الأيسر: لوحة الهوية البصرية والمميزات
-        const Expanded(
-          flex: 5,
-          child: LoginBrandingPanel(),
-        ),
+        const Expanded(flex: 5, child: LoginBrandingPanel()),
 
         // القسم الأيمن: نموذج الدخول مع مبدلات الثيم واللغة العلوية
         Expanded(
@@ -176,10 +176,7 @@ class _LoginViewBody extends StatelessWidget {
             left: 16,
             child: AppFadeSlide(
               delay: Duration(milliseconds: 50),
-              child: AppThemeLanguageSwitchers(
-                spread: true,
-                compact: true,
-              ),
+              child: AppThemeLanguageSwitchers(spread: true, compact: true),
             ),
           ),
 
@@ -246,7 +243,9 @@ class _LoginViewBody extends StatelessWidget {
                             child: AppText.caption(
                               'security_badge',
                               overflow: TextOverflow.ellipsis,
-                              color: colors.onSurfaceVariant.withValues(alpha: 0.7),
+                              color: colors.onSurfaceVariant.withValues(
+                                alpha: 0.7,
+                              ),
                             ),
                           ),
                         ],

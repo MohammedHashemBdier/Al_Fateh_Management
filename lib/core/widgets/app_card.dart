@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../utils/context_extensions.dart';
 
 class AppCard extends StatefulWidget {
@@ -33,17 +34,23 @@ class _AppCardState extends State<AppCard> {
     final colors = context.colors;
     final isDark = context.isDark;
 
-    final defaultBg = widget.backgroundColor ??
+    final defaultBg =
+        widget.backgroundColor ??
         (isDark
             ? colors.surfaceContainerHighest.withValues(alpha: 0.35)
             : colors.surface);
 
-    final defaultBorder = widget.borderColor ??
+    final defaultBorder =
+        widget.borderColor ??
         colors.outlineVariant.withValues(alpha: _isHovered ? 0.6 : 0.3);
 
     return MouseRegion(
-      onEnter: widget.enableHover ? (_) => setState(() => _isHovered = true) : null,
-      onExit: widget.enableHover ? (_) => setState(() => _isHovered = false) : null,
+      onEnter: widget.enableHover
+          ? (_) => setState(() => _isHovered = true)
+          : null,
+      onExit: widget.enableHover
+          ? (_) => setState(() => _isHovered = false)
+          : null,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         transform: Matrix4.translationValues(
@@ -58,7 +65,9 @@ class _AppCardState extends State<AppCard> {
           boxShadow: _isHovered && widget.onTap != null
               ? [
                   BoxShadow(
-                    color: colors.shadow.withValues(alpha: isDark ? 0.25 : 0.08),
+                    color: colors.shadow.withValues(
+                      alpha: isDark ? 0.25 : 0.08,
+                    ),
                     blurRadius: 16,
                     offset: const Offset(0, 6),
                   ),
@@ -72,10 +81,7 @@ class _AppCardState extends State<AppCard> {
           child: InkWell(
             onTap: widget.onTap,
             borderRadius: BorderRadius.circular(widget.borderRadius),
-            child: Padding(
-              padding: widget.padding,
-              child: widget.child,
-            ),
+            child: Padding(padding: widget.padding, child: widget.child),
           ),
         ),
       ),

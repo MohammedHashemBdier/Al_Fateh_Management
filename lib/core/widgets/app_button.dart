@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_hover.dart';
@@ -92,7 +93,8 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.tonal:
         button = FilledButton.tonal(
           style: FilledButton.styleFrom(
-            backgroundColor: customColor?.withValues(alpha: 0.15) ?? colors.primaryContainer,
+            backgroundColor:
+                customColor?.withValues(alpha: 0.15) ?? colors.primaryContainer,
             foregroundColor: customColor ?? colors.onPrimaryContainer,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
@@ -157,11 +159,7 @@ class AppButton extends StatelessWidget {
         break;
     }
 
-    Widget sizedButton = SizedBox(
-      width: width,
-      height: height,
-      child: button,
-    );
+    Widget sizedButton = SizedBox(width: width, height: height, child: button);
 
     // إضافة تأثير Hover للتفاعل المكتبي
     Widget hoverable = AppHover.scale(
@@ -208,4 +206,3 @@ class AppIconButton extends StatelessWidget {
     return btn;
   }
 }
-

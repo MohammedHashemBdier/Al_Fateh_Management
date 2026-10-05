@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_assets.dart';
 import '../utils/context_extensions.dart';
 import 'app_hover.dart';
@@ -60,8 +61,6 @@ class AppCheckbox extends StatelessWidget {
       ),
     );
 
-    return AppHover(
-      child: content,
-    );
+    return AppHover(child: content);
   }
 }

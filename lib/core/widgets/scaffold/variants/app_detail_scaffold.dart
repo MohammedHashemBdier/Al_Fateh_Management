@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../app_scaffold.dart';
 
 /// هيكل صفحات التفاصيل مع زر الرجوع مفعل افتراضياً (Detail Scaffold Variant)

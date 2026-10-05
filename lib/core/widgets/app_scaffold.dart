@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '../../core/design_system/app_breakpoints.dart';
 import '../../core/design_system/app_dimens.dart';
 import '../../core/services/services.dart';
@@ -95,7 +96,8 @@ class AppScaffold extends StatelessWidget {
     final isMobile = AppBreakpoints.isMobile(context);
     final isCompact = AppBreakpoints.isCompact(context);
     final activeRoute =
-        currentRoute ?? AppNavigationService.instance.getCurrentLocation(context);
+        currentRoute ??
+        AppNavigationService.instance.getCurrentLocation(context);
 
     // توفير الـ Cubit إذا لم يكن متاحاً في الشجرة المحيطة
     return BlocProvider(
@@ -149,7 +151,8 @@ class AppScaffold extends StatelessWidget {
           // تطبيق التمرير التلقائي
           if (isScrollable) {
             content = SingleChildScrollView(
-              padding: padding ??
+              padding:
+                  padding ??
                   customPadding ??
                   EdgeInsets.symmetric(
                     horizontal: isCompact
@@ -161,7 +164,8 @@ class AppScaffold extends StatelessWidget {
             );
           } else if (applyPadding) {
             content = Padding(
-              padding: padding ??
+              padding:
+                  padding ??
                   customPadding ??
                   EdgeInsets.symmetric(
                     horizontal: isCompact
@@ -175,10 +179,7 @@ class AppScaffold extends StatelessWidget {
 
           // سحب للتحديث
           if (onRefresh != null) {
-            content = RefreshIndicator(
-              onRefresh: onRefresh!,
-              child: content,
-            );
+            content = RefreshIndicator(onRefresh: onRefresh!, child: content);
           }
 
           // تدرج الخلفية في شاشات المصادقة أو الترحيب
@@ -206,20 +207,16 @@ class AppScaffold extends StatelessWidget {
           }
 
           // 3. تجهيز القوائم الجانبية والسفلية
-          final resolvedDrawer = drawer ??
+          final resolvedDrawer =
+              drawer ??
               ((showDrawer && isCompact)
-                  ? AppDrawer(
-                      user: user,
-                      activeRoute: activeRoute,
-                    )
+                  ? AppDrawer(user: user, activeRoute: activeRoute)
                   : null);
 
-          final resolvedBottomNav = bottomNavigationBar ??
+          final resolvedBottomNav =
+              bottomNavigationBar ??
               ((showNavigation && isMobile)
-                  ? AppBottomNav(
-                      user: user,
-                      activeRoute: activeRoute,
-                    )
+                  ? AppBottomNav(user: user, activeRoute: activeRoute)
                   : null);
 
           // إذا كانت الشاشة ديسكتوب والنافيغيشن مفعل، نبني layout ثنائي العمود
@@ -245,7 +242,10 @@ class AppScaffold extends StatelessWidget {
                         Expanded(
                           child: withGradientBackground
                               ? content
-                              : SafeArea(top: resolvedAppBar == null, child: content),
+                              : SafeArea(
+                                  top: resolvedAppBar == null,
+                                  child: content,
+                                ),
                         ),
                       ],
                     ),

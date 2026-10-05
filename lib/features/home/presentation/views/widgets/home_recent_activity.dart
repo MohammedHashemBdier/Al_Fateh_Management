@@ -44,7 +44,11 @@ class HomeRecentActivity extends StatelessWidget {
                       fontSize: 12,
                     ),
                     const SizedBox(width: 4),
-                    Icon(Icons.arrow_forward_ios_rounded, size: 11, color: colors.primary),
+                    Icon(
+                      Icons.arrow_forward_ios_rounded,
+                      size: 11,
+                      color: colors.primary,
+                    ),
                   ],
                 ),
               ),
@@ -68,31 +72,38 @@ class HomeRecentActivity extends StatelessWidget {
               final ticket = tickets[index];
 
               // تحديد الأيقونة واللون حسب حالة التذكرة
-              final isResolved = ticket.status.trim() == 'تم الحل' ||
+              final isResolved =
+                  ticket.status.trim() == 'تم الحل' ||
                   ticket.status.toLowerCase().contains('resolved');
-              final isInProgress = ticket.status.trim() == 'قيد الحل' ||
+              final isInProgress =
+                  ticket.status.trim() == 'قيد الحل' ||
                   ticket.status.toLowerCase().contains('progress');
 
               final statusColor = isResolved
                   ? colors.success
                   : isInProgress
-                      ? colors.warning
-                      : colors.error;
+                  ? colors.warning
+                  : colors.error;
 
               final statusIcon = isResolved
                   ? Icons.check_circle_outline_rounded
                   : isInProgress
-                      ? Icons.access_time_rounded
-                      : Icons.error_outline_rounded;
+                  ? Icons.access_time_rounded
+                  : Icons.error_outline_rounded;
 
               return AppFadeSlide(
                 delay: Duration(milliseconds: 70 + index * 35),
                 child: AppHover(
                   builder: (c, isHovered) {
                     return AppCard(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 8,
+                      ),
                       borderRadius: 12,
-                      borderColor: isHovered ? colors.primary.withValues(alpha: 0.35) : null,
+                      borderColor: isHovered
+                          ? colors.primary.withValues(alpha: 0.35)
+                          : null,
                       onTap: () => context.go('/tickets'),
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -104,7 +115,11 @@ class HomeRecentActivity extends StatelessWidget {
                               color: statusColor.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Icon(statusIcon, size: 16, color: statusColor),
+                            child: Icon(
+                              statusIcon,
+                              size: 16,
+                              color: statusColor,
+                            ),
                           ),
                           const SizedBox(width: 9),
                           Expanded(
@@ -116,8 +131,8 @@ class HomeRecentActivity extends StatelessWidget {
                                   ticket.subscriberName.isNotEmpty
                                       ? ticket.subscriberName
                                       : (ticket.landline.isNotEmpty
-                                          ? ticket.landline
-                                          : context.tr('subscriber')),
+                                            ? ticket.landline
+                                            : context.tr('subscriber')),
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   fontWeight: FontWeight.bold,
@@ -126,7 +141,8 @@ class HomeRecentActivity extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 2),
                                 AppText.literal(
-                                  ticket.subscriberName.isNotEmpty && ticket.landline.isNotEmpty
+                                  ticket.subscriberName.isNotEmpty &&
+                                          ticket.landline.isNotEmpty
                                       ? '${ticket.problem} • ${ticket.landline}'
                                       : '${ticket.problem}${ticket.employee.isNotEmpty ? ' • ${ticket.employee}' : ''}',
                                   maxLines: 1,

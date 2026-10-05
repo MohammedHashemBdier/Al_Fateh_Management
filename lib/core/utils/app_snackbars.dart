@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../constants/app_assets.dart';
 import '../localization/backend_message_translator.dart';
 import '../theme/theme.dart';
@@ -57,8 +58,7 @@ class AppSnackbars {
     required Color backgroundColor,
     required Color foregroundColor,
   }) {
-    final displayMessage =
-        BackendMessageTranslator.translate(context, message);
+    final displayMessage = BackendMessageTranslator.translate(context, message);
 
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
