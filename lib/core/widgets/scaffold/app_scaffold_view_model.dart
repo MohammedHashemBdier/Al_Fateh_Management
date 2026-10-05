@@ -28,7 +28,8 @@ class AppScaffoldState {
 
 /// متحكم حالة الهيكل الموحد (Scaffold ViewModel / Cubit)
 class AppScaffoldCubit extends Cubit<AppScaffoldState> {
-  AppScaffoldCubit() : super(const AppScaffoldState());
+  AppScaffoldCubit({bool initialExpanded = true})
+    : super(AppScaffoldState(isSidebarExpanded: initialExpanded));
 
   void toggleSidebar() {
     emit(state.copyWith(isSidebarExpanded: !state.isSidebarExpanded));

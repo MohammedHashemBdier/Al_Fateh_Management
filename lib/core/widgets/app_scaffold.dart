@@ -98,14 +98,17 @@ class AppScaffold extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final isMobile = AppBreakpoints.isMobile(context);
+    final isTablet = AppBreakpoints.isTablet(context);
     final isCompact = AppBreakpoints.isCompact(context);
     final activeRoute =
         currentRoute ??
         AppNavigationService.instance.getCurrentLocation(context);
 
-    // توفير الـ Cubit إذا لم يكن متاحاً في الشجرة المحيطة
+    // توفير الـ Cubit إذا لم يكن متاحاً في الشجرة المحيطة (على التابلت تكون مطوية كـ Rail افتراضياً)
     return BlocProvider(
-      create: (_) => AppScaffoldCubit()..setActiveRoute(activeRoute),
+      create: (_) =>
+          AppScaffoldCubit(initialExpanded: !isTablet)
+            ..setActiveRoute(activeRoute),
       child: BlocBuilder<AppScaffoldCubit, AppScaffoldState>(
         builder: (context, scaffoldState) {
           final isSidebarExpanded = scaffoldState.isSidebarExpanded;
@@ -215,7 +218,7 @@ class AppScaffold extends StatelessWidget {
           // 3. تجهيز القوائم الجانبية والسفلية
           final resolvedDrawer =
               drawer ??
-              ((showDrawer && isCompact && (!showNavigation || !isMobile))
+              ((showDrawer && isMobile && !showNavigation)
                   ? AppDrawer(user: effectiveUser, activeRoute: activeRoute)
                   : null);
 
@@ -225,8 +228,8 @@ class AppScaffold extends StatelessWidget {
                   ? AppBottomNav(user: effectiveUser, activeRoute: activeRoute)
                   : null);
 
-          // إذا كانت الشاشة ديسكتوب والنافيغيشن مفعل، نبني layout ثنائي العمود
-          if (showNavigation && !isCompact) {
+          // شاشات التابلت والديسكتوب عند تفعيل النافيغيشن (عرض >= 650)
+          if (showNavigation && !isMobile) {
             return Scaffold(
               backgroundColor: backgroundColor ?? colors.surface,
               resizeToAvoidBottomInset: resizeToAvoidBottomInset,

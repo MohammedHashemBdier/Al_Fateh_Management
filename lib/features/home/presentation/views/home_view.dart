@@ -10,8 +10,6 @@ import '../../../../core/widgets/widgets.dart';
 import '../../../auth/domain/models/user_model.dart';
 import '../cubit/home_cubit.dart';
 import '../cubit/home_state.dart';
-import 'widgets/home_mobile_nav_bar.dart';
-import 'widgets/home_navigation_rail.dart';
 import 'widgets/home_quick_actions.dart';
 import 'widgets/home_recent_activity.dart';
 import 'widgets/home_stats_grid.dart';
@@ -31,26 +29,6 @@ class HomeView extends StatelessWidget {
 
 class _HomeViewBody extends StatelessWidget {
   const _HomeViewBody();
-
-  void _handleDestinationSelected(BuildContext context, int index) {
-    switch (index) {
-      case 0:
-        context.read<HomeCubit>().selectTab(0);
-        break;
-      case 1:
-        context.go('/tickets');
-        break;
-      case 2:
-        context.go('/attendance');
-        break;
-      case 3:
-        context.go('/employees');
-        break;
-      case 4:
-        context.go('/settings');
-        break;
-    }
-  }
 
   Future<void> _handleLogout(BuildContext context) async {
     await context.read<HomeCubit>().logout();
@@ -156,99 +134,44 @@ class _HomeViewBody extends StatelessWidget {
 
     return KeyedSubtree(
       key: const ValueKey('home_loaded'),
-      child: ResponsiveBuilder(
-        desktop: (ctx) => AppScaffold(
-          useDefaultAppBar: false,
-          applyPadding: false,
-          body: Row(
-            children: [
-              HomeNavigationRail(
-                user: user,
-                selectedIndex: loaded.selectedNavIndex,
-                onDestinationSelected: (idx) =>
-                    _handleDestinationSelected(ctx, idx),
-                isExpanded: true,
-                onLogout: () => _handleLogout(ctx),
-              ),
-              Expanded(
-                child: _buildMainDashboardContent(
-                  context: ctx,
-                  user: user,
-                  role: role,
-                  state: loaded,
-                ),
-              ),
-            ],
+      child: AppScaffold(
+        title: 'app_name',
+        currentRoute: '/home',
+        user: user,
+        useDefaultAppBar: true,
+        showAppBar: true,
+        applyPadding: false,
+        extraActions: [
+          IconButton(
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.refresh_rounded, size: 18),
+            tooltip: context.tr('refresh'),
+            onPressed: () => context.read<HomeCubit>().refreshData(),
           ),
-        ),
-        tablet: (ctx) => AppScaffold(
-          useDefaultAppBar: false,
-          applyPadding: false,
-          body: Row(
-            children: [
-              HomeNavigationRail(
-                user: user,
-                selectedIndex: loaded.selectedNavIndex,
-                onDestinationSelected: (idx) =>
-                    _handleDestinationSelected(ctx, idx),
-                isExpanded: false,
-                onLogout: () => _handleLogout(ctx),
-              ),
-              Expanded(
-                child: _buildMainDashboardContent(
-                  context: ctx,
-                  user: user,
-                  role: role,
-                  state: loaded,
-                ),
-              ),
-            ],
+          IconButton(
+            constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+            padding: EdgeInsets.zero,
+            icon: const Icon(Icons.logout_rounded, size: 18),
+            tooltip: context.tr('logout'),
+            onPressed: () async {
+              final confirm = await AppDialogService.danger(
+                context: context,
+                title: context.tr('confirm_logout_title'),
+                message: context.tr('confirm_logout_msg'),
+                confirmText: context.tr('confirm_logout_button'),
+              );
+              if (confirm && context.mounted) {
+                _handleLogout(context);
+              }
+            },
           ),
-        ),
-        mobile: (ctx) => AppScaffold(
-          useDefaultAppBar: false,
-          applyPadding: false,
-          showDrawer: false,
-          appBar: AppAppBar(
-            extraActions: [
-              IconButton(
-                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-                padding: EdgeInsets.zero,
-                icon: const Icon(Icons.refresh_rounded, size: 18),
-                tooltip: ctx.tr('refresh'),
-                onPressed: () => ctx.read<HomeCubit>().refreshData(),
-              ),
-              IconButton(
-                constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
-                padding: EdgeInsets.zero,
-                icon: const Icon(Icons.logout_rounded, size: 18),
-                tooltip: ctx.tr('logout'),
-                onPressed: () async {
-                  final confirm = await AppDialogService.danger(
-                    context: ctx,
-                    title: ctx.tr('confirm_logout_title'),
-                    message: ctx.tr('confirm_logout_msg'),
-                    confirmText: ctx.tr('confirm_logout_button'),
-                  );
-                  if (confirm && ctx.mounted) {
-                    _handleLogout(ctx);
-                  }
-                },
-              ),
-            ],
-          ),
-          body: _buildMainDashboardContent(
-            context: ctx,
-            user: user,
-            role: role,
-            state: loaded,
-          ),
-          bottomNavigationBar: HomeMobileNavBar(
-            user: user,
-            selectedIndex: loaded.selectedNavIndex,
-            onDestinationSelected: (idx) =>
-                _handleDestinationSelected(ctx, idx),
-          ),
+        ],
+        body: _buildMainDashboardContent(
+          context: context,
+          user: user,
+          role: role,
+          state: loaded,
         ),
       ),
     );
@@ -424,66 +347,13 @@ class _HomeViewBody extends StatelessWidget {
 
     final isCompact = context.isMobile;
 
-    return ResponsiveBuilder(
-      desktop: (ctx) => AppScaffold(
-        useDefaultAppBar: false,
-        applyPadding: false,
-        withGradientBackground: false,
-        body: Row(
-          children: [
-            HomeNavigationRail(
-              user: effectiveUser,
-              selectedIndex: 0,
-              onDestinationSelected: (_) {},
-              isExpanded: true,
-              onLogout: () {},
-            ),
-            Expanded(
-              child: _buildSkeletonDashboardContent(
-                context,
-                isCompact,
-                effectiveUser,
-              ),
-            ),
-          ],
-        ),
-      ),
-      tablet: (ctx) => AppScaffold(
-        useDefaultAppBar: false,
-        applyPadding: false,
-        withGradientBackground: false,
-        body: Row(
-          children: [
-            HomeNavigationRail(
-              user: effectiveUser,
-              selectedIndex: 0,
-              onDestinationSelected: (_) {},
-              isExpanded: false,
-              onLogout: () {},
-            ),
-            Expanded(
-              child: _buildSkeletonDashboardContent(
-                context,
-                isCompact,
-                effectiveUser,
-              ),
-            ),
-          ],
-        ),
-      ),
-      mobile: (ctx) => AppScaffold(
-        useDefaultAppBar: false,
-        applyPadding: false,
-        showDrawer: false,
-        withGradientBackground: false,
-        appBar: const AppAppBar(showStatus: false),
-        body: _buildSkeletonDashboardContent(context, isCompact, effectiveUser),
-        bottomNavigationBar: HomeMobileNavBar(
-          selectedIndex: 0,
-          onDestinationSelected: (_) {},
-          user: effectiveUser,
-        ),
-      ),
+    return AppScaffold(
+      title: 'app_name',
+      currentRoute: '/home',
+      user: effectiveUser,
+      useDefaultAppBar: true,
+      applyPadding: false,
+      body: _buildSkeletonDashboardContent(context, isCompact, effectiveUser),
     );
   }
 

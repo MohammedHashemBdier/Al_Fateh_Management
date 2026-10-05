@@ -12,6 +12,7 @@ import 'package:al_fateh_management/features/home/presentation/views/widgets/hom
 import 'package:al_fateh_management/features/home/presentation/views/widgets/home_quick_actions.dart';
 import 'package:al_fateh_management/features/home/presentation/views/widgets/home_recent_activity.dart';
 import 'package:al_fateh_management/features/home/presentation/views/widgets/home_stats_grid.dart';
+import 'package:al_fateh_management/core/widgets/scaffold/components/app_navigation_sidebar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -80,104 +81,163 @@ void main() {
   }
 
   group('Home Widgets Layout & Overflow Tests', () {
-    testWidgets('HomeStatsGrid renders without overflow on tablet and mobile sizes', (tester) async {
-      // Test mobile size
-      tester.view.physicalSize = const Size(360, 800);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
+    testWidgets(
+      'HomeStatsGrid renders without overflow on tablet and mobile sizes',
+      (tester) async {
+        // Test mobile size
+        tester.view.physicalSize = const Size(360, 800);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(() => tester.view.resetPhysicalSize());
 
-      await tester.pumpWidget(
-        buildTestableWidget(
-          screenSize: const Size(360, 800),
-          child: SingleChildScrollView(
-            child: HomeStatsGrid(stats: testStats, user: testUser),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(tester.takeException(), isNull);
-
-      // Test tablet size
-      tester.view.physicalSize = const Size(768, 1024);
-      await tester.pumpWidget(
-        buildTestableWidget(
-          screenSize: const Size(768, 1024),
-          child: SingleChildScrollView(
-            child: HomeStatsGrid(stats: testStats, user: testUser),
-          ),
-        ),
-      );
-      await tester.pumpAndSettle();
-
-      expect(tester.takeException(), isNull);
-    });
-
-    testWidgets('HomeNavigationRail renders without overflow in expanded and compact modes', (tester) async {
-      // Compact rail (tablet/small screen)
-      await tester.pumpWidget(
-        buildTestableWidget(
-          screenSize: const Size(768, 1024),
-          child: SizedBox(
-            width: 76,
-            child: HomeNavigationRail(
-              user: testUser,
-              selectedIndex: 0,
-              onDestinationSelected: (_) {},
-              isExpanded: false,
-              onLogout: () {},
+        await tester.pumpWidget(
+          buildTestableWidget(
+            screenSize: const Size(360, 800),
+            child: SingleChildScrollView(
+              child: HomeStatsGrid(stats: testStats, user: testUser),
             ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull);
+        );
+        await tester.pumpAndSettle();
 
-      // Expanded rail
-      await tester.pumpWidget(
-        buildTestableWidget(
-          screenSize: const Size(1200, 800),
-          child: SizedBox(
-            width: 260,
-            child: HomeNavigationRail(
-              user: testUser,
-              selectedIndex: 0,
-              onDestinationSelected: (_) {},
-              isExpanded: true,
-              onLogout: () {},
+        expect(tester.takeException(), isNull);
+
+        // Test tablet size
+        tester.view.physicalSize = const Size(768, 1024);
+        await tester.pumpWidget(
+          buildTestableWidget(
+            screenSize: const Size(768, 1024),
+            child: SingleChildScrollView(
+              child: HomeStatsGrid(stats: testStats, user: testUser),
             ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull);
-    });
+        );
+        await tester.pumpAndSettle();
 
-    testWidgets('HomeRecentActivity & HomeQuickActions render cleanly on compact width', (tester) async {
-      tester.view.physicalSize = const Size(320, 700);
-      tester.view.devicePixelRatio = 1.0;
-      addTearDown(() => tester.view.resetPhysicalSize());
+        expect(tester.takeException(), isNull);
+      },
+    );
 
-      await tester.pumpWidget(
-        buildTestableWidget(
-          screenSize: const Size(320, 700),
-          child: SingleChildScrollView(
-            child: Column(
+    testWidgets(
+      'HomeNavigationRail renders without overflow in expanded and compact modes',
+      (tester) async {
+        // Compact rail (tablet/small screen)
+        await tester.pumpWidget(
+          buildTestableWidget(
+            screenSize: const Size(768, 1024),
+            child: SizedBox(
+              width: 76,
+              child: HomeNavigationRail(
+                user: testUser,
+                selectedIndex: 0,
+                onDestinationSelected: (_) {},
+                isExpanded: false,
+                onLogout: () {},
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+
+        // Expanded rail
+        await tester.pumpWidget(
+          buildTestableWidget(
+            screenSize: const Size(1200, 800),
+            child: SizedBox(
+              width: 260,
+              child: HomeNavigationRail(
+                user: testUser,
+                selectedIndex: 0,
+                onDestinationSelected: (_) {},
+                isExpanded: true,
+                onLogout: () {},
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+      },
+    );
+
+    testWidgets(
+      'HomeRecentActivity & HomeQuickActions render cleanly on compact width',
+      (tester) async {
+        tester.view.physicalSize = const Size(320, 700);
+        tester.view.devicePixelRatio = 1.0;
+        addTearDown(() => tester.view.resetPhysicalSize());
+
+        await tester.pumpWidget(
+          buildTestableWidget(
+            screenSize: const Size(320, 700),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  HomeQuickActions(user: testUser),
+                  const SizedBox(height: 20),
+                  HomeRecentActivity(tickets: testStats.recentTickets),
+                ],
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+
+        // Verify that subscriber name and landline are found in the widget tree
+        expect(
+          find.text('شركة التقنية للحلول البرمجية المتطورة'),
+          findsOneWidget,
+        );
+        expect(find.textContaining('0112233445'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'AppNavigationSidebar does not crash with narrow constraints or during width transitions',
+      (tester) async {
+        // Test narrow constraint (e.g. 15px during animation frames)
+        await tester.pumpWidget(
+          buildTestableWidget(
+            screenSize: const Size(1200, 800),
+            child: Row(
               children: [
-                HomeQuickActions(user: testUser),
-                const SizedBox(height: 20),
-                HomeRecentActivity(tickets: testStats.recentTickets),
+                SizedBox(
+                  width: 15.0,
+                  child: AppNavigationSidebar(
+                    user: testUser,
+                    isExpanded: true,
+                    activeRoute: '/home',
+                    onToggle: () {},
+                  ),
+                ),
               ],
             ),
           ),
-        ),
-      );
-      await tester.pumpAndSettle();
-      expect(tester.takeException(), isNull);
+        );
+        await tester.pump();
+        expect(tester.takeException(), isNull);
 
-      // Verify that subscriber name and landline are found in the widget tree
-      expect(find.text('شركة التقنية للحلول البرمجية المتطورة'), findsOneWidget);
-      expect(find.textContaining('0112233445'), findsOneWidget);
-    });
+        // Test expanded width
+        await tester.pumpWidget(
+          buildTestableWidget(
+            screenSize: const Size(1200, 800),
+            child: Row(
+              children: [
+                AppNavigationSidebar(
+                  user: testUser,
+                  isExpanded: true,
+                  activeRoute: '/home',
+                  onToggle: () {},
+                ),
+              ],
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+        expect(tester.takeException(), isNull);
+        expect(find.byType(AppNavigationSidebar), findsOneWidget);
+      },
+    );
   });
 }

@@ -87,132 +87,138 @@ class AppNavigationSidebar extends StatelessWidget {
               : BorderSide.none,
         ),
       ),
-      child: SafeArea(
-        child: Column(
-          children: [
-            // ترويسة الشعار والطي
-            Container(
-              height: AppDimens.appBarHeight,
-              padding: const EdgeInsets.symmetric(
-                horizontal: AppDimens.paddingSmall,
-              ),
-              child: Row(
-                mainAxisAlignment: isExpanded
-                    ? MainAxisAlignment.spaceBetween
-                    : MainAxisAlignment.center,
-                children: [
-                  if (isExpanded) ...[
-                    const SizedBox(width: AppDimens.space4),
-                    Icon(
-                      Icons.router_rounded,
-                      color: colors.primary,
-                      size: AppDimens.iconLarge,
-                    ),
-                    const SizedBox(width: AppDimens.spacingSmall),
-                    Expanded(
-                      child: AppText.title(
-                        context.tr('app_name'),
-                        fontWeight: FontWeight.bold,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                  ],
-                  AppIconButton(
-                    icon: isExpanded
-                        ? Icons.menu_open_rounded
-                        : Icons.menu_rounded,
-                    tooltip: context.tr('toggle_sidebar'),
-                    onPressed: onToggle,
-                  ),
-                ],
-              ),
-            ),
-            const Divider(height: 1),
-
-            // كرت المستخدم عند التوسيع
-            if (isExpanded && user != null) ...[
-              Padding(
-                padding: const EdgeInsets.all(AppDimens.paddingSmall),
-                child: AppCard(
-                  padding: const EdgeInsets.all(AppDimens.paddingSmall),
-                  backgroundColor: colors.surfaceContainerHighest.withValues(
-                    alpha: 0.35,
+      child: ClipRect(
+        child: SizedBox(
+          width: width,
+          child: SafeArea(
+            child: Column(
+              children: [
+                // ترويسة الشعار والطي
+                Container(
+                  height: AppDimens.appBarHeight,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimens.paddingSmall,
                   ),
                   child: Row(
+                    mainAxisAlignment: isExpanded
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.center,
                     children: [
-                      CircleAvatar(
-                        radius: AppDimens.avatarSm / 2 + 4,
-                        backgroundColor: colors.primary,
-                        child: AppText.body(
-                          user!.fullName.isNotEmpty ? user!.fullName[0] : 'U',
-                          color: colors.onPrimary,
-                          fontWeight: FontWeight.bold,
+                      if (isExpanded) ...[
+                        const SizedBox(width: AppDimens.space4),
+                        Icon(
+                          Icons.router_rounded,
+                          color: colors.primary,
+                          size: AppDimens.iconLarge,
                         ),
-                      ),
-                      const SizedBox(width: AppDimens.spacingSmall),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            AppText.label(
-                              user!.fullName,
-                              fontWeight: FontWeight.bold,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            AppText.caption(
-                              context.tr(role.code.toLowerCase()),
-                              color: colors.primary,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ],
+                        const SizedBox(width: AppDimens.spacingSmall),
+                        Expanded(
+                          child: AppText.title(
+                            context.tr('app_name'),
+                            fontWeight: FontWeight.bold,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
+                      ],
+                      AppIconButton(
+                        icon: isExpanded
+                            ? Icons.menu_open_rounded
+                            : Icons.menu_rounded,
+                        tooltip: context.tr('toggle_sidebar'),
+                        onPressed: onToggle,
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                const Divider(height: 1),
 
-            const SizedBox(height: AppDimens.space6),
-
-            // قائمة وجهات التنقل
-            Expanded(
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppDimens.paddingSmall,
-                  vertical: AppDimens.space4,
-                ),
-                itemCount: navItems.length,
-                separatorBuilder: (_, _) => const SizedBox(height: 4),
-                itemBuilder: (context, index) {
-                  final item = navItems[index];
-                  final isSelected = activeRoute == item.route;
-                  final label = context.tr(item.titleKey);
-
-                  if (!isExpanded) {
-                    return AppHover.scale(
-                      scale: 1.05,
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(vertical: 2),
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? colors.primaryContainer.withValues(alpha: 0.5)
-                              : null,
-                          borderRadius: AppRadii.sm,
+                // كرت المستخدم
+                if (user != null) ...[
+                  if (isExpanded)
+                    Padding(
+                      padding: const EdgeInsets.all(AppDimens.paddingSmall),
+                      child: AppCard(
+                        padding: const EdgeInsets.all(AppDimens.paddingSmall),
+                        backgroundColor: colors.surfaceContainerHighest
+                            .withValues(alpha: 0.35),
+                        child: Row(
+                          children: [
+                            CircleAvatar(
+                              radius: AppDimens.avatarSm / 2 + 4,
+                              backgroundColor: colors.primary,
+                              child: AppText.body(
+                                user!.fullName.isNotEmpty
+                                    ? user!.fullName[0]
+                                    : 'U',
+                                color: colors.onPrimary,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(width: AppDimens.spacingSmall),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  AppText.label(
+                                    user!.fullName,
+                                    fontWeight: FontWeight.bold,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  AppText.caption(
+                                    context.tr(role.code.toLowerCase()),
+                                    color: colors.primary,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
-                        child: AppIconButton(
-                          icon: isSelected
-                              ? (item.activeIcon ?? item.icon)
-                              : item.icon,
-                          tooltip: label,
-                          color: isSelected
-                              ? colors.primary
-                              : colors.onSurfaceVariant,
-                          onPressed: () {
+                      ),
+                    )
+                  else
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: AppTooltip(
+                        message: user!.fullName,
+                        child: CircleAvatar(
+                          radius: AppDimens.avatarSm / 2 + 2,
+                          backgroundColor: colors.primary,
+                          child: AppText.body(
+                            user!.fullName.isNotEmpty ? user!.fullName[0] : 'U',
+                            color: colors.onPrimary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+
+                const SizedBox(height: AppDimens.space6),
+
+                // قائمة وجهات التنقل
+                Expanded(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppDimens.paddingSmall,
+                      vertical: AppDimens.space4,
+                    ),
+                    itemCount: navItems.length,
+                    separatorBuilder: (_, _) => const SizedBox(height: 4),
+                    itemBuilder: (context, index) {
+                      final item = navItems[index];
+                      final isSelected = activeRoute == item.route;
+                      final label = context.tr(item.titleKey);
+
+                      final navTile = Material(
+                        color: Colors.transparent,
+                        borderRadius: AppRadii.sm,
+                        child: InkWell(
+                          onTap: () {
                             if (!isSelected) {
                               if (onDestinationSelected != null) {
                                 onDestinationSelected!(item.route);
@@ -224,81 +230,91 @@ class AppNavigationSidebar extends StatelessWidget {
                               }
                             }
                           },
-                        ),
-                      ),
-                    );
-                  }
-
-                  return AppHover.scale(
-                    scale: 1.01,
-                    child: Material(
-                      color: Colors.transparent,
-                      child: ListTile(
-                        dense: true,
-                        shape: const RoundedRectangleBorder(
                           borderRadius: AppRadii.sm,
+                          child: Container(
+                            height: 44,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: isExpanded ? 12 : 8,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isSelected
+                                  ? colors.primaryContainer.withValues(
+                                      alpha: 0.45,
+                                    )
+                                  : null,
+                              borderRadius: AppRadii.sm,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: isExpanded
+                                  ? MainAxisAlignment.start
+                                  : MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  isSelected
+                                      ? (item.activeIcon ?? item.icon)
+                                      : item.icon,
+                                  color: isSelected
+                                      ? colors.primary
+                                      : colors.onSurfaceVariant,
+                                  size: AppDimens.iconMedium,
+                                ),
+                                if (isExpanded) ...[
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: AppText.body(
+                                      label,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      fontWeight: isSelected
+                                          ? FontWeight.bold
+                                          : FontWeight.normal,
+                                      color: isSelected
+                                          ? colors.primary
+                                          : colors.onSurface,
+                                    ),
+                                  ),
+                                ],
+                              ],
+                            ),
+                          ),
                         ),
-                        tileColor: isSelected
-                            ? colors.primaryContainer.withValues(alpha: 0.45)
-                            : null,
-                        leading: Icon(
-                          isSelected
-                              ? (item.activeIcon ?? item.icon)
-                              : item.icon,
-                          color: isSelected
-                              ? colors.primary
-                              : colors.onSurfaceVariant,
-                          size: AppDimens.iconMedium,
-                        ),
-                        title: AppText.body(
-                          label,
-                          fontWeight: isSelected
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                          color: isSelected ? colors.primary : colors.onSurface,
-                        ),
-                        onTap: () {
-                          if (!isSelected) {
-                            if (onDestinationSelected != null) {
-                              onDestinationSelected!(item.route);
-                            } else {
-                              AppNavigationService.instance.goTo(
-                                context,
-                                item.route,
-                              );
-                            }
-                          }
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
+                      );
 
-            const Divider(height: 1),
+                      return AppHover.scale(
+                        scale: 1.01,
+                        child: isExpanded
+                            ? navTile
+                            : AppTooltip(message: label, child: navTile),
+                      );
+                    },
+                  ),
+                ),
 
-            // زر الخروج السفلي
-            Padding(
-              padding: const EdgeInsets.all(AppDimens.paddingSmall),
-              child: isExpanded
-                  ? AppButton(
-                      label: context.tr('logout'),
-                      variant: AppButtonVariant.ghost,
-                      icon: Icons.logout_rounded,
-                      height: AppDimens.buttonHeightSm,
-                      onPressed: () => _handleLogout(context),
-                    )
-                  : AppTooltip(
-                      message: context.tr('logout'),
-                      child: AppIconButton(
-                        icon: Icons.logout_rounded,
-                        color: colors.error,
-                        onPressed: () => _handleLogout(context),
-                      ),
-                    ),
+                const Divider(height: 1),
+
+                // زر الخروج السفلي
+                Padding(
+                  padding: const EdgeInsets.all(AppDimens.paddingSmall),
+                  child: isExpanded
+                      ? AppButton(
+                          label: context.tr('logout'),
+                          variant: AppButtonVariant.ghost,
+                          icon: Icons.logout_rounded,
+                          height: AppDimens.buttonHeightSm,
+                          onPressed: () => _handleLogout(context),
+                        )
+                      : AppTooltip(
+                          message: context.tr('logout'),
+                          child: AppIconButton(
+                            icon: Icons.logout_rounded,
+                            color: colors.error,
+                            onPressed: () => _handleLogout(context),
+                          ),
+                        ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );
