@@ -11,9 +11,9 @@ class DioClient {
     _dio = Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.defaultBaseUrl,
-        connectTimeout: const Duration(seconds: 20),
-        receiveTimeout: const Duration(seconds: 20),
-        sendTimeout: const Duration(seconds: 20),
+        connectTimeout: const Duration(seconds: 45),
+        receiveTimeout: const Duration(seconds: 60),
+        sendTimeout: const Duration(seconds: 45),
         followRedirects: false, // Disabling automatic redirect on POST allows catching 302 and redirecting via GET
         maxRedirects: 5,
         validateStatus: (status) => status != null && status < 400,
@@ -61,7 +61,13 @@ class DioClient {
         response.statusCode == 307) {
       final location = response.headers.value('location');
       if (location != null && location.isNotEmpty) {
-        return Dio().get<T>(
+        return Dio(
+          BaseOptions(
+            connectTimeout: const Duration(seconds: 45),
+            receiveTimeout: const Duration(seconds: 60),
+            sendTimeout: const Duration(seconds: 45),
+          ),
+        ).get<T>(
           location,
           options: Options(
             responseType: options?.responseType ?? ResponseType.json,
@@ -97,7 +103,13 @@ class DioClient {
         response.statusCode == 307) {
       final location = response.headers.value('location');
       if (location != null && location.isNotEmpty) {
-        return Dio().get<T>(
+        return Dio(
+          BaseOptions(
+            connectTimeout: const Duration(seconds: 45),
+            receiveTimeout: const Duration(seconds: 60),
+            sendTimeout: const Duration(seconds: 45),
+          ),
+        ).get<T>(
           location,
           options: Options(
             responseType: options?.responseType ?? ResponseType.json,

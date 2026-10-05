@@ -27,7 +27,7 @@ abstract class TicketsRepository {
 
   /// جلب قائمة جميع التذاكر من السيرفر أو الكاش المحلي
   Future<List<TicketModel>> getAllTickets({
-    int limit = 200,
+    int limit = 1000,
     bool forceRefresh = false,
   });
 

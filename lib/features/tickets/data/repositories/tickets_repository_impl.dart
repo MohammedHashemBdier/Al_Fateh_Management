@@ -21,14 +21,17 @@ class TicketsRepositoryImpl implements TicketsRepository {
   Future<TicketsInitData> getInitialData({bool forceRefresh = false}) async {
     try {
       final remoteInit = await _remoteDataSource.fetchInitData();
-      // جلب كافة التذاكر المسجلة بدلاً من الاقتصار على أحدث 30 فقط
       List<TicketModel> allTickets = remoteInit.tickets;
-      try {
-        final fullTickets = await _remoteDataSource.fetchAllTickets(limit: 500);
-        if (fullTickets.isNotEmpty) {
-          allTickets = fullTickets;
-        }
-      } catch (_) {}
+
+      // إذا كانت التذاكر المجلوبة من init أقل من 50 تذكرة، نجلب القائمة الموسعة حتى 1000 تذكرة
+      if (allTickets.length < 50) {
+        try {
+          final fullTickets = await _remoteDataSource.fetchAllTickets(limit: 1000);
+          if (fullTickets.isNotEmpty) {
+            allTickets = fullTickets;
+          }
+        } catch (_) {}
+      }
 
       final fullData = TicketsInitData(
         tickets: allTickets,
@@ -67,7 +70,7 @@ class TicketsRepositoryImpl implements TicketsRepository {
 
   @override
   Future<List<TicketModel>> getAllTickets({
-    int limit = 200,
+    int limit = 1000,
     bool forceRefresh = false,
   }) async {
     try {

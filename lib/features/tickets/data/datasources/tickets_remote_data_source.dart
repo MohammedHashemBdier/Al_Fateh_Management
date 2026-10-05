@@ -10,7 +10,7 @@ import '../../domain/repositories/tickets_repository.dart';
 
 abstract class TicketsRemoteDataSource {
   Future<TicketsInitData> fetchInitData();
-  Future<List<TicketModel>> fetchAllTickets({int limit = 200});
+  Future<List<TicketModel>> fetchAllTickets({int limit = 1000});
   Future<int> addTicket(Map<String, dynamic> params);
   Future<bool> updateTicket(Map<String, dynamic> params);
   Future<bool> deleteTicket(
@@ -78,7 +78,7 @@ class TicketsRemoteDataSourceImpl implements TicketsRemoteDataSource {
   }
 
   @override
-  Future<List<TicketModel>> fetchAllTickets({int limit = 200}) async {
+  Future<List<TicketModel>> fetchAllTickets({int limit = 1000}) async {
     try {
       final response = await _dioClient.get(
         ApiEndpoints.defaultBaseUrl,
