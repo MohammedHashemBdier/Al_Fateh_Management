@@ -91,8 +91,12 @@ class _AppAppBarState extends State<AppAppBar>
     final screenWidth = MediaQuery.of(context).size.width;
     final isCompact = context.isMobile || screenWidth < 768;
     final isNarrow = screenWidth < 480;
-    final displayTitle = widget.title ?? context.tr('app_name');
-    final displaySubtitle = widget.subtitle ?? context.tr('app_subtitle');
+    final displayTitle = widget.title != null
+        ? context.tr(widget.title!)
+        : context.tr('app_name');
+    final displaySubtitle = widget.subtitle != null
+        ? context.tr(widget.subtitle!)
+        : context.tr('app_subtitle');
 
     return Container(
       decoration: BoxDecoration(

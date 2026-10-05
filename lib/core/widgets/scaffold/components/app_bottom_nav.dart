@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../../../core/design_system/app_dimens.dart';
 import '../../../../core/services/services.dart';
 import '../../../../core/utils/context_extensions.dart';
+import '../../../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../../../../features/auth/domain/models/user_model.dart';
-import '../../app_hover.dart';
 import '../../app_text.dart';
 import '../models/role_definitions.dart';
 
@@ -25,7 +24,8 @@ class AppBottomNav extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = context.colors;
     final isDark = context.isDark;
-    final allItems = RoleDefinitions.getItemsForRoleCode(user?.roleId);
+    final effectiveUser = user ?? AuthLocalDataSourceImpl.currentUser;
+    final allItems = RoleDefinitions.getItemsForRoleCode(effectiveUser?.roleId);
     final items = allItems.take(5).toList();
 
     return SafeArea(
@@ -33,7 +33,7 @@ class AppBottomNav extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.fromLTRB(14, 0, 14, 10),
         child: Container(
-          height: AppDimens.bottomNavBarHeight - 4,
+          height: 64,
           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
           decoration: BoxDecoration(
             color: isDark
@@ -60,69 +60,120 @@ class AppBottomNav extends StatelessWidget {
               final isSelected = activeRoute == item.route;
 
               return Expanded(
-                child: AppHover.scale(
-                  scale: 1.04,
-                  child: InkWell(
-                    onTap: () {
-                      if (!isSelected) {
-                        if (onDestinationSelected != null) {
-                          onDestinationSelected!(item.route);
-                        } else {
-                          AppNavigationService.instance.goTo(
-                            context,
-                            item.route,
-                          );
-                        }
+                child: _AppBottomNavItem(
+                  titleKey: item.titleKey,
+                  icon: item.icon,
+                  activeIcon: item.activeIcon ?? item.icon,
+                  isSelected: isSelected,
+                  onTap: () {
+                    if (!isSelected) {
+                      if (onDestinationSelected != null) {
+                        onDestinationSelected!(item.route);
+                      } else {
+                        AppNavigationService.instance.goTo(context, item.route);
                       }
-                    },
-                    borderRadius: BorderRadius.circular(18),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 220),
-                      curve: Curves.easeOutCubic,
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 6,
-                        horizontal: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: isSelected
-                            ? colors.primaryContainer.withValues(alpha: 0.5)
-                            : Colors.transparent,
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            isSelected
-                                ? (item.activeIcon ?? item.icon)
-                                : item.icon,
-                            size: 22,
-                            color: isSelected
-                                ? colors.primary
-                                : colors.onSurfaceVariant,
-                          ),
-                          const SizedBox(height: 2),
-                          Flexible(
-                            child: AppText.caption(
-                              context.tr(item.titleKey),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              fontWeight: isSelected
-                                  ? FontWeight.bold
-                                  : FontWeight.normal,
-                              color: isSelected
-                                  ? colors.primary
-                                  : colors.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                    }
+                  },
                 ),
               );
             }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AppBottomNavItem extends StatefulWidget {
+  final String titleKey;
+  final IconData icon;
+  final IconData activeIcon;
+  final bool isSelected;
+  final VoidCallback onTap;
+
+  const _AppBottomNavItem({
+    required this.titleKey,
+    required this.icon,
+    required this.activeIcon,
+    required this.isSelected,
+    required this.onTap,
+  });
+
+  @override
+  State<_AppBottomNavItem> createState() => _AppBottomNavItemState();
+}
+
+class _AppBottomNavItemState extends State<_AppBottomNavItem> {
+  bool _isPressed = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = context.colors;
+    final isSelected = widget.isSelected;
+
+    return Semantics(
+      button: true,
+      selected: isSelected,
+      label: context.tr(widget.titleKey),
+      child: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) => setState(() => _isPressed = false),
+        onTapCancel: () => setState(() => _isPressed = false),
+        onTap: widget.onTap,
+        child: AnimatedScale(
+          duration: const Duration(milliseconds: 140),
+          scale: _isPressed ? 0.92 : 1.0,
+          child: Center(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 220),
+              curve: Curves.easeOutCubic,
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+              decoration: BoxDecoration(
+                color: isSelected
+                    ? colors.primary.withValues(alpha: 0.14)
+                    : Colors.transparent,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isSelected
+                      ? colors.primary.withValues(alpha: 0.3)
+                      : Colors.transparent,
+                  width: 1,
+                ),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  AnimatedScale(
+                    duration: const Duration(milliseconds: 180),
+                    scale: isSelected ? 1.12 : 1.0,
+                    child: Icon(
+                      isSelected ? widget.activeIcon : widget.icon,
+                      size: 21,
+                      color: isSelected
+                          ? colors.primary
+                          : colors.onSurfaceVariant.withValues(alpha: 0.75),
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: AppText.caption(
+                      widget.titleKey,
+                      maxLines: 1,
+                      fontWeight: isSelected
+                          ? FontWeight.bold
+                          : FontWeight.w500,
+                      fontSize: 10.5,
+                      color: isSelected
+                          ? colors.primary
+                          : colors.onSurfaceVariant.withValues(alpha: 0.8),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         ),
       ),

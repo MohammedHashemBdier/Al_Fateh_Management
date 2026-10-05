@@ -41,6 +41,7 @@ class TicketsCubit extends Cubit<TicketsState> {
 
       final filtered = state.filter.apply(initData.tickets);
 
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -56,6 +57,7 @@ class TicketsCubit extends Cubit<TicketsState> {
         ),
       );
     } catch (e) {
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: TicketsStatus.failure,
@@ -69,6 +71,7 @@ class TicketsCubit extends Cubit<TicketsState> {
   void onSearchChanged(String query) {
     _searchDebounceTimer?.cancel();
     _searchDebounceTimer = Timer(const Duration(milliseconds: 300), () {
+      if (isClosed) return;
       final updatedFilter = state.filter.copyWith(searchQuery: query);
       final filtered = updatedFilter.apply(state.allTickets);
 
@@ -175,6 +178,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       final filtered = state.filter.apply(updatedList);
       final pendingCount = await _repository.getPendingSyncCount();
 
+      if (isClosed) return true;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -186,6 +190,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       return true;
     } catch (e) {
+      if (isClosed) return false;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -227,6 +232,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       final filtered = state.filter.apply(updatedAll);
       final pendingCount = await _repository.getPendingSyncCount();
 
+      if (isClosed) return true;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -238,6 +244,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       return true;
     } catch (e) {
+      if (isClosed) return false;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -280,6 +287,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       final filtered = state.filter.apply(updatedAll);
       final pendingCount = await _repository.getPendingSyncCount();
 
+      if (isClosed) return closedCount;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -291,6 +299,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       return closedCount;
     } catch (e) {
+      if (isClosed) return 0;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -309,6 +318,7 @@ class TicketsCubit extends Cubit<TicketsState> {
         problemName,
         userId: userId,
       );
+      if (isClosed) return true;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -318,6 +328,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       return true;
     } catch (e) {
+      if (isClosed) return false;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -345,6 +356,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       final filtered = state.filter.apply(updatedAll);
       final selected = Set<int>.from(state.selectedTicketIds)..remove(rowId);
 
+      if (isClosed) return success;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -356,6 +368,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       );
       return success;
     } catch (e) {
+      if (isClosed) return false;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -376,6 +389,7 @@ class TicketsCubit extends Cubit<TicketsState> {
       final init = await _repository.getInitialData(forceRefresh: true);
       final filtered = state.filter.apply(init.tickets);
 
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: TicketsStatus.success,
@@ -387,6 +401,7 @@ class TicketsCubit extends Cubit<TicketsState> {
         ),
       );
     } catch (e) {
+      if (isClosed) return;
       emit(
         state.copyWith(
           status: TicketsStatus.success,

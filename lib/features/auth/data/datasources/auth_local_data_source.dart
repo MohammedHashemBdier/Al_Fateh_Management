@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/utils/app_crypto.dart';
 import '../../domain/models/auth_session.dart';
+import '../../domain/models/user_model.dart';
 
 abstract class AuthLocalDataSource {
   Future<void> saveSession(AuthSession session);
@@ -23,8 +24,12 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
   static const String _keyOfflineVerifierPrefix = 'alfateh_verifier_';
   static const String _keyRememberMe = 'alfateh_remember_me';
 
+  static AuthSession? activeSession;
+  static UserModel? get currentUser => activeSession?.user;
+
   @override
   Future<void> saveSession(AuthSession session) async {
+    activeSession = session;
     final prefs = await SharedPreferences.getInstance();
     final jsonStr = jsonEncode(session.toJson());
     final encrypted = AppCrypto.encryptData(jsonStr);
@@ -41,7 +46,9 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
       final jsonStr = AppCrypto.decryptData(encrypted);
       final map = jsonDecode(jsonStr);
       if (map is Map<String, dynamic>) {
-        return AuthSession.fromJson(map);
+        final session = AuthSession.fromJson(map);
+        activeSession = session;
+        return session;
       }
     } catch (_) {}
     return null;
@@ -49,6 +56,7 @@ class AuthLocalDataSourceImpl implements AuthLocalDataSource {
 
   @override
   Future<void> clearSession() async {
+    activeSession = null;
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_keySession);
     await prefs.setBool(_keyRememberMe, false);

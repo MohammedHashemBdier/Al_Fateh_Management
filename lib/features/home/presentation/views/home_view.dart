@@ -208,6 +208,7 @@ class _HomeViewBody extends StatelessWidget {
         mobile: (ctx) => AppScaffold(
           useDefaultAppBar: false,
           applyPadding: false,
+          showDrawer: false,
           appBar: AppAppBar(
             extraActions: [
               IconButton(
@@ -473,6 +474,7 @@ class _HomeViewBody extends StatelessWidget {
       mobile: (ctx) => AppScaffold(
         useDefaultAppBar: false,
         applyPadding: false,
+        showDrawer: false,
         withGradientBackground: false,
         appBar: const AppAppBar(showStatus: false),
         body: _buildSkeletonDashboardContent(context, isCompact, effectiveUser),

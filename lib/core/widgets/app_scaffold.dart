@@ -5,6 +5,7 @@ import '../../core/design_system/app_breakpoints.dart';
 import '../../core/design_system/app_dimens.dart';
 import '../../core/services/services.dart';
 import '../../core/utils/context_extensions.dart';
+import '../../features/auth/data/datasources/auth_local_data_source.dart';
 import '../../features/auth/domain/models/user_model.dart';
 import 'app_app_bar.dart';
 import 'app_empty_state.dart';
@@ -206,17 +207,19 @@ class AppScaffold extends StatelessWidget {
             );
           }
 
+          final effectiveUser = user ?? AuthLocalDataSourceImpl.currentUser;
+
           // 3. تجهيز القوائم الجانبية والسفلية
           final resolvedDrawer =
               drawer ??
-              ((showDrawer && isCompact)
-                  ? AppDrawer(user: user, activeRoute: activeRoute)
+              ((showDrawer && isCompact && (!showNavigation || !isMobile))
+                  ? AppDrawer(user: effectiveUser, activeRoute: activeRoute)
                   : null);
 
           final resolvedBottomNav =
               bottomNavigationBar ??
               ((showNavigation && isMobile)
-                  ? AppBottomNav(user: user, activeRoute: activeRoute)
+                  ? AppBottomNav(user: effectiveUser, activeRoute: activeRoute)
                   : null);
 
           // إذا كانت الشاشة ديسكتوب والنافيغيشن مفعل، نبني layout ثنائي العمود
@@ -229,7 +232,7 @@ class AppScaffold extends StatelessWidget {
               body: Row(
                 children: [
                   AppNavigationSidebar(
-                    user: user,
+                    user: effectiveUser,
                     isExpanded: isSidebarExpanded,
                     activeRoute: activeRoute,
                     onToggle: () =>

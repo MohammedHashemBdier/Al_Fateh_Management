@@ -140,6 +140,7 @@ class _TicketsViewContent extends StatelessWidget {
 
           return AppListScaffold(
             title: 'nav_tickets',
+            user: state.currentUser,
             currentRoute: '/tickets',
             showBackButton: true,
             onBackPressed: () {
