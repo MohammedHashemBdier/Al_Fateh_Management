@@ -14,6 +14,7 @@ import 'scaffold/app_scaffold_view_model.dart';
 import 'scaffold/components/app_bottom_nav.dart';
 import 'scaffold/components/app_drawer.dart';
 import 'scaffold/components/app_navigation_sidebar.dart';
+import 'scaffold/components/app_swipe_navigation.dart';
 
 /// الهيكل التكيفي الموحد الأساسي لكافة شاشات المنظومة (Base Adaptive AppScaffold)
 class AppScaffold extends StatelessWidget {
@@ -50,6 +51,7 @@ class AppScaffold extends StatelessWidget {
   final bool isEmpty;
   final String? emptyMessage;
   final Future<void> Function()? onRefresh;
+  final bool enableSwipeNavigation;
 
   const AppScaffold({
     super.key,
@@ -86,6 +88,7 @@ class AppScaffold extends StatelessWidget {
     this.isEmpty = false,
     this.emptyMessage,
     this.onRefresh,
+    this.enableSwipeNavigation = true,
   });
 
   /// نقطة البناء التي يمكن للـ Variants المتخصصة تخصيصها
@@ -259,6 +262,16 @@ class AppScaffold extends StatelessWidget {
           }
 
           // شاشات الموبايل والتابلت
+          Widget effectiveBody = content;
+          if (enableSwipeNavigation && isMobile && showNavigation) {
+            effectiveBody = AppSwipeNavigation(
+              activeRoute: activeRoute,
+              user: effectiveUser,
+              enabled: true,
+              child: SizedBox.expand(child: content),
+            );
+          }
+
           return Scaffold(
             backgroundColor: backgroundColor ?? colors.surface,
             appBar: resolvedAppBar,
@@ -268,11 +281,11 @@ class AppScaffold extends StatelessWidget {
             bottomSheet: bottomSheet,
             resizeToAvoidBottomInset: resizeToAvoidBottomInset,
             body: withGradientBackground
-                ? content
+                ? effectiveBody
                 : SafeArea(
                     top: resolvedAppBar == null,
                     bottom: resolvedBottomNav == null,
-                    child: content,
+                    child: effectiveBody,
                   ),
           );
         },

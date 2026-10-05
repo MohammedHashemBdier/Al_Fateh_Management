@@ -62,4 +62,26 @@ class RoleDefinitions {
     final role = UserRole.fromCode(roleCode);
     return getItemsForRole(role);
   }
+
+  /// استرجاع المسار التالي بناءً على المسار الحالي ودور المستخدم
+  static String? getNextRoute(String currentRoute, String? roleCode) {
+    final cleanRoute = currentRoute.split('?').first;
+    final items = getItemsForRoleCode(roleCode);
+    final idx = items.indexWhere((it) => it.route == cleanRoute);
+    if (idx != -1 && idx + 1 < items.length) {
+      return items[idx + 1].route;
+    }
+    return null;
+  }
+
+  /// استرجاع المسار السابق بناءً على المسار الحالي ودور المستخدم
+  static String? getPreviousRoute(String currentRoute, String? roleCode) {
+    final cleanRoute = currentRoute.split('?').first;
+    final items = getItemsForRoleCode(roleCode);
+    final idx = items.indexWhere((it) => it.route == cleanRoute);
+    if (idx > 0) {
+      return items[idx - 1].route;
+    }
+    return null;
+  }
 }
