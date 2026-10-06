@@ -29,7 +29,10 @@ class MockTicketsRepository implements TicketsRepository {
   }
 
   @override
-  Future<List<TicketModel>> getAllTickets({int limit = 200, bool forceRefresh = false}) async {
+  Future<List<TicketModel>> getAllTickets({
+    int limit = 200,
+    bool forceRefresh = false,
+  }) async {
     return List.of(mockTickets);
   }
 
@@ -81,7 +84,10 @@ class MockTicketsRepository implements TicketsRepository {
   }
 
   @override
-  Future<List<String>> addProblemType(String problemName, {String? userId}) async {
+  Future<List<String>> addProblemType(
+    String problemName, {
+    String? userId,
+  }) async {
     if (!mockProblems.contains(problemName)) {
       mockProblems.add(problemName);
     }
@@ -102,7 +108,11 @@ class MockTicketsRepository implements TicketsRepository {
   Future<List<SyncOperation>> getPendingSyncOperations() async => [];
 
   @override
-  Future<bool> deleteTicket(int rowId, {required String actorName, String? reason}) async {
+  Future<bool> deleteTicket(
+    int rowId, {
+    required String actorName,
+    String? reason,
+  }) async {
     mockTickets.removeWhere((t) => t.rowId == rowId);
     return true;
   }
@@ -110,7 +120,11 @@ class MockTicketsRepository implements TicketsRepository {
 
 class MockAuthRepository implements AuthRepository {
   @override
-  Future<AuthSession> login({required String username, required String password, bool rememberMe = true}) async {
+  Future<AuthSession> login({
+    required String username,
+    required String password,
+    bool rememberMe = true,
+  }) async {
     throw UnimplementedError();
   }
 
@@ -176,10 +190,7 @@ void main() {
       ),
     ];
 
-    cubit = TicketsCubit(
-      repository: mockRepo,
-      authRepository: mockAuthRepo,
-    );
+    cubit = TicketsCubit(repository: mockRepo, authRepository: mockAuthRepo);
   });
 
   tearDown(() {
@@ -211,13 +222,16 @@ void main() {
       expect(cubit.state.filteredTickets.first.subscriberName, 'خالد علي');
     });
 
-    test('applyFilter filters by search query on subscriber name or landline', () async {
-      await cubit.loadTickets();
+    test(
+      'applyFilter filters by search query on subscriber name or landline',
+      () async {
+        await cubit.loadTickets();
 
-      cubit.applyFilter(const TicketFilterModel(searchQuery: '8765'));
-      expect(cubit.state.filteredTickets.length, 1);
-      expect(cubit.state.filteredTickets.first.landline, '0118765432');
-    });
+        cubit.applyFilter(const TicketFilterModel(searchQuery: '8765'));
+        expect(cubit.state.filteredTickets.length, 1);
+        expect(cubit.state.filteredTickets.first.landline, '0118765432');
+      },
+    );
 
     test('sort orders tickets properly', () async {
       await cubit.loadTickets();
@@ -276,11 +290,19 @@ void main() {
 
     test('closeAllOpenTickets marks all open tickets as resolved', () async {
       await cubit.loadTickets();
-      expect(cubit.state.allTickets.where((t) => t.status != 'تم الحل').length, 1);
+      expect(
+        cubit.state.allTickets.where((t) => t.status != 'تم الحل').length,
+        1,
+      );
 
-      final closedCount = await cubit.closeAllOpenTickets(solution: 'إغلاق شامل من الإدارة');
+      final closedCount = await cubit.closeAllOpenTickets(
+        solution: 'إغلاق شامل من الإدارة',
+      );
       expect(closedCount, 1);
-      expect(cubit.state.allTickets.every((t) => t.status == 'تم الحل'), isTrue);
+      expect(
+        cubit.state.allTickets.every((t) => t.status == 'تم الحل'),
+        isTrue,
+      );
     });
   });
 }

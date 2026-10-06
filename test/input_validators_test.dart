@@ -10,17 +10,29 @@ void main() {
     });
 
     test('validateLandline requires digits only', () {
-      expect(InputValidators.validateLandline('011abcdefg'), contains('أرقام فقط'));
-      expect(InputValidators.validateLandline('011-226292'), contains('أرقام فقط'));
+      expect(
+        InputValidators.validateLandline('011abcdefg'),
+        contains('أرقام فقط'),
+      );
+      expect(
+        InputValidators.validateLandline('011-226292'),
+        contains('أرقام فقط'),
+      );
     });
 
     test('validateLandline enforces exactly 10 digits', () {
       // Less than 10 digits
-      expect(InputValidators.validateLandline('011226292'), contains('10 أرقام'));
+      expect(
+        InputValidators.validateLandline('011226292'),
+        contains('10 أرقام'),
+      );
       expect(InputValidators.validateLandline('12345'), contains('10 أرقام'));
 
       // More than 10 digits
-      expect(InputValidators.validateLandline('011226292421'), contains('10 أرقام'));
+      expect(
+        InputValidators.validateLandline('011226292421'),
+        contains('10 أرقام'),
+      );
 
       // Exactly 10 digits (Valid!)
       expect(InputValidators.validateLandline('0122629242'), isNull);

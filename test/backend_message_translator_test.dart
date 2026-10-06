@@ -25,51 +25,56 @@ void main() {
   }
 
   group('BackendMessageTranslator Tests', () {
-    testWidgets('Translates Arabic backend auth errors to English when locale is en',
-        (tester) async {
-      await tester.pumpWidget(
-        buildTestWidget(
-          locale: const Locale('en'),
-          builder: (context) {
-            // 1. Password error
-            final passMsg = BackendMessageTranslator.translate(
-              context,
-              'كلمة المرور غير صحيحة',
-            );
-            expect(passMsg, equals('Incorrect password'));
+    testWidgets(
+      'Translates Arabic backend auth errors to English when locale is en',
+      (tester) async {
+        await tester.pumpWidget(
+          buildTestWidget(
+            locale: const Locale('en'),
+            builder: (context) {
+              // 1. Password error
+              final passMsg = BackendMessageTranslator.translate(
+                context,
+                'كلمة المرور غير صحيحة',
+              );
+              expect(passMsg, equals('Incorrect password'));
 
-            // 2. User not found
-            final userMsg = BackendMessageTranslator.translate(
-              context,
-              'اسم المستخدم غير موجود',
-            );
-            expect(userMsg, equals('Username not found'));
+              // 2. User not found
+              final userMsg = BackendMessageTranslator.translate(
+                context,
+                'اسم المستخدم غير موجود',
+              );
+              expect(userMsg, equals('Username not found'));
 
-            // 3. Account disabled
-            final disabledMsg = BackendMessageTranslator.translate(
-              context,
-              'تم تعطيل هذا الحساب، يرجى مراجعة إدارة الفتح',
-            );
-            expect(
-              disabledMsg,
-              equals('This account has been disabled, please contact Al-Fateh admin'),
-            );
+              // 3. Account disabled
+              final disabledMsg = BackendMessageTranslator.translate(
+                context,
+                'تم تعطيل هذا الحساب، يرجى مراجعة إدارة الفتح',
+              );
+              expect(
+                disabledMsg,
+                equals(
+                  'This account has been disabled, please contact Al-Fateh admin',
+                ),
+              );
 
-            // 4. Empty fields
-            final emptyMsg = BackendMessageTranslator.translate(
-              context,
-              'يرجى إدخال اسم المستخدم وكلمة المرور',
-            );
-            expect(emptyMsg, equals('Please enter username and password'));
+              // 4. Empty fields
+              final emptyMsg = BackendMessageTranslator.translate(
+                context,
+                'يرجى إدخال اسم المستخدم وكلمة المرور',
+              );
+              expect(emptyMsg, equals('Please enter username and password'));
 
-            return const SizedBox();
-          },
-        ),
-      );
-    });
+              return const SizedBox();
+            },
+          ),
+        );
+      },
+    );
 
-    testWidgets('Translates English errors to Arabic when locale is ar',
-        (tester) async {
+    testWidgets('Translates English errors to Arabic when locale is ar', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildTestWidget(
           locale: const Locale('ar'),
@@ -108,7 +113,10 @@ void main() {
               requestOptions: RequestOptions(path: '/'),
               type: DioExceptionType.connectionError,
             );
-            final connMsg = BackendMessageTranslator.translate(context, connErrorDio);
+            final connMsg = BackendMessageTranslator.translate(
+              context,
+              connErrorDio,
+            );
             expect(connMsg, contains('Unable to connect to server'));
 
             return const SizedBox();
@@ -117,7 +125,9 @@ void main() {
       );
     });
 
-    testWidgets('Translates Tickets & Attendance backend responses', (tester) async {
+    testWidgets('Translates Tickets & Attendance backend responses', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         buildTestWidget(
           locale: const Locale('en'),
@@ -134,7 +144,9 @@ void main() {
             );
             expect(
               geofenceMsg,
-              equals('You are outside the company geofence radius, check-in blocked'),
+              equals(
+                'You are outside the company geofence radius, check-in blocked',
+              ),
             );
 
             return const SizedBox();

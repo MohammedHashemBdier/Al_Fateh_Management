@@ -21,25 +21,30 @@ void main() {
       expect(find.text('Admin Content'), findsOneWidget);
     });
 
-    testWidgets('RoleGate hides child and shows fallback when role does not match', (tester) async {
-      await tester.pumpWidget(
-        const MaterialApp(
-          home: Scaffold(
-            body: RoleGate(
-              userRole: UserRole.support,
-              allowedRoles: [UserRole.finance],
-              fallback: Text('Access Denied'),
-              child: Text('Secret Content'),
+    testWidgets(
+      'RoleGate hides child and shows fallback when role does not match',
+      (tester) async {
+        await tester.pumpWidget(
+          const MaterialApp(
+            home: Scaffold(
+              body: RoleGate(
+                userRole: UserRole.support,
+                allowedRoles: [UserRole.finance],
+                fallback: Text('Access Denied'),
+                child: Text('Secret Content'),
+              ),
             ),
           ),
-        ),
-      );
+        );
 
-      expect(find.text('Secret Content'), findsNothing);
-      expect(find.text('Access Denied'), findsOneWidget);
-    });
+        expect(find.text('Secret Content'), findsNothing);
+        expect(find.text('Access Denied'), findsOneWidget);
+      },
+    );
 
-    testWidgets('PermissionGate allows action when user has permission', (tester) async {
+    testWidgets('PermissionGate allows action when user has permission', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -55,7 +60,9 @@ void main() {
       expect(find.text('Manage Users Button'), findsOneWidget);
     });
 
-    testWidgets('ScopeGate correctly checks minimum scope hierarchy', (tester) async {
+    testWidgets('ScopeGate correctly checks minimum scope hierarchy', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(

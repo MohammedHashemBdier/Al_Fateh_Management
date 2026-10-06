@@ -48,32 +48,35 @@ void main() {
       expect(completed.session, isNull);
     });
 
-    test('Navigates to /home when valid session is saved (Remember Me)', () async {
-      final mockRepo = MockAuthRepositoryForSplash();
-      mockRepo.savedSession = AuthSession(
-        user: UserModel(
-          userId: 'USR-001',
-          username: 'admin',
-          fullName: 'مدير النظام',
-          department: 'MANAGEMENT',
-          roleId: 'ROLE_ADMIN',
-          status: 'ACTIVE',
-        ),
-        sessionToken: 'TOKEN_123',
-        loginTime: DateTime.now(),
-        permissionsVersion: 1,
-        isOffline: false,
-      );
+    test(
+      'Navigates to /home when valid session is saved (Remember Me)',
+      () async {
+        final mockRepo = MockAuthRepositoryForSplash();
+        mockRepo.savedSession = AuthSession(
+          user: UserModel(
+            userId: 'USR-001',
+            username: 'admin',
+            fullName: 'مدير النظام',
+            department: 'MANAGEMENT',
+            roleId: 'ROLE_ADMIN',
+            status: 'ACTIVE',
+          ),
+          sessionToken: 'TOKEN_123',
+          loginTime: DateTime.now(),
+          permissionsVersion: 1,
+          isOffline: false,
+        );
 
-      final cubit = SplashCubit(authRepository: mockRepo);
+        final cubit = SplashCubit(authRepository: mockRepo);
 
-      await cubit.initializeApp();
+        await cubit.initializeApp();
 
-      expect(cubit.state, isA<SplashCompleted>());
-      final completed = cubit.state as SplashCompleted;
-      expect(completed.targetRoute, '/home');
-      expect(completed.session, isNotNull);
-      expect(completed.session?.user.username, 'admin');
-    });
+        expect(cubit.state, isA<SplashCompleted>());
+        final completed = cubit.state as SplashCompleted;
+        expect(completed.targetRoute, '/home');
+        expect(completed.session, isNotNull);
+        expect(completed.session?.user.username, 'admin');
+      },
+    );
   });
 }

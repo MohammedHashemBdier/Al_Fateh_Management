@@ -24,7 +24,9 @@ class MockHomeRepository implements HomeRepository {
   }
 
   @override
-  Future<DashboardStatsModel> getDashboardStats({bool forceRefresh = false}) async {
+  Future<DashboardStatsModel> getDashboardStats({
+    bool forceRefresh = false,
+  }) async {
     if (shouldThrow) throw Exception('Failed to get stats');
     return mockStats ??
         DashboardStatsModel(

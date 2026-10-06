@@ -26,7 +26,9 @@ class TicketsRepositoryImpl implements TicketsRepository {
       // إذا كانت التذاكر المجلوبة من init أقل من 50 تذكرة، نجلب القائمة الموسعة حتى 1000 تذكرة
       if (allTickets.length < 50) {
         try {
-          final fullTickets = await _remoteDataSource.fetchAllTickets(limit: 1000);
+          final fullTickets = await _remoteDataSource.fetchAllTickets(
+            limit: 1000,
+          );
           if (fullTickets.isNotEmpty) {
             allTickets = fullTickets;
           }

@@ -14,71 +14,74 @@ void main() {
     expect(find.byType(AlFatehManagementApp), findsOneWidget);
   });
 
-  testWidgets('AppThemeLanguageSwitchers does not overflow on very narrow screen',
-      (WidgetTester tester) async {
-    tester.view.physicalSize = const Size(180, 600);
-    tester.view.devicePixelRatio = 1.0;
-    addTearDown(tester.view.resetPhysicalSize);
+  testWidgets(
+    'AppThemeLanguageSwitchers does not overflow on very narrow screen',
+    (WidgetTester tester) async {
+      tester.view.physicalSize = const Size(180, 600);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(tester.view.resetPhysicalSize);
 
-    await tester.pumpWidget(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => ThemeCubit()),
-          BlocProvider(create: (_) => LocaleCubit()),
-        ],
-        child: const MaterialApp(
-          localizationsDelegates: [AppLocalizations.delegate],
-          home: Scaffold(
-            body: SizedBox(
-              width: 175.3,
-              child: AppThemeLanguageSwitchers(spread: true),
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => ThemeCubit()),
+            BlocProvider(create: (_) => LocaleCubit()),
+          ],
+          child: const MaterialApp(
+            localizationsDelegates: [AppLocalizations.delegate],
+            home: Scaffold(
+              body: SizedBox(
+                width: 175.3,
+                child: AppThemeLanguageSwitchers(spread: true),
+              ),
             ),
           ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    expect(find.byType(AppThemeLanguageSwitchers), findsOneWidget);
-  });
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(AppThemeLanguageSwitchers), findsOneWidget);
+    },
+  );
 
-  testWidgets('LoginView renders without overflow on narrow mobile and desktop',
-      (WidgetTester tester) async {
-    // 1. Mobile narrow view
-    tester.view.physicalSize = const Size(360, 640);
-    tester.view.devicePixelRatio = 1.0;
+  testWidgets(
+    'LoginView renders without overflow on narrow mobile and desktop',
+    (WidgetTester tester) async {
+      // 1. Mobile narrow view
+      tester.view.physicalSize = const Size(360, 640);
+      tester.view.devicePixelRatio = 1.0;
 
-    await tester.pumpWidget(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => ThemeCubit()),
-          BlocProvider(create: (_) => LocaleCubit()),
-        ],
-        child: const MaterialApp(
-          localizationsDelegates: [AppLocalizations.delegate],
-          home: LoginView(),
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => ThemeCubit()),
+            BlocProvider(create: (_) => LocaleCubit()),
+          ],
+          child: const MaterialApp(
+            localizationsDelegates: [AppLocalizations.delegate],
+            home: LoginView(),
+          ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    expect(find.byType(LoginView), findsOneWidget);
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(LoginView), findsOneWidget);
 
-    // 2. Desktop view
-    tester.view.physicalSize = const Size(1200, 800);
-    await tester.pumpWidget(
-      MultiBlocProvider(
-        providers: [
-          BlocProvider(create: (_) => ThemeCubit()),
-          BlocProvider(create: (_) => LocaleCubit()),
-        ],
-        child: const MaterialApp(
-          localizationsDelegates: [AppLocalizations.delegate],
-          home: LoginView(),
+      // 2. Desktop view
+      tester.view.physicalSize = const Size(1200, 800);
+      await tester.pumpWidget(
+        MultiBlocProvider(
+          providers: [
+            BlocProvider(create: (_) => ThemeCubit()),
+            BlocProvider(create: (_) => LocaleCubit()),
+          ],
+          child: const MaterialApp(
+            localizationsDelegates: [AppLocalizations.delegate],
+            home: LoginView(),
+          ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
-    expect(find.byType(LoginView), findsOneWidget);
-    addTearDown(tester.view.resetPhysicalSize);
-  });
+      );
+      await tester.pumpAndSettle();
+      expect(find.byType(LoginView), findsOneWidget);
+      addTearDown(tester.view.resetPhysicalSize);
+    },
+  );
 }
-

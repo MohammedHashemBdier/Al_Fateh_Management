@@ -102,7 +102,10 @@ void main() {
 
       await cubit.login(username: '', password: '');
       expect(cubit.state, isA<LoginFailure>());
-      expect((cubit.state as LoginFailure).errorMessage, equals('login_error_empty_fields'));
+      expect(
+        (cubit.state as LoginFailure).errorMessage,
+        equals('login_error_empty_fields'),
+      );
     });
 
     test('Successful login emits LoginLoading then LoginSuccess', () async {

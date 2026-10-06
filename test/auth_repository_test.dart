@@ -101,59 +101,56 @@ void main() {
   });
 
   group('AuthRepository Security & Offline Tests', () {
-    test('Successful online login saves session and offline verifier', () async {
-      final session = await repository.login(
-        username: 'admin',
-        password: 'password123',
-        rememberMe: true,
-      );
+    test(
+      'Successful online login saves session and offline verifier',
+      () async {
+        final session = await repository.login(
+          username: 'admin',
+          password: 'password123',
+          rememberMe: true,
+        );
 
-      expect(session.isOffline, isFalse);
-      expect(local.storedSession, isNotNull);
-      expect(local.rememberedUsername, 'admin');
-      expect(local.verifiers['admin'], isNotNull);
-      expect(
-        local.verifiers['admin'],
-        AppCrypto.hashOfflinePassword('password123'),
-      );
-    });
+        expect(session.isOffline, isFalse);
+        expect(local.storedSession, isNotNull);
+        expect(local.rememberedUsername, 'admin');
+        expect(local.verifiers['admin'], isNotNull);
+        expect(
+          local.verifiers['admin'],
+          AppCrypto.hashOfflinePassword('password123'),
+        );
+      },
+    );
 
-    test('Offline login succeeds when credentials match saved verifier', () async {
-      // First login online
-      await repository.login(
-        username: 'admin',
-        password: 'password123',
-      );
+    test(
+      'Offline login succeeds when credentials match saved verifier',
+      () async {
+        // First login online
+        await repository.login(username: 'admin', password: 'password123');
 
-      // Go offline
-      remote.isOnline = false;
+        // Go offline
+        remote.isOnline = false;
 
-      // Attempt offline login with the correct password
-      final offlineSession = await repository.login(
-        username: 'admin',
-        password: 'password123',
-      );
+        // Attempt offline login with the correct password
+        final offlineSession = await repository.login(
+          username: 'admin',
+          password: 'password123',
+        );
 
-      expect(offlineSession.isOffline, isTrue);
-      expect(offlineSession.user.username, 'admin');
-    });
+        expect(offlineSession.isOffline, isTrue);
+        expect(offlineSession.user.username, 'admin');
+      },
+    );
 
     test('Offline login fails when incorrect password is provided', () async {
       // First login online
-      await repository.login(
-        username: 'admin',
-        password: 'password123',
-      );
+      await repository.login(username: 'admin', password: 'password123');
 
       // Go offline
       remote.isOnline = false;
 
       // Attempt offline login with wrong password
       expect(
-        () => repository.login(
-          username: 'admin',
-          password: 'wrong_password',
-        ),
+        () => repository.login(username: 'admin', password: 'wrong_password'),
         throwsA(
           predicate(
             (e) => e.toString().contains('login_error_invalid_password'),
@@ -162,57 +159,49 @@ void main() {
       );
     });
 
-    test('Offline login fails if session is older than 14 days (TTL expired)', () async {
-      // Pre-populate an expired session (15 days old)
-      local.storedSession = AuthSession(
-        user: UserModel(
-          userId: 'USR-001',
-          username: 'admin',
-          fullName: 'مدير النظام',
-          department: 'MANAGEMENT',
-          roleId: 'ROLE_ADMIN',
-          status: 'ACTIVE',
-        ),
-        sessionToken: 'TOKEN_OLD',
-        loginTime: DateTime.now().subtract(const Duration(days: 15)),
-        permissionsVersion: 1,
-        isOffline: false,
-      );
-      local.verifiers['admin'] = AppCrypto.hashOfflinePassword('password123');
-
-      // Go offline
-      remote.isOnline = false;
-
-      // Attempt login
-      expect(
-        () => repository.login(
-          username: 'admin',
-          password: 'password123',
-        ),
-        throwsA(
-          predicate(
-            (e) => e.toString().contains('auth_session_expired'),
+    test(
+      'Offline login fails if session is older than 14 days (TTL expired)',
+      () async {
+        // Pre-populate an expired session (15 days old)
+        local.storedSession = AuthSession(
+          user: UserModel(
+            userId: 'USR-001',
+            username: 'admin',
+            fullName: 'مدير النظام',
+            department: 'MANAGEMENT',
+            roleId: 'ROLE_ADMIN',
+            status: 'ACTIVE',
           ),
-        ),
-      );
-    });
+          sessionToken: 'TOKEN_OLD',
+          loginTime: DateTime.now().subtract(const Duration(days: 15)),
+          permissionsVersion: 1,
+          isOffline: false,
+        );
+        local.verifiers['admin'] = AppCrypto.hashOfflinePassword('password123');
+
+        // Go offline
+        remote.isOnline = false;
+
+        // Attempt login
+        expect(
+          () => repository.login(username: 'admin', password: 'password123'),
+          throwsA(
+            predicate((e) => e.toString().contains('auth_session_expired')),
+          ),
+        );
+      },
+    );
 
     test('Server rejection (invalid credentials) does not trigger offline fallback', () async {
       // User is cached locally
-      await repository.login(
-        username: 'admin',
-        password: 'password123',
-      );
+      await repository.login(username: 'admin', password: 'password123');
 
       // Server is online, but rejects the credentials
       remote.isOnline = true;
       remote.returnInvalidCredentials = true;
 
       expect(
-        () => repository.login(
-          username: 'admin',
-          password: 'wrong_password',
-        ),
+        () => repository.login(username: 'admin', password: 'wrong_password'),
         throwsA(
           predicate(
             (e) => e.toString().contains('login_error_invalid_password'),

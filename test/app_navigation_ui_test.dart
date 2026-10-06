@@ -52,7 +52,9 @@ void main() {
     );
   }
 
-  testWidgets('AppAppBar and HomeMobileNavBar render cleanly with animations', (tester) async {
+  testWidgets('AppAppBar and HomeMobileNavBar render cleanly with animations', (
+    tester,
+  ) async {
     int selectedTab = 0;
 
     await tester.pumpWidget(

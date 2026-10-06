@@ -293,8 +293,9 @@ class _HomeViewBody extends StatelessWidget {
                                 context: context,
                                 title: context.tr('confirm_logout_title'),
                                 message: context.tr('confirm_logout_msg'),
-                                confirmText:
-                                    context.tr('confirm_logout_button'),
+                                confirmText: context.tr(
+                                  'confirm_logout_button',
+                                ),
                               );
                               if (confirm && context.mounted) {
                                 _handleLogout(context);

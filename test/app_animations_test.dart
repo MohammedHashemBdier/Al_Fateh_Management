@@ -4,7 +4,9 @@ import 'package:al_fateh_management/core/widgets/app_animations.dart';
 
 void main() {
   group('AppAnimations Tests', () {
-    testWidgets('AppFadeSlide renders child and animates forward', (tester) async {
+    testWidgets('AppFadeSlide renders child and animates forward', (
+      tester,
+    ) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -28,7 +30,9 @@ void main() {
       expect(find.text('Animated Child'), findsOneWidget);
     });
 
-    testWidgets('AppAnimatedSwitch switches children with fade transition', (tester) async {
+    testWidgets('AppAnimatedSwitch switches children with fade transition', (
+      tester,
+    ) async {
       Widget buildTestWidget(String label) {
         return MaterialApp(
           home: Scaffold(
