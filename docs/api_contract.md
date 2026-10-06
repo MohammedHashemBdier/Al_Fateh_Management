@@ -3,7 +3,7 @@
 
 - **الإصدار:** v5.0 (Enterprise Attendance, Shifts, Tickets & RBAC)
 - **البروتوكول:** HTTPS RESTful Web App (Google Apps Script Engine)
-- **تاريخ الاعتماد:** 2026-10-07
+- **تاريخ الاعتماد:** 2026-10-06
 - **نظام التنسيق:** JSON (MIME type: `application/json`)
 - **عنوان الخادم الأساسي (Production Web App URL):**
   `https://script.google.com/macros/s/AKfycbwW7Ii78ftHFew0g2wxCfyWVaiax3VI9g2NtgMFdd8uocI2GaBWcnm1PhQov7Q4-nY4/exec`
