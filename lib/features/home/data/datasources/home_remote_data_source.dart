@@ -18,7 +18,10 @@ class HomeRemoteDataSourceImpl implements HomeRemoteDataSource {
   Future<DashboardStatsModel> fetchDashboardStats() async {
     final response = await _dioClient.get(
       ApiEndpoints.defaultBaseUrl,
-      queryParameters: {'action': ApiEndpoints.actionInit},
+      queryParameters: {
+        'action': ApiEndpoints.actionInit,
+        'limit': '30',
+      },
     );
 
     dynamic data = response.data;

@@ -69,9 +69,7 @@ class AppSnackbars {
         elevation: 6,
         behavior: SnackBarBehavior.floating,
         backgroundColor: backgroundColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.all(16),
         content: Row(
           key: UniqueKey(),

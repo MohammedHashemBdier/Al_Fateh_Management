@@ -23,7 +23,7 @@ class LoginCubit extends Cubit<LoginState> {
         emit(
           LoginInitial(
             initialUsername: remembered,
-            rememberMe: remembered != null && remembered.isNotEmpty,
+            rememberMe: remembered != null ? remembered.isNotEmpty : true,
             isSkeletonPreview: current.isSkeletonPreview,
           ),
         );
