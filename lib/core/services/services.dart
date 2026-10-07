@@ -1,6 +1,16 @@
+export 'connectivity/app_connectivity_service.dart';
+export 'connectivity/i_connectivity_service.dart';
+export 'device_info/app_device_info_service.dart';
+export 'device_info/i_device_info_service.dart';
 export 'dialog/app_dialog_service.dart';
 export 'dialog/i_dialog_service.dart';
+export 'geofence/app_geofence_service.dart';
+export 'geofence/i_geofence_service.dart';
+export 'location/app_location_service.dart';
+export 'location/i_location_service.dart';
 export 'navigation/app_navigation_service.dart';
 export 'navigation/i_navigation_service.dart';
 export 'snackbar/app_snackbar_service.dart';
 export 'snackbar/i_snackbar_service.dart';
+export 'sync/app_sync_service.dart';
+export 'sync/i_sync_service.dart';

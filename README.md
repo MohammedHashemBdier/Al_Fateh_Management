@@ -4,7 +4,7 @@
 [![Dart](https://img.shields.io/badge/Dart-3.x-0175C2?logo=dart&logoColor=white)](https://dart.dev)
 [![Architecture](https://img.shields.io/badge/Architecture-Clean%20MVVM%20%2B%20Bloc-purple)](#architecture--tech-stack)
 [![Platforms](https://img.shields.io/badge/Platforms-Windows%20%7C%20Web%20%7C%20Android%20%7C%20iOS-success)](#platforms)
-[![Tests](https://img.shields.io/badge/Tests-48%20Passing%20(100%25)-brightgreen)](#testing--verification)
+[![Tests](https://img.shields.io/badge/Tests-71%20Passing%20(100%25)-brightgreen)](#testing--verification)
 [![Security](https://img.shields.io/badge/Security-Encrypted%20Cache%20%7C%20Zero--Plaintext-blue)](#security--offline-caching)
 
 A cross-platform enterprise management solution specifically engineered for **Al-Fateh Internet Service Provider (ISP)** operations. The platform unifies technical support ticket workflows, geofenced GPS employee attendance, hierarchical Role-Based Access Control (RBAC), and offline-first data caching powered by a Google Cloud & Apps Script backend.
@@ -18,6 +18,7 @@ A cross-platform enterprise management solution specifically engineered for **Al
 - [Module Status & Feature Matrix](#-module-status--feature-matrix)
 - [Role-Based Access Control (RBAC) & Dynamic UI](#-role-based-access-control-rbac--dynamic-ui)
 - [Security & Offline Caching](#-security--offline-caching)
+- [Attendance, Geofencing & Shifts Module](#-attendance-geofencing--shifts-module-enterprise-v200)
 - [Project Directory Structure](#-project-directory-structure)
 - [Getting Started](#-getting-started)
 - [Testing & Quality Assurance](#-testing--quality-assurance)
@@ -84,7 +85,7 @@ The application follows **Clean Architecture** with a feature-first **MVVM (Mode
 | **Localization** | Arabic (RTL) & English (LTR) | ✅ Completed | Complete bilingual support with instant runtime toggle. |
 | **Localization** | Universal Backend Translator | ✅ Completed | Automatically translates API error and status responses. |
 | **Tickets** | Support Tickets Management | ✅ Completed | Adaptive Cards/Table, Instant 300ms Search, Multi-Filter, One-Click Status Update, Offline Sync Queue, and Audit Trail. |
-| **Attendance** | GPS Geofenced Check-in | 🚧 Backend Ready | HQ geofence validation (Damascus) + Mock GPS prevention. |
+| **Attendance** | GPS Geofenced Check-in & Shifts | ✅ Completed | HQ geofence validation, Mock GPS prevention, Shifts management, Corrections, Reports, 7 Views, 20 Custom Widgets. |
 | **Employees** | Staff & RBAC Management | 🚧 Backend Ready | Role assignment and user management interface. |
 | **Settings** | Application & Account Profile | 🚧 Planned | Personalization, theme preferences, and security settings. |
 
@@ -129,36 +130,91 @@ The dashboard dynamically morphs based on the authenticated employee's role:
 
 ---
 
+## 📍 Attendance, Geofencing & Shifts Module (Enterprise v2.0.0)
+
+The Attendance module delivers a production-grade, enterprise Clean Architecture + MVVM implementation for geofenced employee attendance, shift schedules, correction approvals, and accounting reports.
+
+### 📱 Views Architecture (7 Complete Views)
+
+1. **`AttendanceHomeView` (`/attendance`):**
+   - **Scaffold:** `AppPageScaffold`
+   - **Features:** Real-time today status card, connection & sync badges, quick action buttons, live weekly attendance overview, recent records list, and instant refresh.
+2. **`CheckInView` (`/attendance/check-in`):**
+   - **Scaffold:** `AppPageScaffold`
+   - **Features:** Interactive OpenStreetMap (`flutter_map`) displaying live GPS coordinates, company HQ geofence boundary circle (50m radius), GPS accuracy indicator, automatic Mock GPS detection and prevention banner, and contextual Check-In / Check-Out button.
+3. **`AttendanceHistoryView` (`/attendance/history`):**
+   - **Scaffold:** `AppListScaffold`
+   - **Features:** Chronological attendance records with dual presentation modes (`AttendanceRecordTable` for Desktop/Tablet and `AttendanceRecordTile` for Mobile), advanced filter sheet (`AttendanceFilterSheet`), text search, and Excel export.
+4. **`AttendanceDetailsView` (`/attendance/details/:id`):**
+   - **Scaffold:** `AppDetailScaffold`
+   - **Features:** Comprehensive shift metrics breakdown (actual hours, overtime, late minutes, early departure), GPS verification metadata (lat/lng, distance to HQ, site name), correction request trigger, and complete chronological `AttendanceTimeline`.
+5. **`AttendanceCorrectionView` (`/attendance/correction`):**
+   - **Scaffold:** `AppListScaffold`
+   - **Features:** Two-tab interface (My Requests / Pending Approval for Managers), submission of attendance adjustment requests, and inline approval/rejection workflows with decision notes.
+6. **`ShiftManagementView` (`/attendance/shifts`):**
+   - **Scaffold:** `AppListScaffold` (Protected by `RoleGate` for `ROLE_ADMIN` & `ROLE_GM`)
+   - **Features:** Full management of working shifts (Morning, Evening, Flexible), add/edit dialog with custom start/end times, grace period minutes, standard hours calculation, and safe delete confirmation.
+7. **`AttendanceReportsView` (`/attendance/reports`):**
+   - **Scaffold:** `AppPageScaffold` (Protected by `RoleGate` for `ROLE_ADMIN`, `ROLE_GM`, `ROLE_FINANCE`)
+   - **Features:** Executive & Accounting metrics (Present days, Absent days, Total hours, Overtime hours, Deductions amount), period selector (Daily, Weekly, Monthly), and instant multi-format export (PDF, Excel, CSV).
+
+### 🧩 Custom Reusable Widgets (20 Component Library)
+
+| Widget | File | Description |
+| :--- | :--- | :--- |
+| `AttendanceStatusCard` | `attendance_status_card.dart` | Primary today status card with check-in/out times and status badge. |
+| `GpsStatusIndicator` | `gps_status_indicator.dart` | Real-time GPS accuracy meter and distance-to-HQ calculator. |
+| `CheckInButton` | `check_in_button.dart` | Action button with loading, disabled, and check-in/out morphing states. |
+| `MockLocationWarning` | `mock_location_warning.dart` | High-priority security warning on fake GPS / location mocking detection. |
+| `SyncStatusBadge` | `sync_status_badge.dart` | Offline sync queue badge with pending items count and instant sync trigger. |
+| `ConnectionStatusIndicator` | `connection_status_indicator.dart` | Network connectivity indicator (Online, Offline, Syncing). |
+| `GeofenceMap` | `geofence_map.dart` | FlutterMap integration showing user marker, HQ pin, and geofence circle. |
+| `TodaySummaryCard` | `today_summary_card.dart` | Summary card for current shift hours and elapsed workday time. |
+| `WeekSummaryWidget` | `week_summary_widget.dart` | Compact 7-day attendance timeline chips. |
+| `AttendanceRecordTile` | `attendance_record_tile.dart` | Adaptive list tile for attendance history records. |
+| `AttendanceRecordTable` | `attendance_record_table.dart` | Desktop/Tablet data table with sorting, hover, and row clicks. |
+| `AttendanceFilterSheet` | `attendance_filter_sheet.dart` | Modal bottom sheet for date range, status, and search filters. |
+| `AttendanceTimeline` | `attendance_timeline.dart` | Visual audit trail timeline mapping check-in, check-out, and manager edits. |
+| `ShiftCard` | `shift_card.dart` | Shift configuration card with hours, grace period, edit and delete buttons. |
+| `OvertimeCard` | `overtime_card.dart` | Overtime record card displaying approved hours and bonus multipliers. |
+| `DeductionCard` | `deduction_card.dart` | Penalty card showing late arrival / absence deductions. |
+| `CorrectionRequestDialog` | `correction_request_dialog.dart` | Modal dialog for requesting attendance corrections with reason input. |
+| `AttendanceEmptyState` | `attendance_empty_state.dart` | Styled empty state with icon and call-to-action button. |
+| `AttendanceErrorState` | `attendance_error_state.dart` | Localized error display with retry callback. |
+| `AttendanceLoadingState` | `attendance_loading_state.dart` | Skeleton shimmer placeholder for smooth loading transitions. |
+
+---
+
 ## 📁 Project Directory Structure
 
 ```text
 lib/
 ├── core/
 │   ├── constants/            # Asset paths, brand dimensions, typography
+│   ├── contracts/            # Result<T>, UIStatus, and base functional contracts
+│   ├── di/                   # Dependency Injection container (get_it setup)
 │   ├── errors/               # AppException & Failure clean architecture classes
-│   ├── localization/         # AppLocalizations, LocaleCubit, BackendMessageTranslator
-│   ├── network/              # DioClient, ApiEndpoints, error handlers
+│   ├── localization/         # AppLocalizations, AttendanceErrorMapper, BackendMessageTranslator
+│   ├── network/              # DioClient, ApiEndpoints, error handlers, redirect interceptors
 │   ├── rbac/                 # UserRole, PermissionScope, AppPermissions matrix
 │   ├── routing/              # AppRouter (GoRouter configuration & routes)
+│   ├── services/             # Core hardware & integration services
+│   │   ├── connectivity/     # Network state observer & offline detection
+│   │   ├── geofence/         # Geofencing distance & perimeter calculations
+│   │   ├── location/         # GPS location tracking & Mock location detection
+│   │   └── sync/             # Offline operations synchronization queue
+│   ├── storage/              # Encrypted local storage (ILocalStorage / SharedPreferences)
 │   ├── theme/                # Light/Dark MaterialTheme definitions, ThemeCubit
 │   ├── utils/                # AppCrypto, ContextExtensions, AppSnackbars
-│   └── widgets/              # Reusable design system components
-│       ├── app_button.dart
-│       ├── app_card.dart
-│       ├── app_confirm_dialog.dart
-│       ├── app_hover.dart
-│       ├── app_skeleton.dart
-│       ├── app_tooltip.dart
-│       ├── role_gate.dart
-│       └── ...
+│   └── widgets/              # Design system reusable components & scaffold variants
 ├── features/
-│   ├── attendance/           # GPS Attendance Module (Views & Cubits)
+│   ├── attendance/           # GPS Attendance, Geofencing & Shifts Module
+│   │   ├── data/             # Models (freezed/json_serializable), DataSources, RepositoryImpl
+│   │   ├── domain/           # Entities, Enums, Repositories, UseCases (CheckIn, Shifts, etc.)
+│   │   └── presentation/     # 8 Cubits, 7 Views, and 20 specialized Widgets
 │   ├── auth/                 # Authentication & Session Module
 │   ├── employees/            # Staff & Permissions Management Module
 │   ├── home/                 # Main Shell & Role-Based Dashboard
-│   │   ├── data/             # Remote & Local encrypted DataSources, RepositoryImpl
-│   │   ├── domain/           # DashboardStatsModel, NavDestinationItem, Repository
-│   │   └── presentation/     # HomeView, HomeCubit, HomeState, Widgets
 │   ├── settings/             # Settings & Account Profile Module
 │   ├── splash/               # Animated Startup & Auto-Login Session Resolver
 │   └── tickets/              # Support & Inquiry Tickets Module
@@ -215,7 +271,10 @@ flutter test
 flutter analyze
 ```
 
-### Current Test Coverage (34 Tests Passing - 100%):
+### Current Test Coverage (71 Tests Passing - 100%):
+* `test/attendance_views_field_test.dart`: Complete widget validation for Attendance cards, geofence indicators, mock location warnings, record tables, and shift management cards with full Material theme and Arabic locale wrapping.
+* `test/e2e_full_attendance_test.dart`: End-to-end integration suite validating real-world Google Apps Script backend workflows (Shifts CRUD, CheckIn idempotency, CheckOut, TodayStatus, CorrectionRequests & Approvals).
+* `test/tickets_cubit_test.dart` & `test/tickets_repository_test.dart`: Support tickets filtering, debounced search, status update, and offline caching sync operations.
 * `test/home_cubit_test.dart`: Dashboard stats loading, tab selection, data refresh, session error handling, logout.
 * `test/role_gate_test.dart`: RoleGate, PermissionGate, and ScopeGate widget rendering and permission checks.
 * `test/app_confirm_dialog_test.dart`: Modal confirmation rendering, danger variants, confirm/cancel callbacks.
@@ -228,6 +287,18 @@ flutter analyze
 ---
 
 ## 📝 Changelog & Sprint Progress
+
+### Sprint 4: Attendance, Geofencing & Work Shifts (v2.0.0 - October 2026)
+* [x] Engineered comprehensive Clean Architecture + MVVM for Attendance (`Domain` entities, `Data` models/repositories, `8 Presentation Cubits`, and DI via `get_it`).
+* [x] Built 7 enterprise views: `AttendanceHomeView`, `CheckInView`, `AttendanceHistoryView`, `AttendanceDetailsView`, `AttendanceCorrectionView`, `ShiftManagementView`, and `AttendanceReportsView`.
+* [x] Developed 20 specialized, responsive UI widgets following strict Material Design 3 and Al-Fateh design system tokens.
+* [x] Integrated real-time GPS Geofencing with OpenStreetMap (`flutter_map`) and circular boundary rendering (HQ 50m radius).
+* [x] Implemented anti-tampering GPS validation and Mock GPS detection alerts.
+* [x] Implemented offline caching and asynchronous background sync queue for offline attendance punch records.
+* [x] Added full role-based access control via `RoleGate` protecting administrative and financial views.
+* [x] Added over 60 localized keys with 100% Arabic (RTL) and English (LTR) parity.
+* [x] Integrated live Google Apps Script endpoints for Check-In, Check-Out, Shifts CRUD, TodayStatus, and Correction Requests.
+* [x] Validated with 0 static analysis issues (`dart analyze lib/`) and clean Windows native binary compilation (`al_fateh_management.exe`).
 
 ### Sprint 3: Tickets & Support Operations Module (v1.1.0 - October 2026)
 * [x] Developed comprehensive Tickets MVVM architecture (`TicketsCubit`, `TicketsState`, `TicketModel`, `TicketFilterModel`, `TicketsRepositoryImpl`, `TicketsRemoteDataSource`, `TicketsLocalDataSource`).

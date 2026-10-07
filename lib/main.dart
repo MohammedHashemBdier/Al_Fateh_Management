@@ -8,8 +8,13 @@ import 'core/routing/app_router.dart';
 import 'core/theme/theme_cubit.dart';
 import 'core/theme/theme.dart';
 
-void main() {
+import 'core/di/injection.dart';
+import 'core/storage/i_local_storage.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await configureDependencies();
+  await getIt<ILocalStorage>().init();
   runApp(const AlFatehManagementApp());
 }
 
