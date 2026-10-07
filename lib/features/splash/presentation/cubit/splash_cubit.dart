@@ -23,7 +23,9 @@ class SplashCubit extends Cubit<SplashState> {
     emit(const SplashLoading(progress: 0.80, statusKey: 'splash_step_system'));
 
     // التحقق الأمني من وجود جلسة صالحة ومحفوظة مسبقاً (Auto-login / Remember Me)
-    final savedSession = await _authRepository.getSavedSession();
+    final savedSession = await _authRepository.getSavedSession(
+      requireRememberMe: true,
+    );
 
     await Future.delayed(const Duration(milliseconds: 300));
 

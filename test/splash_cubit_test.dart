@@ -9,7 +9,9 @@ class MockAuthRepositoryForSplash implements AuthRepository {
   AuthSession? savedSession;
 
   @override
-  Future<AuthSession?> getSavedSession() async => savedSession;
+  Future<AuthSession?> getSavedSession({
+    bool requireRememberMe = false,
+  }) async => savedSession;
 
   @override
   Future<AuthSession> login({

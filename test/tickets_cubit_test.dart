@@ -129,7 +129,7 @@ class MockAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<AuthSession?> getSavedSession() async {
+  Future<AuthSession?> getSavedSession({bool requireRememberMe = false}) async {
     return AuthSession(
       sessionToken: 'fake_token',
       loginTime: DateTime.now(),

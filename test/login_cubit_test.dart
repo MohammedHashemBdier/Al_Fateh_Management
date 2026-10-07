@@ -36,7 +36,9 @@ class MockAuthRepository implements AuthRepository {
   }
 
   @override
-  Future<AuthSession?> getSavedSession() async => null;
+  Future<AuthSession?> getSavedSession({
+    bool requireRememberMe = false,
+  }) async => null;
 
   @override
   Future<void> logout() async {}

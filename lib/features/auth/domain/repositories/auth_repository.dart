@@ -9,7 +9,7 @@ abstract class AuthRepository {
   });
 
   /// استرجاع الجلسة المحفوظة محلياً (Offline Caching)
-  Future<AuthSession?> getSavedSession();
+  Future<AuthSession?> getSavedSession({bool requireRememberMe = false});
 
   /// تسجيل الخروج وحذف الجلسة المخزنة
   Future<void> logout();

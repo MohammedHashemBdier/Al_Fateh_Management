@@ -32,7 +32,7 @@ class TicketsRemoteDataSourceImpl implements TicketsRemoteDataSource {
     try {
       final response = await _dioClient.get(
         ApiEndpoints.defaultBaseUrl,
-        queryParameters: {'action': ApiEndpoints.actionInit},
+        queryParameters: {'action': ApiEndpoints.actionInit, 'limit': '50'},
       );
       final data = _parseResponse(response);
 

@@ -85,9 +85,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<AuthSession?> getSavedSession() async {
-    final isRemembered = await _localDataSource.isRememberMe();
-    if (!isRemembered) return null;
+  Future<AuthSession?> getSavedSession({bool requireRememberMe = false}) async {
+    if (requireRememberMe) {
+      final isRemembered = await _localDataSource.isRememberMe();
+      if (!isRemembered) return null;
+    }
 
     final session = await _localDataSource.getSession();
     if (session == null) return null;
