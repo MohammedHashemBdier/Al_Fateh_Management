@@ -60,36 +60,39 @@ class AppSnackbars {
   }) {
     final displayMessage = BackendMessageTranslator.translate(context, message);
 
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(
-        SnackBar(
-          elevation: 6,
-          behavior: SnackBarBehavior.floating,
-          backgroundColor: backgroundColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-          margin: const EdgeInsets.all(16),
-          content: Row(
-            children: [
-              Icon(icon, color: foregroundColor, size: 22),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Text(
-                  displayMessage,
-                  style: TextStyle(
-                    fontFamily: AppAssets.fontPrimary,
-                    color: foregroundColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
+    final messenger = ScaffoldMessenger.of(context);
+    messenger.clearSnackBars();
+
+    messenger.showSnackBar(
+      SnackBar(
+        key: UniqueKey(),
+        elevation: 6,
+        behavior: SnackBarBehavior.floating,
+        backgroundColor: backgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+        margin: const EdgeInsets.all(16),
+        content: Row(
+          key: UniqueKey(),
+          children: [
+            Icon(icon, color: foregroundColor, size: 22),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                displayMessage,
+                style: TextStyle(
+                  fontFamily: AppAssets.fontPrimary,
+                  color: foregroundColor,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
-            ],
-          ),
-          duration: const Duration(seconds: 3),
+            ),
+          ],
         ),
-      );
+        duration: const Duration(seconds: 3),
+      ),
+    );
   }
 }

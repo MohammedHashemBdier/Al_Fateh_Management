@@ -80,17 +80,8 @@ class _LoginViewBody extends StatelessWidget {
           );
           AppSnackbars.showError(context, localizedError);
         } else if (state is LoginSuccess) {
-          if (state.session.isOffline) {
-            AppSnackbars.showWarning(
-              context,
-              '${context.tr('login_success')} - ${context.tr('offline_mode_banner')}',
-            );
-          } else {
-            AppSnackbars.showSuccess(
-              context,
-              '${context.tr('login_success')}: ${state.session.user.fullName}',
-            );
-          }
+          // مسح أي إشعار سابق لتفادي تعارض الـ Hero أثناء انتقال الصفحة
+          ScaffoldMessenger.of(context).clearSnackBars();
           // الانتقال إلى الصفحة الرئيسية
           context.go('/home');
         }

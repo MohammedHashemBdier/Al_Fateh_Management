@@ -11,9 +11,9 @@ class DioClient {
     _dio = Dio(
       BaseOptions(
         baseUrl: ApiEndpoints.defaultBaseUrl,
-        connectTimeout: const Duration(seconds: 45),
-        receiveTimeout: const Duration(seconds: 60),
-        sendTimeout: const Duration(seconds: 45),
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
         followRedirects: false, // Disabling automatic redirect on POST allows catching 302 and redirecting via GET
         maxRedirects: 5,
         validateStatus: (status) => status != null && status < 400,
@@ -43,6 +43,28 @@ class DioClient {
 
   Dio get dio => _dio;
 
+  Dio _createRedirectDio() {
+    final client = Dio(
+      BaseOptions(
+        connectTimeout: const Duration(seconds: 30),
+        receiveTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
+        followRedirects: true,
+        maxRedirects: 5,
+      ),
+    );
+    if (kDebugMode) {
+      client.interceptors.add(
+        LogInterceptor(
+          requestBody: false,
+          responseBody: false,
+          error: true,
+        ),
+      );
+    }
+    return client;
+  }
+
   Future<Response<T>> get<T>(
     String path, {
     Map<String, dynamic>? queryParameters,
@@ -61,13 +83,7 @@ class DioClient {
         response.statusCode == 307) {
       final location = response.headers.value('location');
       if (location != null && location.isNotEmpty) {
-        return Dio(
-          BaseOptions(
-            connectTimeout: const Duration(seconds: 45),
-            receiveTimeout: const Duration(seconds: 60),
-            sendTimeout: const Duration(seconds: 45),
-          ),
-        ).get<T>(
+        return _createRedirectDio().get<T>(
           location,
           options: Options(
             responseType: options?.responseType ?? ResponseType.json,
@@ -103,13 +119,7 @@ class DioClient {
         response.statusCode == 307) {
       final location = response.headers.value('location');
       if (location != null && location.isNotEmpty) {
-        return Dio(
-          BaseOptions(
-            connectTimeout: const Duration(seconds: 45),
-            receiveTimeout: const Duration(seconds: 60),
-            sendTimeout: const Duration(seconds: 45),
-          ),
-        ).get<T>(
+        return _createRedirectDio().get<T>(
           location,
           options: Options(
             responseType: options?.responseType ?? ResponseType.json,
